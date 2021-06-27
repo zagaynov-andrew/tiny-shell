@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/17 15:09:06 by ngamora           #+#    #+#             */
-/*   Updated: 2021/06/27 12:34:37 by ngamora          ###   ########.fr       */
+/*   Created: 2021/06/27 16:17:15 by ngamora           #+#    #+#             */
+/*   Updated: 2021/06/27 19:10:35 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include <stdio.h>
+#include "../libft/libft.h"
+#include <sys/wait.h>
+#include <readline/history.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
-{
-	t_list	*current;
-	t_list	*tmp;
-
-	if (!lst || !del)
-		return ;
-	if (!*lst)
-		return ;
-	current = *lst;
-	while (current)
-	{
-		tmp = current->next;
-		ft_lstdelone(current, del);
-		current = tmp;
-	}
-	*lst = NULL;
-}
+int		msh_exec(char *in_file, char *out_file, t_list *lst);
+void	msh_set_input(char *in_file, int tmp[], int fd[]);
+void	msh_simple_cmd_loop(char *out_file,
+								int tmp[], int fd[], t_list *lst);

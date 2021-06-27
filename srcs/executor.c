@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstclear.c                                      :+:      :+:    :+:   */
+/*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/17 15:09:06 by ngamora           #+#    #+#             */
-/*   Updated: 2021/06/27 12:34:37 by ngamora          ###   ########.fr       */
+/*   Created: 2021/06/27 15:55:31 by ngamora           #+#    #+#             */
+/*   Updated: 2021/06/27 18:20:43 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "executor.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
+int	msh_exec(char *in_file, char *out_file, t_list *lst)
 {
-	t_list	*current;
-	t_list	*tmp;
+	int	tmp[2];
+	int	fd[2];
 
-	if (!lst || !del)
-		return ;
-	if (!*lst)
-		return ;
-	current = *lst;
-	while (current)
-	{
-		tmp = current->next;
-		ft_lstdelone(current, del);
-		current = tmp;
-	}
-	*lst = NULL;
+	tmp[0] = dup(0);
+	tmp[1] = dup(1);
+	msh_set_input(in_file, tmp, fd);
+	msh_simple_cmd_loop(out_file, tmp, fd, lst);
+	dup2(tmp[0], 0);
+	dup2(tmp[1], 1);
+	close(tmp[0]);
+	close(tmp[1]);
+	system("chmod 700 file");
+	return (0);
 }
