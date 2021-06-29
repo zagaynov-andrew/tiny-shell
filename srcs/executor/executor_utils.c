@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/06/29 16:20:36 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/06/29 20:22:28 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,9 @@ void	msh_simple_cmd_loop(char *out_file,
 			msh_create_pipe(fd);
 		dup2(fd[1], 1);
 		close(fd[1]);
+		// if (!ft_strcmp(((char**)lst->content)[0], "hello"))
+		// 	hello();
+		// else
 		msh_launch(lst);
 		lst = lst->next;
 		i++;
