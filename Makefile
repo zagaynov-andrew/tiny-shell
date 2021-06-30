@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/06/29 21:49:37 by ngamora          ###   ########.fr        #
+#    Updated: 2021/06/30 15:16:17 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,7 @@ LIBFT_SRCS	=	ft_memset.c				\
 SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(EXECUTOR_DIR)executor_utils.c		\
 			$(SRCS_DIR)$(EXECUTOR_DIR)str_array_free.c		\
+			$(SRCS_DIR)$(EXECUTOR_DIR)msh_file_creation.c	\
 			$(SRCS_DIR)$(TEST_DIR)print_str_array.c			\
 			$(SRCS_DIR)$(TEST_DIR)print_list_str_array.c	\
 			$(SRCS_DIR)minishell.c
@@ -125,7 +126,7 @@ clean:
 	rm -Rf $(OBJS_DIR)
 
 fclean: clean
-	@$(MAKE) fclean -C $(LIBFT_DIR)								
+	@$(MAKE) fclean -C $(LIBFT_DIR)
 	rm -f $(NAME)
 
 re: fclean all
