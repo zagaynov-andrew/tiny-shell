@@ -6,23 +6,37 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/06/29 20:22:28 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/06/30 01:28:48 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-void	msh_set_input(char *in_file, int tmp[], int fd[])
+void	msh_set_input(char *in_file, int tmp[], int fd[], int flag_no_input)
 {
-	if (in_file)
+	if (ft_strcmp(in_file, ""))
 		fd[0] = open(in_file, O_RDONLY);
 	else
-		fd[0] = dup(tmp[0]);
+	{
+		if (tmp)
+		{
+			// if (flag_no_input)
+			// 	close(fd[0]);
+			fd[0] = dup(tmp[0]);
+			// ft_putstr_fd("hello", fd[1]);
+			// ft_putchar_fd(4, 1);
+		}
+		// if (flag_no_input)
+		// {
+		// 	// close(fd[0]);
+		// 	fd[0] = dup(tmp[0]);
+		// }
+	}
 }
 
 static void	msh_set_output(char *out_file, int tmp[], int fd[])
 {
-	if (out_file)
+	if (ft_strcmp(out_file, ""))
 		fd[1] = open(out_file, O_TRUNC | O_CREAT | O_RDWR);
 	else
 		fd[1] = dup(tmp[1]);
@@ -62,20 +76,33 @@ static int	msh_launch(t_list *lst)
 	return (status);
 }
 
-void	msh_simple_cmd_loop(char *out_file,
-								int tmp[], int fd[], t_list *lst)
+void	msh_simple_cmd_loop(t_list *redirs,
+								int tmp[], int fd[], t_list *cmds)
 {
 	int	num_simple_cmds;
 	int	i;
+	int flag_no_input;
 
-	num_simple_cmds = ft_lstsize(lst);
+	num_simple_cmds = ft_lstsize(cmds);
 	i = 0;
+	flag_no_input = 0;
+	// msh_set_input(((char **)redirs->content)[0], fd, fd);
 	while (i < num_simple_cmds)
 	{
+		if (i)
+			msh_set_input(((char **)redirs->content)[0], NULL, fd, flag_no_input);
+		// if (flag_no_input)
+			// msh_set_input(((char **)redirs->content)[0], tmp, fd, flag_no_input);
+		flag_no_input = 0;
 		dup2(fd[0], 0);
 		close(fd[0]);
-		if (i == num_simple_cmds - 1)
-			msh_set_output(out_file, tmp, fd);
+		
+		if (ft_strcmp(((char **)redirs->content)[1], "") || i == num_simple_cmds - 1)
+		{
+			msh_set_output(((char **)redirs->content)[1], tmp, fd);
+			if (ft_strcmp(((char **)redirs->content)[1], ""))
+				flag_no_input = 1;
+		}
 		else
 			msh_create_pipe(fd);
 		dup2(fd[1], 1);
@@ -83,8 +110,23 @@ void	msh_simple_cmd_loop(char *out_file,
 		// if (!ft_strcmp(((char**)lst->content)[0], "hello"))
 		// 	hello();
 		// else
-		msh_launch(lst);
-		lst = lst->next;
+		// if (i)
+			// ft_putchar_fd(4, 1);
+		msh_launch(cmds);
+		cmds = cmds->next;
+		redirs = redirs->next;
+
+		if (flag_no_input)
+		{
+			msh_create_pipe(fd);
+			dup2(fd[1], 1);
+			close(fd[1]);
+			// ft_putstr_fd("HELLO\n", 1);
+			// ft_putchar_fd(4, 1);
+		}
+		perror("DONE");
+		
+		// ft_putchar_fd(4, 1);
 		i++;
 	}
 }
