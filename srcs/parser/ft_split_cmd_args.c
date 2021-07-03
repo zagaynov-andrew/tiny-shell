@@ -3,30 +3,16 @@
 char	*define_del(char *str, int len)
 {
 	if (!ft_strncmp("|", str , 1) && len == 1)
-		return ("PIPE");
+		return ("|PIPE");
 	if (!ft_strncmp("<<", str, 2) && len == 2)
-		return ("LESSLESS");
+		return ("<<LESSLESS");
 	if (!ft_strncmp(">>", str, 2) && len == 2)
-		return ("GREATGREAT");
+		return (">>GREATGREAT");
 	if (!ft_strncmp("<", str, 1) && len == 1)
-		return ("LESS");
+		return ("<LESS");
 	if (!ft_strncmp(">", str, 1) && len == 1)
-		return ("GREAT");
+		return (">GREAT");
 	return (NULL);
-}
-
-void	ft_strncpy(char *dst, char *src, int n)
-{
-	int i;
-
-	i = 0;
-	while (src[i] && n)
-	{
-		dst[i] = src[i];
-		n--;
-		i++;
-	}
-	dst[i] = '\0';
 }
 
 int		calc_ch(char *str, char *ch)
@@ -63,7 +49,7 @@ void	check_spec(char **split, char **line, int *i)
 	}
 	else
 	{
-		write(1, "Error parsing\n", 14);
+		write(1, "Error parsing delimetrs\n", 24);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -81,7 +67,7 @@ void	make_word(char **split, char **line, int *i)
 
 	tmp = *line;
 	len = 0;
-	while (!ft_strchr("|<> ", **line))
+	while (!ft_strchr("|<> \'\"", **line))
 	{
 		(*line)++;
 		len++;
@@ -91,42 +77,12 @@ void	make_word(char **split, char **line, int *i)
 	*i = *i + 1;
 }
 
-int		get_num_words(char *line)
-{
-	int len;
-	int i;
-
-	len = 0;
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] == ' ')
-		{
-			while (line[i] == ' ')
-				i++;
-		}
-		else if (ft_strchr("|<> ", line[i]))
-		{
-			len++;
-			while (ft_strchr("|<> ", line[i]))
-				i++;
-		}
-		else
-		{
-			len++;
-			while (!ft_strchr("|<> ", line[i]))
-				i++;
-		}		
-	}
-	return (len);
-}
-
 char	**ft_split_cmd_args(char *line)
 {
 	int i;
 	int numstr;
 	char **split;
-	
+
 	i = 0;
 	numstr = get_num_words(line);
 	split = (char **)malloc(sizeof(char *) * numstr + 1);
@@ -136,6 +92,8 @@ char	**ft_split_cmd_args(char *line)
 			check_spec(split, &line, &i);
 		else if (*line == ' ')
 			skip_spaces(&line);
+		else if (*line == '\'' || *line == '\"')
+			quote_parse(split, &line, &i);
 		else
 			make_word(split, &line, &i);
 	}
