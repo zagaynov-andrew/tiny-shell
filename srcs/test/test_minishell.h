@@ -10,6 +10,6 @@
 # define PURPLE	"\033[1;35m"
 
 void	print_str_array(char **array);
-void    print_list_str_array();
+void	print_list_str_array(t_list *lst);
 
 #endif
