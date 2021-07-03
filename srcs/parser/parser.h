@@ -8,7 +8,6 @@
 #include <unistd.h>
 #include <dirent.h>
 #include "libft/libft.h"
-#include "gnl/get_next_line.h"
 
 t_list  *lexer(char *line, int status);
 void    skip_wsp(int *i, char *line);

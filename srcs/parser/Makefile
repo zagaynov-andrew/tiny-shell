@@ -1,6 +1,6 @@
 NAME := minishell
 
-SRC := gnl/get_next_line.c gnl/get_next_line_utils.c main.c lexer.c ft_split_cmd_args.c \
+SRC :=  main.c lexer.c ft_split_cmd_args.c \
 		ft_split_utils.c cmd_table.c test_list/print_list_str_array.c test_list/print_str_array.c
 		
 
