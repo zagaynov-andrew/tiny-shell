@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/06/30 15:16:17 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/06 23:04:23 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME			= minishell
 LIBFT_DIR		= ./libft/
 PARSER_DIR		= parser/
 EXECUTOR_DIR	= executor/
+BUILTIN_DIR		= builtin/
 TEST_DIR		= test/
 SRCS_DIR		= ./srcs/
 OBJS_DIR		= ./objs/
@@ -80,6 +81,10 @@ SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(EXECUTOR_DIR)executor_utils.c		\
 			$(SRCS_DIR)$(EXECUTOR_DIR)str_array_free.c		\
 			$(SRCS_DIR)$(EXECUTOR_DIR)msh_file_creation.c	\
+			$(SRCS_DIR)$(BUILTIN_DIR)echo.c					\
+			$(SRCS_DIR)$(BUILTIN_DIR)pwd.c					\
+			$(SRCS_DIR)$(BUILTIN_DIR)cd.c					\
+			$(SRCS_DIR)$(BUILTIN_DIR)env.c					\
 			$(SRCS_DIR)$(TEST_DIR)print_str_array.c			\
 			$(SRCS_DIR)$(TEST_DIR)print_list_str_array.c	\
 			$(SRCS_DIR)minishell.c
@@ -111,6 +116,11 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)$(TEST_DIR)%.c $(SRCS_DIR)$(TEST_DIR)test_minishell.
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)$(EXECUTOR_DIR)%.c $(SRCS_DIR)$(EXECUTOR_DIR)executor.h
+	@mkdir -p $(OBJS_DIR)
+	@echo "\033[1;31m- Done :\033[0m $<"
+	@$(CC) $(CC_FLAGS) -c $< -o $@
+
+$(OBJS_DIR)%.o : $(SRCS_DIR)$(BUILTIN_DIR)%.c $(SRCS_DIR)$(BUILTIN_DIR)builtin.h
 	@mkdir -p $(OBJS_DIR)
 	@echo "\033[1;31m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@

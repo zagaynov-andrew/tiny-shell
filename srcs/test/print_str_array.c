@@ -13,3 +13,17 @@ void	print_str_array(char **array)
 		i++;
 	}
 }
+
+void	print_str_array_no_color(char **array)
+{
+	int i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array[i])
+	{
+		printf("%s\n", array[i]);
+		i++;
+	}
+}

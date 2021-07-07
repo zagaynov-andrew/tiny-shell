@@ -6,12 +6,13 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:18:38 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/03 21:10:45 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/06 23:06:21 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor/executor.h"
 #include "test/test_minishell.h"
+#include <signal.h>
 
 int	main(int argc, char *argv[], char *env[])
 {
@@ -20,7 +21,10 @@ int	main(int argc, char *argv[], char *env[])
 	t_vec	*vec;
 
 	vec = ft_vec_new(2);
-	ft_vec_push(&vec, (void*)ft_strdup("ls"));
+	ft_vec_push(&vec, (void*)ft_strdup("cd"));
+	// ft_vec_push(&vec, (void*)ft_strdup("-n"));
+	// ft_vec_push(&vec, (void*)ft_strdup("hello"));
+	// ft_vec_push(&vec, (void*)ft_strdup("world"));
 	ft_vec_push(&vec, NULL);
 	ft_lstadd_back(&cmds, ft_lstnew(vec->data));
 	free(vec);
@@ -34,8 +38,8 @@ int	main(int argc, char *argv[], char *env[])
 	// free(vec);
 
 	vec = ft_vec_new(3);
-	ft_vec_push(&vec, (void*)ft_strdup("touch"));
-	ft_vec_push(&vec, (void*)ft_strdup("ggg"));
+	ft_vec_push(&vec, (void*)ft_strdup("grep"));
+	ft_vec_push(&vec, (void*)ft_strdup("PWD"));
 	ft_vec_push(&vec, NULL);
 	ft_lstadd_back(&cmds, ft_lstnew(vec->data));
 	free(vec);
@@ -46,7 +50,7 @@ int	main(int argc, char *argv[], char *env[])
 
 	vec = ft_vec_new(4);
 	ft_vec_push(&vec, (void*)ft_strdup(""));
-	ft_vec_push(&vec, (void*)ft_strdup("/Users/ngamora/minishell/file"));
+	ft_vec_push(&vec, (void*)ft_strdup(""));
 	ft_vec_push(&vec, (void*)ft_strdup(""));
 	ft_vec_push(&vec, NULL);
 	ft_lstadd_back(&redirs, ft_lstnew(vec->data));
@@ -70,8 +74,7 @@ int	main(int argc, char *argv[], char *env[])
 
 	print_list_str_array(redirs);
 	msh_file_creation(redirs);
-	perror("DONE");
-	msh_exec(cmds, redirs);
+	msh_exec(cmds, redirs, env);
 
 
 	ft_lstclear(&cmds, str_array_free);

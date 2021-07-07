@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:17:15 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/03 19:22:31 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/06 22:46:50 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "../../libft/libft.h"
 #include "../test/test_minishell.h"
+#include "../builtin/builtin.h"
 #include <stdio.h>
 #include <sys/wait.h>
 #include <readline/history.h>
@@ -22,10 +23,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-int		msh_exec(t_list *cmds, t_list *redirs);
+int		msh_exec(t_list *cmds, t_list *redirs, char **env);
 void	msh_set_input(char *in_file, int tmp[], int fd[]);
-void	msh_simple_cmd_loop(t_list *redirs,
-								int tmp[], int fd[], t_list *cmds);
+void	msh_simple_cmd_loop(t_list *redirs, t_list *cmds, char **env);
 void	str_array_free(void *str_array);
 void	msh_file_creation(t_list *redirs);
 

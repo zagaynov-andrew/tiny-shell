@@ -1,36 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_file_creation.c                                :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/30 15:04:19 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/03 20:08:49 by ngamora          ###   ########.fr       */
+/*   Created: 2021/07/06 19:10:41 by ngamora           #+#    #+#             */
+/*   Updated: 2021/07/07 18:13:29 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#include "builtin.h"
 
-static void	create_files(void *redirs)
+int	msh_cd(int argc, char *argv[], char *env[])
 {
-	char	**path;
-	int		fd;
-
-	path = (char **)redirs;
-	if (ft_strcmp(path[1], "") != 0)
+	(void)argc;
+	(void)argv;
+	if (argc == 1)
 	{
-		fd = open(path[1], O_TRUNC | O_CREAT | O_RDWR, 0644);
-		close(fd);
+		if (chdir(getenv("HOME")) != 0)
+			perror("ERROR"); //
 	}
-	if (ft_strcmp(path[2], "") != 0)
+	else if (argc > 2)
 	{
-		fd = open(path[2], O_CREAT | O_RDWR, 0644);
-		close(fd);
+		perror("too many arguments"); //
 	}
+	else
+	{
+		if (chdir(argv[1]) != 0)
+			perror("ERROR"); //
+	}
+	return (0);
 }
 
-void	msh_file_creation(t_list *redirs)
-{
-	ft_lstiter(redirs, create_files);
-}
+// int main(int argc, char *argv[], char *env[])
+// {
+//     msh_cd(argc, argv, env);
+//     return (0);
+// }

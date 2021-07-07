@@ -11,5 +11,6 @@
 
 void	print_str_array(char **array);
 void	print_list_str_array(t_list *lst);
+void	print_str_array_no_color(char **array);
 
 #endif

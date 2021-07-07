@@ -1,36 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_file_creation.c                                :+:      :+:    :+:   */
+/*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/30 15:04:19 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/03 20:08:49 by ngamora          ###   ########.fr       */
+/*   Created: 2021/07/06 22:07:23 by ngamora           #+#    #+#             */
+/*   Updated: 2021/07/07 00:06:07 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "executor.h"
+#ifndef BUILTIN_H
+# define BUILTIN_H
 
-static void	create_files(void *redirs)
-{
-	char	**path;
-	int		fd;
+#include "../../libft/libft.h"
+#include "../test/test_minishell.h" //
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
-	path = (char **)redirs;
-	if (ft_strcmp(path[1], "") != 0)
-	{
-		fd = open(path[1], O_TRUNC | O_CREAT | O_RDWR, 0644);
-		close(fd);
-	}
-	if (ft_strcmp(path[2], "") != 0)
-	{
-		fd = open(path[2], O_CREAT | O_RDWR, 0644);
-		close(fd);
-	}
-}
+int	msh_echo(int argc, char *argv[], char *env[]);
+int	msh_pwd(int argc, char *argv[], char *env[]);
+int	msh_cd(int argc, char *argv[], char *env[]);
+int	msh_env(int argc, char *argv[], char *env[]);
 
-void	msh_file_creation(t_list *redirs)
-{
-	ft_lstiter(redirs, create_files);
-}
+#endif

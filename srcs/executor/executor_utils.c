@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/03 20:38:39 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/06 23:02:46 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,71 +61,98 @@ static int	*ft_int_dup(int num)
 	return (tmp);
 }
 
-static t_list	*msh_launch(t_list *lst, t_list *pid_lst)
+static int		len_str_array(char **str_array)
+{
+	int	i;
+
+	i = 0;
+	while (str_array[i])
+		i++;
+	return (i);
+}
+
+static t_list	*msh_launch(t_list *lst, t_list *pid_lst, char **env)
 {
 	int		pid;
 	int		status;
 	char	**args;
 
-	// if (!ft_strcmp(((char**)lst->content)[0], "hello"))
-	// 	hello();
-	// else
-	// if (i)
-		// ft_putchar_fd(4, 1);
+	args = (char **)lst->content;
+	if (!ft_strcmp(args[0], "echo"))
+	{
+		msh_echo(len_str_array(args), args, env);
+		return (pid_lst);
+	}
+	else if (!ft_strcmp(args[0], "pwd"))
+	{
+		msh_pwd(len_str_array(args), args, env);
+		return (pid_lst);
+	}
+	else if (!ft_strcmp(args[0], "cd"))
+	{
+		msh_cd(len_str_array(args), args, env);
+		return (pid_lst);
+	}
+	else if (!ft_strcmp(args[0], "env"))
+	{
+		msh_env(len_str_array(args), args, env);
+		return (pid_lst);
+	}
+
 	pid = fork();
 	if (pid == 0)
 	{
-		args = (char **)lst->content;
 		execvp(args[0], args);
 		perror("ERROR");
 		exit(EXIT_FAILURE);
 	}
 	if (pid > 0)
-	{
 		ft_lstadd_back(&pid_lst, ft_lstnew((void*)ft_int_dup(pid)));
-		// waitpid(pid, &status, WUNTRACED);
-		// while (!WIFEXITED(status) && !WIFSIGNALED(status))
-		// 	waitpid(pid, &status, WUNTRACED);
-	}
 	if (pid < 0)
 		printf("Forking error\n");
 	return (pid_lst);
 }
 
-void	msh_simple_cmd_loop(t_list *redirs,
-								int tmp[], int fd[], t_list *cmds)
+void	msh_simple_cmd_loop(t_list *redirs, t_list *cmds, char **env)
 {
-	int	num_cmds;
-	int	i;
-	t_list *pid_lst;
+	int		num_cmds;
+	int		i;
+	int		tmp[2];
+	int		fd[2];
+	t_list	*pid_lst;
 
+	tmp[0] = dup(0);
+	tmp[1] = dup(1);
+	msh_set_input(((char **)redirs->content)[0], tmp, fd);
 	num_cmds = ft_lstsize(cmds);
 	pid_lst = NULL;
-	i = 0;
-	while (i < num_cmds)
+	i = -1;
+	while (++i < num_cmds)
 	{
 		if (i != num_cmds - 1)
 			msh_create_pipe(fd);
 		msh_set_output(((char **)redirs->content), tmp, fd, i == num_cmds - 1);
-		pid_lst = msh_launch(cmds , pid_lst);
+		pid_lst = msh_launch(cmds, pid_lst, env);
 		redirs = redirs->next;
 		if (i != num_cmds - 1)
 			msh_set_input(((char **)redirs->content)[0], NULL, fd);
 		cmds = cmds->next;
-		i++;
 	}
 	while (pid_lst)
 	{
 		int pid = *((int *)(pid_lst->content));
 		int status;
-		ft_putstr_fd("pid = ", 2);
-		ft_putnbr_fd(pid, 2);
-		ft_putstr_fd("\n", 2);
+		// ft_putstr_fd("pid = ", 2);
+		// ft_putnbr_fd(pid, 2);
+		// ft_putstr_fd("\n", 2);
 		waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
 		pid_lst = pid_lst->next;
 	}
+	close(tmp[0]);
+	close(tmp[1]);
 
-	perror("DONE");
+	if (errno != 0)
+		perror("DONE");
 }
