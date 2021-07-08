@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 23:33:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/07 21:24:32 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/08 18:53:32 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ void	str_array_free(char **str_array)
 	i = 0;
 	while (str_array[i])
 	{
+		// printf("%p\n", str_array[i]);
 		free(str_array[i]);
 		i++;
 	}
 	free(str_array);
 }
 
-size_t	str_array_size(char **str_array)
+size_t	str_array_size(const char **str_array)
 {
 	size_t	size;
 
@@ -51,7 +52,7 @@ char	**str_array_sort(char **str_array)
 	int	j;
 	int	size;
 
-	size = (int)str_array_size(str_array);
+	size = (int)str_array_size((const char **)str_array);
 	j = 1;
 	while (j < size)
 	{
@@ -67,7 +68,7 @@ char	**str_array_sort(char **str_array)
 	return (str_array);
 }
 
-char	**str_array_copy(char **str_array)
+char	**str_array_copy(const char **str_array)
 {
 	int		i;
 	int		size;
@@ -89,7 +90,7 @@ char	**str_array_copy(char **str_array)
 	return (copy);
 }
 
-void	msh_export_print(char **str_array)
+void	msh_export_print(const char **str_array)
 {
 	int	i;
 	int	j;
@@ -111,49 +112,125 @@ void	msh_export_print(char **str_array)
 	}
 }
 
-int		msh_export(int argc, char *argv[], char *env[])
+int		get_env_pos(const char *name, const char **env)
+{
+	int		i;
+	int		cur_name_len;
+	int		name_len;
+	char	*equal;
+
+	if ((equal = ft_strnstr(name, "=", ft_strlen(name))))
+		name_len = equal - name;
+	else
+		name_len = ft_strlen(name);
+	i = 0;
+	while (env[i])
+	{
+		if ((equal = ft_strnstr(env[i], "=", ft_strlen(env[i]))))
+			cur_name_len = equal - env[i];
+		else
+			cur_name_len = ft_strlen(env[i]);
+		if (name_len == cur_name_len
+				&& ft_strncmp(env[i], name, cur_name_len) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+int		is_correct_name(const char *env_ptr)
+{
+	int		name_len;
+	char	*equal;
+	int		i;
+
+	if ((equal = ft_strnstr(env_ptr, "=", ft_strlen(env_ptr))))
+		name_len = equal - env_ptr;
+	else
+		name_len = ft_strlen(env_ptr);
+	i = 0;
+	while (i < name_len)
+	{
+		if (!ft_isalnum(env_ptr[i]) && env_ptr[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static char	**str_array_add_back(const char **str_array, const char *str)
+{
+	char	**new;
+	int		i;
+	int		old_size;
+
+	if (!str_array)
+		return (NULL);
+	old_size = str_array_size(str_array);
+	if (!(new = ft_calloc(old_size + 2, sizeof(char*))))
+	{
+		str_array_free((char **)str_array);
+		return (NULL);
+	}
+	i = 0;
+	while (i < old_size)
+	{
+		new[i] = (char *)str_array[i];
+		i++;
+	}
+	new[i] = (char *)str;
+	new[i + 1] = NULL;
+	str_array_free((char **)str_array);
+	return (new);
+}
+
+int		msh_export(const int argc, const char *argv[], const char *env[])
 {
 	char	**copy;
 
 	if (argc == 1)
 	{
-		copy = str_array_copy(env);
+		if (!(copy = str_array_copy(env)))
+			return (errno);
 		str_array_sort(copy);
-		msh_export_print(copy);
+		msh_export_print((const char **)copy);
 		str_array_free(copy);
 	}
 	else
 	{
-		int	i = 1; //iteration
-		int	j = 0;
-		char	*name;
-		char	*value;
-		char	*equal;
+		int		i = 1; // iteration
+		int		pos;
 
-		ft_putstr_fd(argv[i], 1);
-		ft_putstr_fd("\n", 1);
-
-		if ((equal = ft_strnstr(argv[i], "=", ft_strlen(argv[i]))))
+		if (!is_correct_name(argv[i]))
 		{
-			name = ft_substr(argv[i], 0, equal - argv[i]);
-			if (name)
-				return (1); //
-			j = 0;
-			while (name[j])
-			{
-				if (!ft_isalnum(name[j]) && name[j] != '_')
-					perror("ERROR"); //
-				j++;
-			}
-
-			free(name);
+			perror("ERROR"); //
+			return (1); //
 		}
+		if ((pos = get_env_pos(argv[i], env)) >= 0)
+		{
+			if (!ft_strnstr(argv[i], "=", ft_strlen(argv[i])))
+				return (0);
+			free((char*)env[pos]);
+			env[pos] = ft_strdup(argv[i]);
+		}
+		else
+		{
+			if (!(copy = str_array_add_back(env, argv[i])))
+			{
+				perror("ERROR"); //
+				return (errno);
+			}
+		}
+		printf("");
 	}
 	return (0);
 }
 
-int		main(int argc, char *argv[], char *env[])
+int		main(const int argc, const char *argv[], const char *env[])
 {
-	msh_export(argc, argv, env);
+	char	**copy_env = str_array_copy(env);
+	msh_export(argc, argv, (const char **)copy_env);
+	print_str_array(copy_env);
+	str_array_free(copy_env);
 	return (0);
 }
