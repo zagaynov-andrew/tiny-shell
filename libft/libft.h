@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:26:57 by ngamora           #+#    #+#             */
-/*   Updated: 2021/06/26 22:22:00 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/08 17:21:19 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char				**ft_split(char const *s, char c);
 char				*ft_itoa(int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 int					ft_putchar_fd(char c, int fd);
-int					ft_putstr_fd(char *s, int fd);
+int					ft_putstr_fd(const char *s, int fd);
 int					ft_putendl_fd(char *s, int fd);
 int					ft_putnbr_fd(int n, int fd);
 t_list				*ft_lstnew(void *content);
