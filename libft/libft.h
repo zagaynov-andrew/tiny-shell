@@ -6,13 +6,15 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:26:57 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/08 17:21:19 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/09 23:30:49 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # include "ft_vec.h"
+# include "str_array/str_array.h"
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>

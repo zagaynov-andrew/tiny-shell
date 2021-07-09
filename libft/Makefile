@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/15 17:57:46 by ngamora           #+#    #+#              #
-#    Updated: 2021/06/26 22:22:32 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/09 23:28:44 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,13 @@ SRCS_VEC	=	ft_vec/ft_vec_new.c		\
 				ft_vec/ft_vec_free.c	\
 				$(SRCS)
 
+SRCS_STR_ARRAY	=	str_array/str_array_sort.c		\
+					str_array/str_array_size.c		\
+					str_array/str_array_free.c		\
+					str_array/str_array_copy.c		\
+					str_array/str_array_add_back.c	\
+					$(SRCS)
+
 SRCS_LIST	=	ft_list/ft_lstnew.c			\
 				ft_list/ft_lstadd_front.c	\
 				ft_list/ft_lstsize.c		\
@@ -82,6 +89,8 @@ OBJS_VEC = $(notdir $(SRCS_VEC:.c=.o))
 OBJS_VEC_PATH = $(addprefix $(OBJS_DIR), $(OBJS_VEC))
 OBJS_LIST = $(notdir $(SRCS_LIST:.c=.o))
 OBJS_LIST_PATH = $(addprefix $(OBJS_DIR), $(OBJS_LIST))
+OBJS_STR_ARRAY = $(notdir $(SRCS_STR_ARRAY:.c=.o))
+OBJS_STR_ARRAY_PATH = $(addprefix $(OBJS_DIR), $(OBJS_STR_ARRAY))
 
 
 $(OBJS_DIR)%.o : %.c libft.h
@@ -95,6 +104,11 @@ $(OBJS_DIR)%.o : ft_vec/%.c libft.h
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : ft_list/%.c libft.h
+	@mkdir -p $(OBJS_DIR)
+	@echo "\033[1;31m- Done :\033[0m $<"
+	@$(CC) $(CC_FLAGS) -c $< -o $@
+
+$(OBJS_DIR)%.o : str_array/%.c str_array/str_array.h
 	@mkdir -p $(OBJS_DIR)
 	@echo "\033[1;31m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
@@ -121,7 +135,11 @@ list: $(OBJS_LIST_PATH)
 	@ar r $(NAME) $(OBJS_LIST_PATH)
 	@echo "\033[1;31;42m=====LIBFT WITH LIST IS COMPLETED======\033[0m"
 
+str_array: $(OBJS_STR_ARRAY_PATH)
+	@ar r $(NAME) $(OBJS_STR_ARRAY_PATH)
+	@echo "\033[1;31;42m=====LIBFT WITH STR_ARRAY IS COMPLETED======\033[0m"
+
 full:
-	@make list vec
+	@make list vec str_array
 
 .PHONY : $(NAME) all clean fclean re vec list
