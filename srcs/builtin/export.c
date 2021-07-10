@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 23:33:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 11:04:16 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/10 12:49:05 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,62 @@ void	msh_export_print(const char **str_array)
 	{
 		ft_putstr_fd("declare -x ", 1);
 		j = 0;
-		while (str_array[i][j] != '=')
+		while (str_array[i][j] != '=' && str_array[i][j] != '\0')
 		{
 			ft_putchar_fd(str_array[i][j], 1);
 			j++;
 		}
-		ft_putstr_fd("=\"", 1);
-		ft_putstr_fd(&str_array[i][j + 1], 1);
-		ft_putstr_fd("\"\n", 1);
+		if (str_array[i][j] != '\0')
+		{
+			ft_putstr_fd("=\"", 1);
+			ft_putstr_fd(&str_array[i][j + 1], 1);
+			ft_putstr_fd("\"", 1);
+		}
+		ft_putstr_fd("\n", 1);
 		i++;
 	}
+}
+
+char	**str_array_add_back(char **str_array[], const char *str)
+{
+	char	**new;
+	int		i;
+	int		old_size;
+
+	old_size = str_array_size((const char **)(*str_array));
+	if (!(new = ft_calloc(old_size + 2, sizeof(char*))))
+	{
+		str_array_free((char **)(*str_array));
+		return (NULL);
+	}
+	i = 0;
+	while (i < old_size)
+	{
+		new[i] = (char *)(*str_array)[i];
+		i++;
+	}
+	new[i] = ft_strdup(str);
+	new[i + 1] = NULL;
+	free(*str_array);
+	*str_array = new;
+	return (new);
 }
 
 int		msh_export_add_env(const char *argv[], char **env[])
 {
 	int		i;
 	int		pos;
+	int		flag;
 
+	flag = 0;
 	i = 1;
 	while (argv[i])
 	{
 		if (!is_valid_env_name(argv[i]))
 		{
-			perror("ERROR not a valid identifier"); //
-			return (1);
+			flag = 1;
+			i++;
+			continue ;
 		}
 		if ((pos = get_env_pos(argv[i], (const char **)*env)) >= 0)
 		{
@@ -63,8 +95,12 @@ int		msh_export_add_env(const char *argv[], char **env[])
 				return (errno);
 			}
 		}
-		// print_str_array(*env);
 		i++;
+	}
+	if (flag)
+	{
+		perror("ERROR not a valid identifier"); //
+		return (1);
 	}
 	return (0);
 }
@@ -86,12 +122,19 @@ int		msh_export(const int argc, const char *argv[], char **env[])
 		return (msh_export_add_env(argv, env));
 }
 
-int		main(const int argc, const char *argv[], char *env[])
-{
-	msh_export_print((const char **)env);
-	char	**copy_env = str_array_copy((const char **)env);
-	msh_export(argc, argv, &copy_env);
-	msh_export_print((const char **)copy_env);
-	str_array_free(copy_env);
-	return (0);
-}
+// int		main(const int argc, const char *argv[], char *env[])
+// {
+// 	msh_export_print((const char **)env);
+// 	char	**copy_env;
+// 	copy_env = str_array_copy((const char **)env);
+// 	// copy_env = NULL;
+// 	// copy_env = str_array_add_back(&copy_env, "first=string");
+// 	// copy_env = str_array_add_back(&copy_env, "second=string");
+// 	// copy_env = str_array_add_back(&copy_env, "third=string");
+// 	// copy_env = str_array_add_back(&copy_env, "forth=string");
+// 	msh_export_print((const char **)copy_env);
+// 	msh_export(argc, argv, &copy_env);
+// 	msh_export_print((const char **)copy_env);
+// 	str_array_free(copy_env);
+// 	return (0);
+// }
