@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/11/15 17:57:46 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/09 23:28:44 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/10 01:10:54 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,7 @@ SRCS_STR_ARRAY	=	str_array/str_array_sort.c		\
 					str_array/str_array_free.c		\
 					str_array/str_array_copy.c		\
 					str_array/str_array_add_back.c	\
+					str_array/str_array_erase.c	\
 					$(SRCS)
 
 SRCS_LIST	=	ft_list/ft_lstnew.c			\

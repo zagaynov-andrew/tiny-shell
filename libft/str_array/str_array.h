@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 23:13:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/09 23:30:02 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/10 10:11:46 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,11 @@
 # include "../libft.h"
 # include <stdlib.h>
 
-void	str_array_free(char **str_array);
-size_t	str_array_size(const char **str_array);
-char	**str_array_sort(char **str_array);
-char	**str_array_copy(const char **str_array);
-char	**str_array_add_back(char **str_array, const char *str);
+void	str_array_free(char *str_array[]);
+size_t	str_array_size(const char *str_array[]);
+char	**str_array_sort(char *str_array[]);
+char	**str_array_copy(const char *str_array[]);
+char	**str_array_add_back(char **str_array[], const char *str);
+char	**str_array_erase(char **str_array[], int pos);
 
 #endif
