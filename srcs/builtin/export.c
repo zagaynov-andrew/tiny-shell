@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 23:33:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 00:08:36 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/10 10:50:59 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,26 +60,6 @@ int		get_env_pos(const char *name, const char **env)
 	return (-1);
 }
 
-int		is_correct_name(const char *env_ptr)
-{
-	int		name_len;
-	char	*equal;
-	int		i;
-
-	if ((equal = ft_strnstr(env_ptr, "=", ft_strlen(env_ptr))))
-		name_len = equal - env_ptr;
-	else
-		name_len = ft_strlen(env_ptr);
-	i = 0;
-	while (i < name_len)
-	{
-		if (!ft_isalnum(env_ptr[i]) && env_ptr[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
 int		msh_export_add_env(const char *argv[], char **env[])
 {
 	int		i;
@@ -88,10 +68,10 @@ int		msh_export_add_env(const char *argv[], char **env[])
 	i = 1;
 	while (argv[i])
 	{
-		if (!is_correct_name(argv[i]))
+		if (!is_valid_env_name(argv[i]))
 		{
-			perror("ERROR"); //
-			return (1); //
+			perror("ERROR not a valid identifier"); //
+			return (1);
 		}
 		if ((pos = get_env_pos(argv[i], (const char **)*env)) >= 0)
 		{
@@ -103,7 +83,7 @@ int		msh_export_add_env(const char *argv[], char **env[])
 		}
 		else
 		{
-			if (!(*env = str_array_add_back(*env, argv[i])))
+			if (!(*env = str_array_add_back(env, argv[i])))
 			{
 				perror("ERROR"); //
 				return (errno);
