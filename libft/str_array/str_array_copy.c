@@ -6,13 +6,13 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 23:19:51 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/09 23:21:07 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/10 10:11:54 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "str_array.h"
 
-char	**str_array_copy(const char **str_array)
+char	**str_array_copy(const char *str_array[])
 {
 	int		i;
 	int		size;
@@ -27,7 +27,10 @@ char	**str_array_copy(const char **str_array)
 	{
 		copy[i] = ft_strdup(str_array[i]);
 		if (!copy[i])
+		{
+			str_array_free((char **)str_array);
 			return (NULL);
+		}
 		i++;
 	}
 	copy[i] = NULL;
