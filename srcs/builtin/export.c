@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 23:33:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 10:50:59 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/10 11:04:16 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,32 +32,6 @@ void	msh_export_print(const char **str_array)
 		ft_putstr_fd("\"\n", 1);
 		i++;
 	}
-}
-
-int		get_env_pos(const char *name, const char **env)
-{
-	int		i;
-	int		cur_name_len;
-	int		name_len;
-	char	*equal;
-
-	if ((equal = ft_strnstr(name, "=", ft_strlen(name))))
-		name_len = equal - name;
-	else
-		name_len = ft_strlen(name);
-	i = 0;
-	while (env[i])
-	{
-		if ((equal = ft_strnstr(env[i], "=", ft_strlen(env[i]))))
-			cur_name_len = equal - env[i];
-		else
-			cur_name_len = ft_strlen(env[i]);
-		if (name_len == cur_name_len
-				&& ft_strncmp(env[i], name, cur_name_len) == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
 }
 
 int		msh_export_add_env(const char *argv[], char **env[])
