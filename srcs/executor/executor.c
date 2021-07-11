@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 15:55:31 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/06 22:47:37 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/11 19:37:25 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,13 @@
 
 int	msh_exec(t_list *cmds, t_list *redirs, char **env)
 {
-	msh_simple_cmd_loop(redirs, cmds, env);
-	// dup2(tmp[0], 0);
-	// dup2(tmp[1], 1);
-	system("chmod 700 file"); //
-	return (0);
+	int	std_io[2];
+	int	ret;
+
+	std_io[0] = dup(0);
+	std_io[1] = dup(1);
+	ret = msh_simple_cmd_loop(cmds, redirs, std_io, env);
+	close(std_io[0]);
+	close(std_io[1]);
+	return (ret);
 }

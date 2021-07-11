@@ -6,31 +6,48 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:04:19 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/03 20:08:49 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/11 18:07:43 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-static void	create_files(void *redirs)
+static int	create_files(char **cmd_array)
 {
-	char	**path;
 	int		fd;
+	int		i;
 
-	path = (char **)redirs;
-	if (ft_strcmp(path[1], "") != 0)
+	i = 0;
+	while (cmd_array[i])
 	{
-		fd = open(path[1], O_TRUNC | O_CREAT | O_RDWR, 0644);
-		close(fd);
+		if (ft_strcmp(cmd_array[i], ">") == 0)
+		{
+			fd = open(cmd_array[i + 1], O_TRUNC | O_CREAT | O_RDWR, 0644);
+			close(fd);
+			if (fd < 0)
+				return (1);
+			i++;
+		}
+		else if (ft_strcmp(cmd_array[i], ">>") == 0)
+		{
+			fd = open(cmd_array[i + 1], O_CREAT | O_RDWR, 0644);
+			close(fd);
+			if (fd < 0)
+				return (1);
+			i++;
+		}
+		i++;
 	}
-	if (ft_strcmp(path[2], "") != 0)
-	{
-		fd = open(path[2], O_CREAT | O_RDWR, 0644);
-		close(fd);
-	}
+	return (0);
 }
 
-void	msh_file_creation(t_list *redirs)
+int	msh_file_creation(t_list *shell_lst)
 {
-	ft_lstiter(redirs, create_files);
+	while (shell_lst)
+	{
+		if (create_files((char **)(shell_lst->content)))
+			return (1);
+		shell_lst = shell_lst->next;
+	}
+	return (0);
 }

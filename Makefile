@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/10 11:03:59 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/11 13:19:40 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,6 @@ LIBFT_SRCS	=	ft_memset.c				\
 
 SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(EXECUTOR_DIR)executor_utils.c		\
-			$(SRCS_DIR)$(EXECUTOR_DIR)str_array_free.c		\
 			$(SRCS_DIR)$(EXECUTOR_DIR)msh_file_creation.c	\
 			$(SRCS_DIR)$(BUILTIN_DIR)echo.c					\
 			$(SRCS_DIR)$(BUILTIN_DIR)pwd.c					\
