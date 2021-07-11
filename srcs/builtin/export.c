@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 23:33:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 12:49:05 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/11 13:32:40 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**str_array_add_back(char **str_array[], const char *str)
 	int		old_size;
 
 	old_size = str_array_size((const char **)(*str_array));
-	if (!(new = ft_calloc(old_size + 2, sizeof(char*))))
+	if (!(new = ft_calloc(old_size + 2, sizeof(char *))))
 	{
 		str_array_free((char **)(*str_array));
 		return (NULL);
@@ -63,7 +63,7 @@ char	**str_array_add_back(char **str_array[], const char *str)
 	return (new);
 }
 
-int		msh_export_add_env(const char *argv[], char **env[])
+int	msh_export_add_env(const char *argv[], char **env[])
 {
 	int		i;
 	int		pos;
@@ -83,7 +83,7 @@ int		msh_export_add_env(const char *argv[], char **env[])
 		{
 			if (ft_strnstr(argv[i], "=", ft_strlen(argv[i])))
 			{
-				free((char*)(*env)[pos]);
+				free((char *)(*env)[pos]);
 				(*env)[pos] = ft_strdup(argv[i]);
 			}
 		}
@@ -105,7 +105,7 @@ int		msh_export_add_env(const char *argv[], char **env[])
 	return (0);
 }
 
-int		msh_export(const int argc, const char *argv[], char **env[])
+int	msh_export(const int argc, const char *argv[], char **env[])
 {
 	char	**copy;
 

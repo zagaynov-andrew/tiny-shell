@@ -6,15 +6,11 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 21:21:03 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/06 22:31:36 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/11 13:28:59 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include <stdlib.h>
-// #include <stdio.h>
 #include "builtin.h"
-// #include <unistd.h>
-// #include <fcntl.h>
 
 int	msh_echo(int argc, char *argv[], char *env[])
 {

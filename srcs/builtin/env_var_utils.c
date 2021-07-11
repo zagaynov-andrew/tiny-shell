@@ -6,13 +6,13 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 10:48:08 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 11:04:25 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/11 13:30:29 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-int		is_valid_env_name(const char *env_ptr)
+int	is_valid_env_name(const char *env_ptr)
 {
 	int		name_len;
 	char	*equal;
@@ -34,7 +34,7 @@ int		is_valid_env_name(const char *env_ptr)
 	return (1);
 }
 
-int		get_env_pos(const char *name, const char **env)
+int	get_env_pos(const char *name, const char **env)
 {
 	int		i;
 	int		cur_name_len;
@@ -53,7 +53,7 @@ int		get_env_pos(const char *name, const char **env)
 		else
 			cur_name_len = ft_strlen(env[i]);
 		if (name_len == cur_name_len
-				&& ft_strncmp(env[i], name, cur_name_len) == 0)
+					&& ft_strncmp(env[i], name, cur_name_len) == 0)
 			return (i);
 		i++;
 	}

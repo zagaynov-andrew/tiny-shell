@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 20:05:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/06 23:01:42 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/11 13:33:31 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 int	msh_pwd(int argc, char *argv[], char *env[])
 {
-	(void)argc;
-    (void)argv;
-    (void)env;
+	(void)env;
 	if (argc > 1)
 	{
-		if (argv[1][0] == '-' && argv[1][1] == '-' && argv[1][2] != '\0') // check -, --, -dafb, -s 
+		if (argv[1][0] == '-' && argv[1][1] == '-'
+			&& argv[1][2] != '\0') // check -, --, -dafb, -s
 		{
 			perror("-q: invalid option"); //
 			return (0);
 		}
-		else if (argv[1][0] == '-' && argv[1][1] != '\0' && argv[1][1] != '-') // check -, --, -dafb, -s 
+		else if (argv[1][0] == '-' && argv[1][1] != '\0'
+			&& argv[1][1] != '-') // check -, --, -dafb, -s
 		{
 			perror("-q: invalid option"); //
 			return (0);
