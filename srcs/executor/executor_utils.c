@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/11 19:38:44 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 13:12:49 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,33 +71,36 @@ static int		len_str_array(char **str_array)
 	return (i);
 }
 
-static t_list	*msh_launch(t_list *lst, t_list *pid_lst, char **env)
+static int	msh_launch_builtin(t_list *cmd, char **env[])
+{
+	char	**args;
+
+	args = (char **)cmd->content;
+	if (!ft_strcmp(args[0], "echo"))
+		return (msh_echo(len_str_array(args), args, *env));
+	else if (!ft_strcmp(args[0], "pwd"))
+		return(msh_pwd(len_str_array(args), args, *env));
+	else if (!ft_strcmp(args[0], "cd"))
+		return(msh_cd(len_str_array(args), (const char **)args, env));
+	else if (!ft_strcmp(args[0], "env"))
+		return(msh_env(len_str_array(args), args, *env));
+	else if (!ft_strcmp(args[0], "export"))
+		return(msh_export(len_str_array(args), (const char **)args, env));
+	else if (!ft_strcmp(args[0], "unset"))
+		return(msh_unset(len_str_array(args), (const char **)args, env));
+	return (-1);
+}
+
+static int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[])
 {
 	int		pid;
 	int		status;
 	char	**args;
 
-	args = (char **)lst->content;
-	if (!ft_strcmp(args[0], "echo"))
-	{
-		msh_echo(len_str_array(args), args, env);
-		return (pid_lst);
-	}
-	else if (!ft_strcmp(args[0], "pwd"))
-	{
-		msh_pwd(len_str_array(args), args, env);
-		return (pid_lst);
-	}
-	else if (!ft_strcmp(args[0], "cd"))
-	{
-		msh_cd(len_str_array(args), args, env);
-		return (pid_lst);
-	}
-	else if (!ft_strcmp(args[0], "env"))
-	{
-		msh_env(len_str_array(args), args, env);
-		return (pid_lst);
-	}
+	status = msh_launch_builtin(cmd, env);
+	if (status != -1)
+		return (status);
+	args = (char **)cmd->content;
 	pid = fork();
 	if (pid == 0)
 	{
@@ -106,35 +109,45 @@ static t_list	*msh_launch(t_list *lst, t_list *pid_lst, char **env)
 		exit(EXIT_FAILURE);
 	}
 	if (pid > 0)
-		ft_lstadd_back(&pid_lst, ft_lstnew((void *)ft_int_dup(pid)));
+		ft_lstadd_back(pid_lst, ft_lstnew((void *)ft_int_dup(pid))); // Check malloc
 	if (pid < 0)
-		printf("Forking error\n");
-	perror("ERROR");
-	return (pid_lst);
+		printf("Forking error\n"); //
+	perror("ERROR"); //
+	return (-1);
 }
 
-int	cmd_waiting(t_list	*pid_lst)
+int	cmd_waiting(t_list	**pid_lst)
 {
-	int	pid;
-	int	status;
+	int		pid;
+	int		status;
+	t_list	*pid_lst_copy;
 
-	while (pid_lst)
+	pid_lst_copy = *pid_lst;
+	while (*pid_lst)
 	{
-		pid = *((int *)(pid_lst->content));
+		pid = *((int *)((*pid_lst)->content));
 		waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
-		pid_lst = pid_lst->next;
+		(*pid_lst) = (*pid_lst)->next;
 	}
+	ft_lstclear(&pid_lst_copy, free);
 	return (status); // incorrect exit status
 }
 
-int	msh_simple_cmd_loop(t_list *cmds, t_list *redirs, int standard_io[], char **env)
+static void	inc_lst(t_list **cmds, t_list **redirs)
+{
+	*redirs = (*redirs)->next;
+	*cmds = (*cmds)->next;
+}
+
+int	msh_simple_cmd_loop(t_list *cmds, t_list *redirs, int standard_io[], char **env[])
 {
 	int		num_cmds;
 	int		i;
 	int		fd[2];
 	t_list	*pid_lst;
+	int		status[2];
 
 	msh_set_input(((char **)redirs->content)[0], standard_io, fd);
 	num_cmds = ft_lstsize(cmds);
@@ -145,7 +158,9 @@ int	msh_simple_cmd_loop(t_list *cmds, t_list *redirs, int standard_io[], char **
 		if (i != num_cmds - 1)
 			msh_create_pipe(fd);
 		msh_set_output(((char **)redirs->content), standard_io, fd, i == num_cmds - 1);
-		pid_lst = msh_launch(cmds, pid_lst, env);
+		status[0] = msh_launch(cmds, &pid_lst, env);
+		if (i != num_cmds - 1)
+			status[0] = -1;
 		redirs = redirs->next;
 		if (i != num_cmds - 1)
 			msh_set_input(((char **)redirs->content)[0], NULL, fd);
@@ -153,6 +168,8 @@ int	msh_simple_cmd_loop(t_list *cmds, t_list *redirs, int standard_io[], char **
 	}
 	if (errno != 0)		//
 		perror("DONE");	//
-	ft_lstclear(&pid_lst, free);
-	return (cmd_waiting(pid_lst));
+	status[1] = cmd_waiting(&pid_lst);
+	if (status[0] != -1)
+		return (status[0]);
+	return (status[1]);
 }

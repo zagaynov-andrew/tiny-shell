@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/11 13:19:40 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/12 11:51:38 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,13 @@ LIBFT_SRCS	=	ft_memset.c				\
 				ft_list/ft_lstmap.c			\
 				ft_vec/ft_vec_new.c			\
 				ft_vec/ft_vec_push.c		\
-				ft_vec/ft_vec_free.c
+				ft_vec/ft_vec_free.c		\
+				str_array/str_array_sort.c		\
+				str_array/str_array_size.c		\
+				str_array/str_array_free.c		\
+				str_array/str_array_copy.c		\
+				str_array/str_array_add_back.c	\
+				str_array/str_array_erase.c
 
 SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(EXECUTOR_DIR)executor_utils.c		\
@@ -84,7 +90,9 @@ SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(BUILTIN_DIR)pwd.c					\
 			$(SRCS_DIR)$(BUILTIN_DIR)cd.c					\
 			$(SRCS_DIR)$(BUILTIN_DIR)env.c					\
-			$(SRCS_DIR)$(BUILTIN_DIR)env_var_utils.c	\
+			$(SRCS_DIR)$(BUILTIN_DIR)env_var_utils.c		\
+			$(SRCS_DIR)$(BUILTIN_DIR)export.c				\
+			$(SRCS_DIR)$(BUILTIN_DIR)unset.c				\
 			$(SRCS_DIR)$(TEST_DIR)print_str_array.c			\
 			$(SRCS_DIR)$(TEST_DIR)print_list_str_array.c	\
 			$(SRCS_DIR)minishell.c
@@ -100,7 +108,7 @@ $(LIBFT_DIR)$(OBJS_DIR)%.o : $(LIBFT_DIR)ft_vec/%.c $(LIBFT_DIR)libft.h
 $(LIBFT_DIR)$(OBJS_DIR)%.o : $(LIBFT_DIR)ft_list/%.c $(LIBFT_DIR)libft.h
 	@$(MAKE) full -C $(LIBFT_DIR)
 
-$(OBJS_DIR)%.o : $(SRCS_DIR)%.c
+$(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(SRCS_DIR)minishell.h
 	@mkdir -p $(OBJS_DIR)
 	@echo "\033[1;31m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@

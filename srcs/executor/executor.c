@@ -6,13 +6,13 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 15:55:31 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/11 19:37:25 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 11:16:25 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-int	msh_exec(t_list *cmds, t_list *redirs, char **env)
+int	msh_exec(t_list *cmds, t_list *redirs, char **env[])
 {
 	int	std_io[2];
 	int	ret;
