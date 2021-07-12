@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 23:10:16 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 10:10:43 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 21:23:22 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,5 @@ void	str_array_free(char *str_array[])
 		i++;
 	}
 	free(str_array);
+	str_array = NULL;
 }
