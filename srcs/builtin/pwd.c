@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 20:05:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 12:24:54 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 14:20:45 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ int	msh_pwd(int argc, char *argv[], char *env[])
 	cur_dir = get_cur_dir();
 	if (!cur_dir)
 		return (1);
-	printf("%s\n", cur_dir);
+	ft_putstr_fd(cur_dir, 1);
+	ft_putchar_fd('\n', 1);
 	free(cur_dir);
 	return (0);
 }

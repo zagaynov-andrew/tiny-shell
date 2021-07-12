@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:18:38 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 13:26:58 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 14:24:17 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,15 +159,32 @@ int	main(int argc, char *argv[], char *env[])
 	t_vec	*vec;
 	char	**env_copy;
 
-	vec = ft_vec_new(6);
-	ft_vec_push(&vec, (void*)ft_strdup("cat"));
-	ft_vec_push(&vec, (void*)ft_strdup("<<"));
-	ft_vec_push(&vec, (void*)ft_strdup("stop"));
+	// vec = ft_vec_new(6);
+	// ft_vec_push(&vec, (void*)ft_strdup("cat"));
+	// ft_vec_push(&vec, (void*)ft_strdup("<<"));
+	// ft_vec_push(&vec, (void*)ft_strdup("stop"));
+	// // ft_vec_push(&vec, (void*)ft_strdup(">"));
+	// // ft_vec_push(&vec, (void*)ft_strdup("file5"));
+	// ft_vec_push(&vec, (void*)ft_strdup("<"));
+	// ft_vec_push(&vec, (void*)ft_strdup("file"));
+	// ft_vec_push(&vec, (void*)ft_strdup("-e"));
+	// ft_vec_push(&vec, NULL);
+	// ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
+	// free(vec);
+
+	// vec = ft_vec_new(2);
+	// ft_vec_push(&vec, (void*)ft_strdup("|"));
+	// ft_vec_push(&vec, NULL);
+	// ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
+	// free(vec);
+
+	vec = ft_vec_new(2);
+	ft_vec_push(&vec, (void*)ft_strdup("pwd"));
+	ft_vec_push(&vec, (void*)ft_strdup(">"));
+	ft_vec_push(&vec, (void*)ft_strdup("1"));
 	// ft_vec_push(&vec, (void*)ft_strdup(">"));
-	// ft_vec_push(&vec, (void*)ft_strdup("file5"));
-	ft_vec_push(&vec, (void*)ft_strdup("<"));
-	ft_vec_push(&vec, (void*)ft_strdup("file"));
-	ft_vec_push(&vec, (void*)ft_strdup("-e"));
+	// ft_vec_push(&vec, (void*)ft_strdup("file3"));
+	// ft_vec_push(&vec, (void*)ft_strdup("-b"));
 	ft_vec_push(&vec, NULL);
 	ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
 	free(vec);
@@ -179,12 +196,9 @@ int	main(int argc, char *argv[], char *env[])
 	free(vec);
 
 	vec = ft_vec_new(2);
-	ft_vec_push(&vec, (void*)ft_strdup("cat"));
-	// ft_vec_push(&vec, (void*)ft_strdup("<"));
-	// ft_vec_push(&vec, (void*)ft_strdup("file"));
-	ft_vec_push(&vec, (void*)ft_strdup(">>"));
-	ft_vec_push(&vec, (void*)ft_strdup("file3"));
-	ft_vec_push(&vec, (void*)ft_strdup("-b"));
+	ft_vec_push(&vec, (void*)ft_strdup("ls"));
+	// ft_vec_push(&vec, (void*)ft_strdup(">"));
+	// ft_vec_push(&vec, (void*)ft_strdup("file3"));
 	ft_vec_push(&vec, NULL);
 	ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
 	free(vec);
@@ -197,20 +211,22 @@ int	main(int argc, char *argv[], char *env[])
 
 	// vec = ft_vec_new(2);
 	// ft_vec_push(&vec, (void*)ft_strdup("pwd"));
+	// // ft_vec_push(&vec, (void*)ft_strdup("<"));
+	// // ft_vec_push(&vec, (void*)ft_strdup("file"));
 	// // ft_vec_push(&vec, (void*)ft_strdup(">"));
 	// // ft_vec_push(&vec, (void*)ft_strdup("file3"));
+	// // ft_vec_push(&vec, (void*)ft_strdup("-b"));
 	// ft_vec_push(&vec, NULL);
 	// ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
 	// free(vec);
 
-	print_list_str_array(shell_lst);
+	// print_list_str_array(shell_lst);
 
 	t_list	*cmds = NULL;
 	t_list	*redirs = NULL;
 	split_shell_lst(shell_lst, &cmds, &redirs);
-
-	print_list_str_array(cmds);
-	print_list_str_array(redirs);
+	// print_list_str_array(cmds);
+	// print_list_str_array(redirs);
 
 	msh_file_creation(shell_lst); // check return value
 	env_copy = NULL;
@@ -223,6 +239,8 @@ int	main(int argc, char *argv[], char *env[])
 	ft_lstclear(&cmds, void_array_free);
 	ft_lstclear(&redirs, void_array_free);
 	ft_lstclear(&shell_lst, void_array_free);
+	if (errno != 0)		//
+		perror("DONE");	//
 	return (0);
 }
 
