@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:18:38 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 14:24:17 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 21:43:55 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,13 +152,12 @@ int	split_shell_lst(t_list *shell_lst, t_list **cmds, t_list **redirs)
 	return (0);
 }
 
-int	main(int argc, char *argv[], char *env[])
+t_list *get_shell_lst()
 {
-	// msh_loop(env);
-	t_list	*shell_lst = NULL;
+	t_list	*shell_lst;
 	t_vec	*vec;
-	char	**env_copy;
 
+	shell_lst = NULL;
 	// vec = ft_vec_new(6);
 	// ft_vec_push(&vec, (void*)ft_strdup("cat"));
 	// ft_vec_push(&vec, (void*)ft_strdup("<<"));
@@ -179,9 +178,9 @@ int	main(int argc, char *argv[], char *env[])
 	// free(vec);
 
 	vec = ft_vec_new(2);
-	ft_vec_push(&vec, (void*)ft_strdup("pwd"));
-	ft_vec_push(&vec, (void*)ft_strdup(">"));
-	ft_vec_push(&vec, (void*)ft_strdup("1"));
+	ft_vec_push(&vec, (void*)ft_strdup("cat"));
+	ft_vec_push(&vec, (void*)ft_strdup("-eb"));
+	// ft_vec_push(&vec, (void*)ft_strdup("1"));
 	// ft_vec_push(&vec, (void*)ft_strdup(">"));
 	// ft_vec_push(&vec, (void*)ft_strdup("file3"));
 	// ft_vec_push(&vec, (void*)ft_strdup("-b"));
@@ -189,19 +188,19 @@ int	main(int argc, char *argv[], char *env[])
 	ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
 	free(vec);
 
-	vec = ft_vec_new(2);
-	ft_vec_push(&vec, (void*)ft_strdup("|"));
-	ft_vec_push(&vec, NULL);
-	ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
-	free(vec);
+	// vec = ft_vec_new(2);
+	// ft_vec_push(&vec, (void*)ft_strdup("|"));
+	// ft_vec_push(&vec, NULL);
+	// ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
+	// free(vec);
 
-	vec = ft_vec_new(2);
-	ft_vec_push(&vec, (void*)ft_strdup("ls"));
-	// ft_vec_push(&vec, (void*)ft_strdup(">"));
-	// ft_vec_push(&vec, (void*)ft_strdup("file3"));
-	ft_vec_push(&vec, NULL);
-	ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
-	free(vec);
+	// vec = ft_vec_new(2);
+	// ft_vec_push(&vec, (void*)ft_strdup("cat"));
+	// ft_vec_push(&vec, (void*)ft_strdup("-eb"));
+	// // ft_vec_push(&vec, (void*)ft_strdup("file3"));
+	// ft_vec_push(&vec, NULL);
+	// ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
+	// free(vec);
 
 	// vec = ft_vec_new(2);
 	// ft_vec_push(&vec, (void*)ft_strdup("|"));
@@ -219,28 +218,50 @@ int	main(int argc, char *argv[], char *env[])
 	// ft_vec_push(&vec, NULL);
 	// ft_lstadd_back(&shell_lst, ft_lstnew(vec->data));
 	// free(vec);
-
-	// print_list_str_array(shell_lst);
-
-	t_list	*cmds = NULL;
-	t_list	*redirs = NULL;
-	split_shell_lst(shell_lst, &cmds, &redirs);
-	// print_list_str_array(cmds);
-	// print_list_str_array(redirs);
-
-	msh_file_creation(shell_lst); // check return value
-	env_copy = NULL;
-	env_copy = str_array_copy((const char **)env);
-	if (!env_copy)
-		return (1); //
-	msh_exec(cmds, redirs, &env_copy);
-	
-	str_array_free(env_copy);
-	ft_lstclear(&cmds, void_array_free);
-	ft_lstclear(&redirs, void_array_free);
-	ft_lstclear(&shell_lst, void_array_free);
-	if (errno != 0)		//
-		perror("DONE");	//
-	return (0);
+	return (shell_lst);
 }
 
+
+int	main(int argc, char *argv[], char *env[])
+{
+	t_list	*shell_lst;
+	t_list	*cmds = NULL;
+	t_list	*redirs = NULL;
+	char	**env_copy;
+	char	*input;
+
+	cmds = NULL;
+	redirs = NULL;
+	while (1)
+	{
+		input = readline("\033[1;35mminishell$ \033[0m");
+		errno = 0;
+		if (!input)
+		{
+			ft_putstr_fd("\b\bexit\n", 1);
+			break ;
+		}
+		// printf("\"%s\"\n", input);
+		// if (input)
+		// 	add_history(input);
+
+		shell_lst = get_shell_lst(); // check return value
+		split_shell_lst(shell_lst, &cmds, &redirs); // check return value
+
+		msh_file_creation(shell_lst); // check return value
+		env_copy = str_array_copy((const char **)env);
+		if (!env_copy)
+			return (1); //
+		msh_exec(cmds, redirs, &env_copy);
+
+		str_array_free(env_copy);
+		ft_lstclear(&cmds, void_array_free);
+		ft_lstclear(&redirs, void_array_free);
+		ft_lstclear(&shell_lst, void_array_free);
+
+		if (errno != 0)		//
+			perror("DONE");	//
+		free(input);
+	}
+	return (0);
+}

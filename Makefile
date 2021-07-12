@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/12 11:51:38 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/12 19:52:44 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -134,7 +134,7 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)$(BUILTIN_DIR)%.c $(SRCS_DIR)$(BUILTIN_DIR)builtin.h
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(NAME): $(LIBFT_OBJ_PATH) $(OBJS_PATH)
-	@gcc -o $(NAME) $(LIBFT_OBJ_PATH) $(OBJS_PATH)
+	@gcc -o $(NAME) $(LIBFT_OBJ_PATH) $(OBJS_PATH) -lreadline
 	@echo "\033[1;31;42m=====minishell IS COMPLETED======\033[0m\n"
 
 all: $(NAME)
