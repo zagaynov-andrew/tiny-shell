@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 13:12:49 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 21:40:06 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,14 +105,13 @@ static int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[])
 	if (pid == 0)
 	{
 		execvp(args[0], args);
-		perror("ERROR");
+		perror("ERROR1");
 		exit(EXIT_FAILURE);
 	}
 	if (pid > 0)
 		ft_lstadd_back(pid_lst, ft_lstnew((void *)ft_int_dup(pid))); // Check malloc
 	if (pid < 0)
-		printf("Forking error\n"); //
-	perror("ERROR"); //
+		perror("Forking error\n"); //
 	return (-1);
 }
 
