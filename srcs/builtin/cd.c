@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 19:10:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 09:31:36 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 21:44:54 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static int	msh_cd_utils(char *oldpwd, int oldpwd_pos, int pwd_pos, char *env[])
 		if (!env[pwd_pos])
 			return (1);
 	}
+	return (0);
 }
 
 int	msh_cd(const int argc, const char *argv[], char **env[])
@@ -48,10 +49,8 @@ int	msh_cd(const int argc, const char *argv[], char **env[])
 	oldpwd = get_cur_dir();
 	if (argc == 1)
 	{
-		
 		if (chdir(getenv("HOME")) != 0)
 			perror("ERROR"); //
-		
 	}
 	else if (argc > 2)
 	{
@@ -69,7 +68,7 @@ int	msh_cd(const int argc, const char *argv[], char **env[])
 // {
 // 	char	**copy_env;
 
-	
+
 
 // 	copy_env = NULL;
 // 	copy_env = str_array_copy((const char **)env);

@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 10:48:08 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 09:33:30 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/12 21:15:54 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*get_env_var_value(const char *name, const char **env) // is it necessary?
 	char	*value;
 	char	*equal;
 
-	if (!name || env)
+	if (!name || !env)
 		return (NULL);
 	pos = get_env_pos(name, env);
 	if (pos == -1)
