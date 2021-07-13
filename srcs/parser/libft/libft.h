@@ -6,7 +6,7 @@
 /*   By: skharjo <skharjo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/30 20:12:33 by skharjo           #+#    #+#             */
-/*   Updated: 2021/06/29 09:08:51 by skharjo          ###   ########.fr       */
+/*   Updated: 2021/07/13 18:02:21 by skharjo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,7 @@ int					ft_tolower(int c);
 int					ft_toupper(int character);
 
 void				ft_strncpy(char *dst, char *src, int n);
+
+int					ft_strcmp(const char *str1, const char *str2);
 
 #endif

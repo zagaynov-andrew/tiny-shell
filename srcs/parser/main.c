@@ -13,18 +13,23 @@ void print_list(t_list *list)
 	}
 }
 
-int main()
+int main(int arc, char **argv, char **env)
 {
-	char *str = "<<ls -la \"ab cd\"|cat FILE<< file1";
+	if(arc != 1)
+		return 0;
+	(void)argv;
+	char *str = "\t \r cat \"hello \'\t \r$PWD\' world\"< $PWD pwd | CAT FILE<< file1";
 	char **split;
 	int status = 0;
 	t_list *list;
 	split = ft_split_cmd_args(str);
-	// while (*split)
-	// printf("%s\n", *split++);
+	while (*split)
+	printf("%s\n", *split++);
 	list = NULL;
-	list = lexer(str, status);
-	// print_list(list);
+	list = lexer(str, status, env);
 	print_list_str_array(list);
+	ft_lstclear1(&list, del_list_content);
+	// sleep(1000);
+	// printf("%s\n", str);
 	return (0);
 }

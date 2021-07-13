@@ -3,15 +3,15 @@
 char	*define_del(char *str, int len)
 {
 	if (!ft_strncmp("|", str , 1) && len == 1)
-		return ("|PIPE");
+		return ("|");
 	if (!ft_strncmp("<<", str, 2) && len == 2)
-		return ("<<LESSLESS");
+		return ("<<");
 	if (!ft_strncmp(">>", str, 2) && len == 2)
-		return (">>GREATGREAT");
+		return (">>");
 	if (!ft_strncmp("<", str, 1) && len == 1)
-		return ("<LESS");
+		return ("<");
 	if (!ft_strncmp(">", str, 1) && len == 1)
-		return (">GREAT");
+		return (">");
 	return (NULL);
 }
 
@@ -56,7 +56,7 @@ void	check_spec(char **split, char **line, int *i)
 
 void	skip_spaces(char **line)
 {
-	while (**line == ' ' && **line)
+	while ((**line == ' ' || **line == '\t' || **line == '\r') && **line)
 		(*line)++;
 }
 
@@ -90,7 +90,7 @@ char	**ft_split_cmd_args(char *line)
 	{
 		if (ft_strchr("|<>", *line))
 			check_spec(split, &line, &i);
-		else if (*line == ' ')
+		else if (*line == ' ' || *line == '\t' || *line == '\r')
 			skip_spaces(&line);
 		else if (*line == '\'' || *line == '\"')
 			quote_parse(split, &line, &i);

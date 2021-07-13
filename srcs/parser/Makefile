@@ -1,7 +1,8 @@
 NAME := minishell
 
-SRC :=  main.c lexer.c ft_split_cmd_args.c \
-		ft_split_utils.c cmd_table.c test_list/print_list_str_array.c test_list/print_str_array.c
+SRC :=  main.c lexer.c ft_split_cmd_args.c check_var.c free_data.c ft_error.c check_cmd.c \
+		ft_split_utils.c cmd_table.c test_list/print_list_str_array.c test_list/print_str_array.c\
+		parse_line.c get_env_var_value.c
 		
 
 OBJ := $(patsubst %.c, %.o, $(SRC))

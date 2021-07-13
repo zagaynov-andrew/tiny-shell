@@ -5,11 +5,11 @@ int		length_data(char **split)
 	int len;
 
 	len = 0;
-	if (ft_strchr("<>|\'\"", **split))
+	if (ft_strchr("|", **split))
 		return (1);
 	while (*split)
 	{
-		if (!ft_strchr("<>|\'\"", **split))
+		if (!ft_strchr("|", **split))
 			len++;
 		else
 			break;
@@ -57,7 +57,17 @@ t_list	*make_node(char **split)
 	{
 		len = length_data(split);
 		data = malloc(sizeof(char *) * len + 1);
-		while (*split && !ft_strchr("<>|\'\"", **split))
+		while (*split && !ft_strchr("|", **split))
+			data[i++] = create_row(split++);
+		data[i] = 0;
+		return (create_node(data, node));
+	}
+	else if (ft_strchr("<>", **split))
+	{
+		len = length_data(split);
+		data = malloc(sizeof(char *) * len + 1);
+		data[i++] = create_row(split++);
+		while (*split && !ft_strchr("|", **split))
 			data[i++] = create_row(split++);
 		data[i] = 0;
 		return (create_node(data, node));
@@ -69,7 +79,7 @@ t_list	*make_node(char **split)
 		data[i] = 0;
 		return (create_node(data, node));
 	}
-	return (NULL);
+		return (NULL);
 }
 
 void	make_cmd_table(t_list **list, char **split)

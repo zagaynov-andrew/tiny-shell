@@ -10,7 +10,12 @@ int quote_len(char *line, char ch)
 	while (line[i])
 	{
 		if (line[i] == ch)
+		{
+			i++;
+			while (!ft_strchr(" \t\r", line[i])  && !ft_strchr("<>|", line[i++]))
+				len++;
 			return (len);
+		}
 		len++;
 		i++;
 	}
@@ -33,14 +38,17 @@ void	quote_parse(char **split, char **line, int *i)
 
 void	skip_wsp(int *i, char *line)
 {
-	while (line[*i] == ' ')
+	while (line[*i] == ' ' || line[*i] == '\t' || line[*i] == '\r')
 		(*i)++;
 }
 
-void	skip_del_ch(char *line, int *len, int *i)
+void	  skip_del_ch(char *line, int *len, int *i)
 {
+	char ch;
+
 	(*len)++;
-	while (ft_strchr("|<> ", line[*i]))
+	ch = line[*i];
+	while (line[*i] == ch)
 		(*i)++;
 }
 
@@ -53,7 +61,7 @@ int		get_num_words(char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == ' ')
+		if (line[i] == ' ' || line[i] == '\t' || line[i] == '\r')
 			skip_wsp(&i, line);
 		else if (ft_strchr("|<> ", line[i]))
 			skip_del_ch(line, &len, &i);

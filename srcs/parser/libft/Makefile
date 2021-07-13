@@ -36,7 +36,8 @@ SRC = ft_atoi.c \
 			ft_memcpy.c	\
 			ft_putstr_fd.c \
 			ft_strmapi.c \
-			ft_strncpy.c
+			ft_strncpy.c \
+			ft_strcmp.c
 
 SRC_BONUS = ft_lstadd_back.c \
 			ft_lstadd_front.c \
