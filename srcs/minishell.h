@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:28:17 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 21:51:29 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/13 22:34:26 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 #include "executor/executor.h"
 #include "test/test_minishell.h"
-#include "../libft/libft.h"
+#include "../libs/libft/libft.h"
+#include "parser/parser.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 

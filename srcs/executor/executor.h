@@ -6,14 +6,14 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:17:15 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 11:21:55 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/13 22:33:34 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-# include "../../libft/libft.h"
+# include "../../libs/libft/libft.h"
 # include "../test/test_minishell.h"
 # include "../builtin/builtin.h"
 # include <stdio.h>

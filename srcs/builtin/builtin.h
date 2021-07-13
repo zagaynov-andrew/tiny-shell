@@ -6,14 +6,14 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 22:07:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 11:55:34 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/13 22:34:00 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-# include "../../libft/libft.h"
+# include "../../libs/libft/libft.h"
 # include "../test/test_minishell.h" //
 # include <stdio.h>
 # include <stdlib.h>
