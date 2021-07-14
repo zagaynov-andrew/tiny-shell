@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 23:17:42 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 10:11:37 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:47:40 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	str_swap(char **str_1, char **str_2)
 	*str_2 = tmp;
 }
 
-char		**str_array_sort(char *str_array[])
+char	**str_array_sort(char *str_array[])
 {
 	int	i;
 	int	j;

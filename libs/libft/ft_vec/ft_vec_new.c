@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 20:20:22 by nforce            #+#    #+#             */
-/*   Updated: 2021/03/27 10:19:14 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:49:04 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ t_vec	*ft_vec_new(size_t capacity)
 
 	if (!capacity)
 		return (NULL);
-	if (!(vec = ft_calloc(capacity, sizeof(t_vec))))
+	vec = ft_calloc(capacity, sizeof(t_vec));
+	if (!vec)
 	{
 		errno = ENOMEM;
 		return (NULL);
 	}
-	if (!(vec->data = ft_calloc(capacity, sizeof(void*))))
+	vec->data = ft_calloc(capacity, sizeof(void *));
+	if (!vec->data)
 	{
 		errno = ENOMEM;
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 20:12:51 by nforce            #+#    #+#             */
-/*   Updated: 2021/03/27 10:14:56 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:46:03 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stddef.h>
 # include <errno.h>
 
-typedef	struct	s_vec
+typedef struct s_vec
 {
 	void		**data;
 	size_t		size;

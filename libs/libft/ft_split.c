@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/14 16:32:28 by ngamora           #+#    #+#             */
-/*   Updated: 2020/11/17 22:07:37 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:38:19 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static char	**ft_fill_split(char const *s, char c, char **split)
 	i = 0;
 	row = 0;
 	while (s[i])
+	{
 		if (s[i] != c)
 		{
 			word_len = ft_word_len(s, c, i);
@@ -82,11 +83,12 @@ static char	**ft_fill_split(char const *s, char c, char **split)
 		}
 		else
 			i++;
+	}
 	split[row] = NULL;
 	return (split);
 }
 
-char		**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char	**split;
 	int		qty_words;
@@ -94,7 +96,8 @@ char		**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	qty_words = ft_count_words(s, c);
-	if (!(split = ft_calloc(qty_words + 1, sizeof(char*))))
+	split = ft_calloc(qty_words + 1, sizeof(char *));
+	if (!split)
 		return (NULL);
 	ft_fill_split(s, c, split);
 	return (split);

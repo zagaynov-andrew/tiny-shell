@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 23:21:44 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 01:47:15 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:47:55 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ char	**str_array_add_back(char **str_array[], const char *str)
 	int		old_size;
 
 	old_size = str_array_size((const char **)(*str_array));
-	if (!(new = ft_calloc(old_size + 2, sizeof(char*))))
+	new = ft_calloc(old_size + 2, sizeof(char *));
+	if (!new)
 	{
 		str_array_free((char **)(*str_array));
 		return (NULL);

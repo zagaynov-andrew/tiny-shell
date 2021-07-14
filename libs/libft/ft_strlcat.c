@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 20:51:20 by ngamora           #+#    #+#             */
-/*   Updated: 2020/11/17 21:48:38 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:39:36 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	int	src_len;
 	int	dst_len;
 	int	i;
-	int j;
+	int	j;
 
 	src_len = ft_strlen(src);
 	dst_len = ft_strlen(dst);

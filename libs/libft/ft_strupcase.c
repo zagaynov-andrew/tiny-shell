@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 16:05:48 by nforce            #+#    #+#             */
-/*   Updated: 2021/01/15 15:52:28 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:44:40 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strupcase(char *str)
 {
-	int i;
+	int	i;
 
 	if (!str)
 		return (NULL);

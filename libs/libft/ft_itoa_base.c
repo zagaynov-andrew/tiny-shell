@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/07 14:56:00 by nforce            #+#    #+#             */
-/*   Updated: 2021/01/15 16:47:59 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:32:19 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@ char	*ft_itoa_base(long long int value, int base)
 	alphabit = "0123456789abcdef";
 	if (base < 2 || base > 16)
 		return (NULL);
-	if (base == 10)
-		return (ft_itoa(value));
-	tmp = value;
-	while (tmp /= base)
+	tmp = value / base;
+	while (tmp)
+	{
 		size++;
+		tmp /= base;
+	}
 	size++;
 	str = (char *)ft_calloc(size + 1, sizeof(char));
 	str[size] = '\0';

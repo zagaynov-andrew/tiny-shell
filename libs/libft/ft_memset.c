@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:26:00 by ngamora           #+#    #+#             */
-/*   Updated: 2020/11/03 18:36:56 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:36:44 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memset(void *b, int c, size_t len)
 {
-	unsigned char *ptr_b;
+	unsigned char	*ptr_b;
 
 	ptr_b = (unsigned char *)b;
 	while (len--)

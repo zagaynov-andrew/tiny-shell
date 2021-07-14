@@ -6,13 +6,16 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/04 12:02:17 by nforce            #+#    #+#             */
-/*   Updated: 2021/01/15 15:52:10 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:27:19 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_abs(int n)
+int	ft_abs(int n)
 {
-	return (n < 0 ? -n : n);
+	if (n < 0)
+		return (-n);
+	else
+		return (n);
 }

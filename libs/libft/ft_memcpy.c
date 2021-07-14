@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 17:26:35 by ngamora           #+#    #+#             */
-/*   Updated: 2020/11/17 21:56:18 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:35:52 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!dst && !src)

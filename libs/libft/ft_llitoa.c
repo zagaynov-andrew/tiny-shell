@@ -6,13 +6,13 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/06 21:15:13 by nforce            #+#    #+#             */
-/*   Updated: 2021/01/15 16:41:37 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:32:57 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char		*ft_llitoa(long long int n)
+char	*ft_llitoa(long long int n)
 {
 	char	*str;
 	int		str_len;

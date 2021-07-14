@@ -6,13 +6,14 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 00:59:10 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 10:22:49 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:47:24 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "str_array.h"
 
-static char	**str_array_erase_utils(char **str_array[], char *new[], int pos, int old_size)
+static char	**str_array_erase_utils(char **str_array[], char *new[],
+													int pos, int old_size)
 {
 	int	i;
 	int	flag;
@@ -40,7 +41,7 @@ static char	**str_array_erase_utils(char **str_array[], char *new[], int pos, in
 	return (new);
 }
 
-char		**str_array_erase(char **str_array[], int pos)
+char	**str_array_erase(char **str_array[], int pos)
 {
 	char	**new;
 	int		old_size;
@@ -53,7 +54,6 @@ char		**str_array_erase(char **str_array[], int pos)
 	new = (char **)ft_calloc(old_size, sizeof(char *));
 	if (!new)
 		return (NULL);
-	
 	if (!str_array_erase_utils(str_array, new, pos, old_size))
 		return (NULL);
 	free(*str_array);

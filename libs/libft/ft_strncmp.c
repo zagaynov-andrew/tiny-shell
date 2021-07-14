@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/03 18:55:57 by ngamora           #+#    #+#             */
-/*   Updated: 2021/03/27 12:58:53 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:40:17 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	int i;
+	int	i;
 
 	if (!s1 || !s2)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/07 20:16:22 by ngamora           #+#    #+#             */
-/*   Updated: 2020/11/13 15:51:35 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 16:38:41 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strchr(const char *s, int c)
 	while (i < ft_strlen(s) + 1)
 	{
 		if (s[i] == (char)c)
-			return ((char*)(s + i));
+			return ((char *)(s + i));
 		i++;
 	}
 	return (NULL);
