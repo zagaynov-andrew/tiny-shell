@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   msh_errors.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/11/03 18:55:57 by ngamora           #+#    #+#             */
-/*   Updated: 2021/03/27 12:58:53 by ngamora          ###   ########.fr       */
+/*   Created: 2021/07/14 14:35:06 by ngamora           #+#    #+#             */
+/*   Updated: 2021/07/14 14:58:39 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+int	msh_perror(char *str, int ret)
 {
-	int i;
+	if (!str)
+		return (ret);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putchar_fd('\n', 2);
+	return (ret);
+}
 
-	if (!s1 || !s2)
-		return (0);
-	if (n == 0)
-		return (0);
-	i = 0;
-	while (s1[i] == s2[i] && i < (int)(n - 1) && s1[i] != '\0' && s2[i] != '\0')
-		i++;
-	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+int	msh_strerror(int ret)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putchar_fd('\n', 2);
+	return (ret);
 }

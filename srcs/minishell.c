@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:18:38 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/13 22:52:28 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 17:06:25 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,20 +152,7 @@ int	split_shell_lst(t_list *shell_lst, t_list **cmds, t_list **redirs)
 	return (0);
 }
 
-void listener(int sig)
-{
-	if (sig == SIGQUIT)
-		write(2, "\b\b  \b\b", 6);
-	else if (sig == SIGINT)
-	{
-		ft_putstr_fd("\n", 1);
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-}
-
-t_list *get_shell_lst()
+t_list	*lexer(char *line, int status, char **env)
 {
 	t_list	*shell_lst;
 	t_vec	*vec;
@@ -234,7 +221,12 @@ t_list *get_shell_lst()
 	return (shell_lst);
 }
 
-
+void	clear_shell_lst(t_list **shell_lst, t_list **cmds, t_list **redirs)
+{
+	ft_lstclear(cmds, void_array_free);
+	ft_lstclear(redirs, void_array_free);
+	ft_lstclear(shell_lst, void_array_free);
+}
 
 int	main(int argc, char *argv[], char *env[])
 {
@@ -246,11 +238,11 @@ int	main(int argc, char *argv[], char *env[])
 
 	cmds = NULL;
 	redirs = NULL;
+	g_last_exit_status = 0;
 	while (1)
 	{
-		signal(SIGQUIT, listener);
-		signal(SIGINT, listener);
-		input = readline("\033[1;35mminishell$ \033[0m");
+		init_signals(sig_catcher_msh);
+		input = readline("\033[1;35mminishell $ \033[0m");
 		errno = 0;
 		if (!input)
 		{
@@ -264,30 +256,27 @@ int	main(int argc, char *argv[], char *env[])
 			rl_redisplay();
 			continue ;
 		}
-		// printf("\"%s\"\n", input);
-		// if (input)
-		// 	add_history(input);
+		if (input)
+			add_history(input);
 
-		// shell_lst = get_shell_lst(); // check return value
 		env_copy = str_array_copy((const char **)env);
 		if (!env_copy)
-			return (1); //
+			return (msh_strerror(EXIT_FAILURE));
 		shell_lst = lexer(input, 0, env_copy);
+		if (!shell_lst)
+			continue ;
 		// print_list_str_array(shell_lst);
 		split_shell_lst(shell_lst, &cmds, &redirs); // check return value
 
 		msh_file_creation(shell_lst); // check return value
 
 		msh_exec(cmds, redirs, &env_copy);
-
-		str_array_free(env_copy);
-		ft_lstclear(&cmds, void_array_free);
-		ft_lstclear(&redirs, void_array_free);
-		ft_lstclear(&shell_lst, void_array_free);
-
+		// printf("%d\n", g_last_exit_status);
+		clear_shell_lst(&shell_lst, &cmds, &redirs);
 		if (errno != 0)		//
 			perror("DONE");	//
 		free(input);
 	}
+	str_array_free(env_copy);
 	return (0);
 }

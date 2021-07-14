@@ -6,12 +6,12 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/12 19:52:44 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/14 17:05:41 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			= minishell
-LIBFT_DIR		= ./libft/
+LIBFT_DIR		= ./libs/libft/
 PARSER_DIR		= parser/
 EXECUTOR_DIR	= executor/
 BUILTIN_DIR		= builtin/
@@ -40,6 +40,7 @@ LIBFT_SRCS	=	ft_memset.c				\
 				ft_strrchr.c			\
 				ft_strncmp.c			\
 				ft_strlcpy.c			\
+				ft_strncpy.c			\
 				ft_strlcat.c			\
 				ft_strnstr.c			\
 				ft_atoi.c				\
@@ -95,7 +96,19 @@ SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(BUILTIN_DIR)unset.c				\
 			$(SRCS_DIR)$(TEST_DIR)print_str_array.c			\
 			$(SRCS_DIR)$(TEST_DIR)print_list_str_array.c	\
+			$(SRCS_DIR)$(TEST_DIR)msh_errors.c				\
+			$(SRCS_DIR)$(TEST_DIR)msh_signals.c				\
 			$(SRCS_DIR)minishell.c
+			# $(SRCS_DIR)$(PARSER_DIR)lexer.c					\
+			# $(SRCS_DIR)$(PARSER_DIR)ft_split_cmd_args.c		\
+			# $(SRCS_DIR)$(PARSER_DIR)check_var.c				\
+			# $(SRCS_DIR)$(PARSER_DIR)free_data.c				\
+			# $(SRCS_DIR)$(PARSER_DIR)ft_error.c				\
+			# $(SRCS_DIR)$(PARSER_DIR)check_cmd.c				\
+			# $(SRCS_DIR)$(PARSER_DIR)ft_split_utils.c		\
+			# $(SRCS_DIR)$(PARSER_DIR)cmd_table.c				\
+			# $(SRCS_DIR)$(PARSER_DIR)parse_line.c			\
+
 
 OBJS			= $(notdir $(SRCS:.c=.o))
 OBJS_PATH		= $(addprefix $(OBJS_DIR), $(OBJS))
@@ -107,11 +120,13 @@ $(LIBFT_DIR)$(OBJS_DIR)%.o : $(LIBFT_DIR)ft_vec/%.c $(LIBFT_DIR)libft.h
 	@$(MAKE) full -C $(LIBFT_DIR)
 $(LIBFT_DIR)$(OBJS_DIR)%.o : $(LIBFT_DIR)ft_list/%.c $(LIBFT_DIR)libft.h
 	@$(MAKE) full -C $(LIBFT_DIR)
+$(LIBFT_DIR)$(OBJS_DIR)%.o : $(LIBFT_DIR)str_array/%.c $(LIBFT_DIR)str_array/str_array.h
+	@$(MAKE) full -C $(LIBFT_DIR)
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(SRCS_DIR)minishell.h
 	@mkdir -p $(OBJS_DIR)
 	@echo "\033[1;31m- Done :\033[0m $<"
-	@$(CC) $(CC_FLAGS) -c $< -o $@
+	@$(CC) $(CC_FLAGS) -c $< -o $@ -I./libs/readline/include
 
 # $(OBJS_DIR)%.o : $(SRCS_DIR)$(PARSER_DIR)%.c $(SRCS_DIR)minishell.h
 # 	@mkdir -p $(OBJS_DIR)
@@ -122,6 +137,11 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)$(TEST_DIR)%.c $(SRCS_DIR)$(TEST_DIR)test_minishell.
 	@mkdir -p $(OBJS_DIR)
 	@echo "\033[1;31m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
+
+# $(OBJS_DIR)%.o : $(SRCS_DIR)$(PARSER_DIR)%.c $(SRCS_DIR)$(PARSER_DIR)parser.h
+# 	@mkdir -p $(OBJS_DIR)
+# 	@echo "\033[1;31m- Done :\033[0m $<"
+# 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)$(EXECUTOR_DIR)%.c $(SRCS_DIR)$(EXECUTOR_DIR)executor.h
 	@mkdir -p $(OBJS_DIR)
@@ -134,7 +154,7 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)$(BUILTIN_DIR)%.c $(SRCS_DIR)$(BUILTIN_DIR)builtin.h
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(NAME): $(LIBFT_OBJ_PATH) $(OBJS_PATH)
-	@gcc -o $(NAME) $(LIBFT_OBJ_PATH) $(OBJS_PATH) -lreadline
+	@gcc -o $(NAME) $(LIBFT_OBJ_PATH) $(OBJS_PATH) -lreadline -L ./libs/readline/lib
 	@echo "\033[1;31;42m=====minishell IS COMPLETED======\033[0m\n"
 
 all: $(NAME)
