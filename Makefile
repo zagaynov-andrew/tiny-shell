@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/14 17:05:41 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/14 17:54:16 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ TEST_DIR		= test/
 SRCS_DIR		= ./srcs/
 OBJS_DIR		= ./objs/
 CC				= gcc
-CC_FLAGS		= -g #-Wall -Wextra -Werror
+CC_FLAGS		= -g -Wall -Wextra -Werror
 
 LIBFT_SRCS	=	ft_memset.c				\
 				ft_bzero.c				\

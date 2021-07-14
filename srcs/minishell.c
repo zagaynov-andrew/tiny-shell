@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:18:38 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/14 17:06:25 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 17:54:10 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,9 @@ t_list	*lexer(char *line, int status, char **env)
 	t_list	*shell_lst;
 	t_vec	*vec;
 
+	(void)line;
+	(void)status;
+	(void)env;
 	shell_lst = NULL;
 	// vec = ft_vec_new(6);
 	// ft_vec_push(&vec, (void*)ft_strdup("cat"));
@@ -236,6 +239,8 @@ int	main(int argc, char *argv[], char *env[])
 	char	**env_copy;
 	char	*input;
 
+	(void)argc;
+	(void)argv;
 	cmds = NULL;
 	redirs = NULL;
 	g_last_exit_status = 0;

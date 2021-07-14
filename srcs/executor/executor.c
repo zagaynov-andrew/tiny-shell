@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 15:55:31 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/14 16:12:06 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 17:52:24 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	msh_exec(t_list *cmds, t_list *redirs, char **env[])
 {
 	int	std_io[2];
-	int	ret;
 
 	std_io[0] = dup(0);
 	std_io[1] = dup(1);

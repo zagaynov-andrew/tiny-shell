@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/14 16:23:29 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 17:52:36 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,11 +138,11 @@ int	cmd_waiting(t_list	**pid_lst)
 	return (WEXITSTATUS(status)); // incorrect exit status
 }
 
-static void	inc_lst(t_list **cmds, t_list **redirs)
-{
-	*redirs = (*redirs)->next;
-	*cmds = (*cmds)->next;
-}
+// static void	inc_lst(t_list **cmds, t_list **redirs)
+// {
+// 	*redirs = (*redirs)->next;
+// 	*cmds = (*cmds)->next;
+// }
 
 void	msh_simple_cmd_loop(t_list *cmds, t_list *redirs,
 			int standard_io[], char **env[])
