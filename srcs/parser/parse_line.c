@@ -29,7 +29,8 @@ static char *parser_dollar(char *line, int *i, char **env, int status)
 	j = *i;
 	(*i)++;
 	len = 0;
-	while ((line[*i] == '_' || ft_isalnum(line[*i])) && !ft_isdigit(line[j + 1]))
+	while ((line[*i] == '_' || ft_isalnum(line[*i]) || line[*i] == '?') &&
+		   !ft_isdigit(line[j + 1]))
 	{
 		len++;
 		(*i)++;

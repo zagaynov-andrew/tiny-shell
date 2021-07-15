@@ -35,18 +35,18 @@ void ft_tolower_line(char *line)
 	}
 }
 
-DIR *ft_opendir(char *direct)
-{
-	DIR *dir;
+// DIR *ft_opendir(char *direct)
+// {
+// 	DIR *dir;
 
-	dir = opendir(direct);
-	if (!dir)
-	{
-		perror("diropen");
-		exit(1);
-	}
-	return (dir);
-}
+// 	dir = opendir(direct);
+// 	if (!dir)
+// 	{
+// 		perror("diropen");
+// 		exit(1);
+// 	}
+// 	return (dir);
+// }
 
 char *file_path(char *d_name, char *dir, char *cmd)
 {

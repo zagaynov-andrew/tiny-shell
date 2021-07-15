@@ -67,7 +67,7 @@ void	make_word(char **split, char **line, int *i)
 
 	tmp = *line;
 	len = 0;
-	while (!ft_strchr("|<> \'\"", **line))
+	while (!ft_strchr("|<> \r\t\'\"", **line))
 	{
 		(*line)++;
 		len++;

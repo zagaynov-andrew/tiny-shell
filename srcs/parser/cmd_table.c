@@ -25,7 +25,7 @@ char	*create_row(char **split)
 	tmp = malloc(sizeof(char *) * ft_strlen(*split) + 1);
 	if (!tmp)
 	{
-		perror("Error malloc");
+		perror("Can't create list row");
 		exit(EXIT_FAILURE);
 	}
 	ft_strncpy(tmp, *split, ft_strlen(*split));
@@ -53,7 +53,7 @@ t_list	*make_node(char **split)
 	len = 0;
 	i = 0;
 	node = NULL;
-	if (!ft_strchr("<>|\'\"", **split))
+	if (!ft_strchr("<>|", **split))
 	{
 		len = length_data(split);
 		data = malloc(sizeof(char *) * len + 1);
