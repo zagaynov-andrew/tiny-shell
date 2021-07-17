@@ -36,10 +36,17 @@ char	*get_env_var_value(char *name, char **env)
 		return (NULL);
 	pos = get_env_pos(name, env);
 	if (pos == -1)
-		return (NULL);
+	{
+		value = ft_strdup("");
+		if (!value)
+			exit(msh_strerror(EXIT_FAILURE));
+		return (value);
+	}
 	equal = ft_strnstr(env[pos], "=", ft_strlen(env[pos]));
 	if (!equal)
 		return (NULL);
 	value = ft_strdup(equal + 1);
+	if (!value)
+		exit(msh_strerror(EXIT_FAILURE));
 	return (value);
 }

@@ -1,96 +1,75 @@
 #include "parser.h"
 
-int		length_data(char **split)
+int msh_perror(char *str, int ret)
 {
-	int len;
+	if (!str)
+		return (ret);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putchar_fd('\n', 2);
+	errno = 0;
+	return (ret);
+}
+int msh_strerror(int ret)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(strerror(errno), 2);
+	ft_putchar_fd('\n', 2);
+	errno = 0;
+	return (ret);
+}
 
-	len = 0;
-	if (ft_strchr("|", **split))
+void	lst_add_node(t_list **list, char **data)
+{
+	t_list *new;
+
+	new = ft_lstnew((void *)data);
+	if (!new)
+		exit(msh_strerror(EXIT_FAILURE));
+	ft_lstadd_back(list, new);
+}
+
+int		is_redir(char *str)
+{
+	if (ft_strcmp(str, "<") == 0)
 		return (1);
-	while (*split)
-	{
-		if (!ft_strchr("|", **split))
-			len++;
-		else
-			break;
-		split++;
-	}
-	return (len);
-}
-
-char	*create_row(char **split)
-{
-	char	*tmp;
-
-	tmp = malloc(sizeof(char *) * ft_strlen(*split) + 1);
-	if (!tmp)
-	{
-		perror("Can't create list row");
-		exit(EXIT_FAILURE);
-	}
-	ft_strncpy(tmp, *split, ft_strlen(*split));
-	return (tmp);
-}
-
-t_list	*create_node(char **data, t_list *node)
-{
-	node = ft_lstnew((void *)data);
-	if (!node)
-	{
-		perror("Error malloc node");
-		exit(EXIT_FAILURE);
-	}
-	return (node);
-}
-
-t_list	*make_node(char **split)
-{
-	int		len;
-	char	**data;
-	int		i;
-	t_list	*node;
-	
-	len = 0;
-	i = 0;
-	node = NULL;
-	if (!ft_strchr("<>|", **split))
-	{
-		len = length_data(split);
-		data = malloc(sizeof(char *) * len + 1);
-		while (*split && !ft_strchr("|", **split))
-			data[i++] = create_row(split++);
-		data[i] = 0;
-		return (create_node(data, node));
-	}
-	else if (ft_strchr("<>", **split))
-	{
-		len = length_data(split);
-		data = malloc(sizeof(char *) * len + 1);
-		data[i++] = create_row(split++);
-		while (*split && !ft_strchr("|", **split))
-			data[i++] = create_row(split++);
-		data[i] = 0;
-		return (create_node(data, node));
-	}
-	else
-	{
-		data = malloc(sizeof(char *) * 2);
-		data[i++] = create_row(split);
-		data[i] = 0;
-		return (create_node(data, node));
-	}
-		return (NULL);
+	if (ft_strcmp(str, "<<") == 0)
+		return (1);
+	if (ft_strcmp(str, ">") == 0)
+		return (1);
+	if (ft_strcmp(str, ">>") == 0)
+		return (1);
+	return (0);
 }
 
 void	make_cmd_table(t_list **list, char **split)
 {
-	t_list	*new;
+	char	**data_redir;
+	char	**data_arg;
 
 	while (*split)
 	{
-		new = make_node(split);
-		split += length_data(split) - 1;
-		ft_lstadd_back(list, new);
+		data_arg = NULL;
+		data_redir = NULL;
+		while (*split && ft_strcmp(*split, "|") != 0)
+		{
+			if (is_redir(*split))
+			{
+				str_array_add_back(&data_redir, *split);
+				str_array_add_back(&data_redir, *(split + 1));
+				split++;
+			}
+			else
+				str_array_add_back(&data_arg, *split);
+			split++;
+		}
+		lst_add_node(list, data_arg);
+		lst_add_node(list, data_redir);
+		data_arg = NULL;
+		if (!(*split))
+			return ;
+		str_array_add_back(&data_arg, *split);
+		lst_add_node(list, data_arg);
 		split++;
 	}
 }

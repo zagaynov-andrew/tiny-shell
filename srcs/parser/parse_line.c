@@ -18,81 +18,104 @@ static char *parse_slash(char *line, int *i)
 	return (tmp);
 }
 
-static char *parser_dollar(char *line, int *i, char **env, int status)
+char	*str_replace(char *line, int start, int len, char *replace)
 {
-	char	*tmp1;
-	char	*tmp2;
-	int		siz;
-	int		j;
-	int		len;
+	char	*left;
+	char	*right;
+	char	*tmp;
 
-	j = *i;
+	left = ft_substr(line, 0, start);
+	right = ft_strdup(line + start + len);
+	if (!left && !right)
+		exit(msh_strerror(EXIT_FAILURE));
+	free(line);
+	tmp = left;
+	left = ft_strjoin(left, replace);
+	free(tmp);
+	if (!left)
+		exit(msh_strerror(EXIT_FAILURE));
+	tmp = left;
+	left = ft_strjoin(left, right);
+	free(tmp);
+	free(right);
+	if (!left)
+		exit(msh_strerror(EXIT_FAILURE));
+	return (left);
+}
+
+void	dollar_proc(char **line, int *i, char **env, int status)
+{
+	int		len;
+	int		start;
+	char 	*name;
+	char 	*value;
+
+	len = 1;
+	start = *i;
 	(*i)++;
-	len = 0;
-	while ((line[*i] == '_' || ft_isalnum(line[*i]) || line[*i] == '?') &&
-		   !ft_isdigit(line[j + 1]))
+	while (!ft_strchr(" \t\\\'\"/$", (*line)[*i]))
 	{
 		len++;
 		(*i)++;
 	}
-	if (len == 0)
-		return (line);
-	tmp1 = ft_substr(line, j + 1, len);
-	tmp1 = check_var(tmp1, env, status);
-	siz = ft_strlen(line) - ft_strlen(&line[j]);
-	tmp2 = malloc(ft_strlen(tmp1) + ft_strlen(&line[*i]) + ft_strlen(tmp1) + siz);
-	ft_strncpy(tmp2, line, ft_strlen(line) - ft_strlen(&line[j]));
-	ft_strncpy(&tmp2[j], tmp1, ft_strlen(tmp1));
-	ft_strncpy(&tmp2[j + ft_strlen(tmp1)], &line[j + 1 + len], ft_strlen(line));
-	free(tmp1);
-	free(line);
-	*i = j + ft_strlen(tmp1);
-	return (tmp2);
+	name = ft_substr(*line, start + 1, len - 1);
+	if (!name)
+		exit(msh_strerror(EXIT_FAILURE));
+	value = replace_var(name, env, status);
+	*i = *i - ft_strlen(name) + ft_strlen(value) - 1;
+	free(name);
+	*line = str_replace(*line, start, len, value);
+	free(value);
 }
 
-static char *parce_sl_dl(char *line, char **env, int status)
+void	bslash_proc(char **line, int *i)
 {
-	int i;
+	*line = str_replace(*line, *i, 1, "");
+	(*i)++;
+}
 
-	i = 0;
-	while (line[i])
+void	quotes_dbl(char **line, int *i, char **env, int status)
+{
+	*line = str_replace(*line, *i, 1, "");
+	while ((*line)[*i] && (*line)[*i] != '\"')
 	{
-		if (line[i] == '\\')
-			line = parse_slash(line, &i);
-		else if (line[i] == '$')
-			line = parser_dollar(line, &i, env, status);
+		if ((*line)[*i] == '\\' && (*line)[*i + 1] == '$')
+			bslash_proc(line, i);
+		else if ((*line)[*i] == '$')
+			dollar_proc(line, i, env, status);
 		else
-			i++;
+			(*i)++;
 	}
-	return (line);
+	*line = str_replace(*line, *i, 1, "");
 }
 
-static char	*remove_quote(char *line)
+void	quotes_one(char **line, int *i)
 {
-	char *tmp;
-
-	tmp = malloc(ft_strlen(line) - 2);
-	if (!tmp)
-	{
-		perror("Error one quote malloc");
-		exit(EXIT_FAILURE);
-	}
-	ft_strncpy(tmp, (line + 1), ft_strlen(line) - 2);
-	free(line);
-	return (tmp);
+	*line = str_replace(*line, *i, 1, "");
+	while ((*line)[*i] && (*line)[*i] != '\'')
+		(*i)++;
+	*line = str_replace(*line, *i, 1, "");
 }
 
 char	*parce_line(char *line, char **env, int status)
 {
-	if (*line == '\'')
-		line = remove_quote(line);
-	else if (*line == '\"')
+	int	i;
+	int	quotes;
+
+	i = 0;
+	while (line[i])
 	{
-		line = remove_quote(line);
-		line = parce_sl_dl(line, env, status);
+		if (line[i] == '\'')
+			quotes_one(&line, &i);
+		else if (line[i] == '\"')
+			quotes_dbl(&line, &i, env, status);
+		else if(line[i] == '\\')
+			bslash_proc(&line, &i);
+		else if (line[i] == '$')
+			dollar_proc(&line, &i, env, status);
+		else
+			i++;
 	}
-	else
-		line = parce_sl_dl(line, env, status);
 	return (line);
 }
 
