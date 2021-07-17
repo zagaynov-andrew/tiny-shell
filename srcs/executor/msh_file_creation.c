@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:04:19 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/11 18:07:43 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/17 19:06:21 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,67 @@ static int	create_files(char **cmd_array)
 	return (0);
 }
 
-int	msh_file_creation(t_list *shell_lst)
+static int	launch_heredocs_utils(char **cmd_array, char **redir_array, char **heredoc, int i)
 {
+	int	std_in;
+
+	std_in = dup(0);
+	*heredoc = msh_heredoc(cmd_array[i + 1]);
+	if (g_last_exit_status)
+	{
+		// free(heredoc);
+		dup2(std_in, 0);
+		return (1);
+	}
+	free(redir_array[HEREDOC]);
+	redir_array[HEREDOC] = *heredoc;
+	return (0);
+}
+
+static void	launch_heredocs(char **cmd_array, char **redir_array)
+{
+	int		fd;
+	int		i;
+	char	*heredoc;
+
+	heredoc = NULL;
+	i = 0;
+	while (cmd_array[i])
+	{
+		if (ft_strcmp(cmd_array[i], "<") == 0)
+		{
+			free(redir_array[HEREDOC]);
+			redir_array[HEREDOC] = ft_strdup("");
+			if (!redir_array[HEREDOC])
+				exit(msh_strerror(EXIT_FAILURE));
+			i += 2;
+			continue ;
+		}
+		if (ft_strcmp(cmd_array[i], "<<") == 0)
+		{
+			launch_heredocs_utils(cmd_array, redir_array, &heredoc, i);
+			i++;
+		}
+		i++;
+	}
+}
+
+int	processing_redirs(t_list *shell_lst, t_list *redirs)
+{
+	char	**shell_data;
+	char	**redir_data;
+
 	while (shell_lst)
 	{
-		if (create_files((char **)(shell_lst->content)))
+		shell_data = (char **)(shell_lst->content);
+		redir_data = (char **)(redirs->content);
+		launch_heredocs(shell_data, redir_data);
+		if (g_last_exit_status)
+			return (1);
+		if (create_files(shell_data))
 			return (1);
 		shell_lst = shell_lst->next;
+		redirs = redirs->next;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/09 23:19:51 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 10:11:54 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/15 19:47:31 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	**str_array_copy(const char *str_array[])
 		copy[i] = ft_strdup(str_array[i]);
 		if (!copy[i])
 		{
-			str_array_free((char **)str_array);
+			str_array_free((char ***)&str_array);
 			return (NULL);
 		}
 		i++;

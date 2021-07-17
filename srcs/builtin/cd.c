@@ -6,11 +6,22 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 19:10:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 21:44:54 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:59:48 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+
+static int	cd_perror(char *str, int ret)
+{
+	if (!str)
+		return (ret);
+	ft_putstr_fd("minishell: cd: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putchar_fd('\n', 2);
+	errno = 0;
+	return (ret);
+}
 
 static int	msh_cd_utils(char *oldpwd, int oldpwd_pos, int pwd_pos, char *env[])
 {
@@ -50,16 +61,20 @@ int	msh_cd(const int argc, const char *argv[], char **env[])
 	if (argc == 1)
 	{
 		if (chdir(getenv("HOME")) != 0)
-			perror("ERROR"); //
-	}
-	else if (argc > 2)
-	{
-		perror("too many arguments"); // return value
+			return (cd_perror("HOME not set", EXIT_FAILURE));
 	}
 	else
 	{
 		if (chdir(argv[1]) != 0)
-			return (1);
+		{
+			ft_putstr_fd("minishell: cd: ", 2);
+			ft_putstr_fd(argv[1], 2);
+			ft_putstr_fd(": ", 2);
+			ft_putstr_fd(strerror(errno), 2);
+			ft_putchar_fd('\n', 2);
+			errno = 0;
+			return (EXIT_FAILURE);
+		}
 	}
 	return (msh_cd_utils(oldpwd, oldpwd_pos, pwd_pos, *env));
 }

@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 23:33:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 11:51:57 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/15 18:15:49 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	msh_export(const int argc, const char *argv[], char **env[])
 			return (errno);
 		str_array_sort(copy);
 		msh_export_print((const char **)copy);
-		str_array_free(copy);
+		str_array_free(&copy);
 		return (0);
 	}
 	else

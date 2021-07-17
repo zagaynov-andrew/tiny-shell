@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:17:15 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/14 16:20:13 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/16 18:39:40 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,8 @@
 # include <fcntl.h>
 
 void	msh_exec(t_list *cmds, t_list *redirs, char **env[]);
-void	msh_set_input(char *in_file, int tmp[], int fd[]);
 void	msh_simple_cmd_loop(t_list *redirs, t_list *cmds,
 			int standard_io[], char **env[]);
-int		msh_file_creation(t_list *shell_lst);
+int		processing_redirs(t_list *shell_lst, t_list *redirs);
 
 #endif

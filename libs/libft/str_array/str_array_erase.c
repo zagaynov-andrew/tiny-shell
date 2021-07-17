@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 00:59:10 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/14 16:47:24 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/15 18:14:56 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	**str_array_erase_utils(char **str_array[], char *new[],
 			new[i - flag] = (*str_array)[i];
 			if (!new[i - flag])
 			{
-				str_array_free((char **)(*str_array));
+				str_array_free(str_array);
 				return (NULL);
 			}
 		}

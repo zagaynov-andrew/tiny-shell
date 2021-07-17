@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 15:04:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/14 16:19:11 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/17 19:14:29 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,32 @@ void	sig_catcher_msh(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+	}
+}
+
+void	sig_catcher_heredoc(int sig)
+{
+	int	fd_pipe[2];
+
+	if (sig == SIGQUIT)
+	{
+		ft_putstr_fd("> ", 1);
+		ft_putstr_fd(rl_line_buffer, 1);
+		ft_putstr_fd("  \b\b", 1);
+	}
+	else if (sig == SIGINT)
+	{
+		pipe(fd_pipe);
+		dup2(fd_pipe[0], 0);
+		close(fd_pipe[0]);
+		close(fd_pipe[1]);
+		ft_putstr_fd("> ", 1);
+		ft_putstr_fd(rl_line_buffer, 1);
+		ft_putstr_fd("  \b\b", 1);
+		if (!ft_strcmp(rl_line_buffer, ""))
+			ft_putstr_fd("\n", 1);
+		errno = 0;
+		g_last_exit_status = 1;
 	}
 }
 

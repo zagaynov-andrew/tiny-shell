@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 22:07:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/13 22:34:00 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/14 18:48:54 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../../libs/libft/libft.h"
 # include "../test/test_minishell.h" //
+# include "../minishell.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
