@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_file_creation.c                                :+:      :+:    :+:   */
+/*   pre_execution.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:04:19 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/17 19:06:21 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/17 20:36:22 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	create_files(char **cmd_array)
 	return (0);
 }
 
-static int	launch_heredocs_utils(char **cmd_array, char **redir_array, char **heredoc, int i)
+static int	launch_heredocs_utils(char **cmd_array,
+				char **redir_array, char **heredoc, int i)
 {
 	int	std_in;
 
@@ -49,7 +50,6 @@ static int	launch_heredocs_utils(char **cmd_array, char **redir_array, char **he
 	*heredoc = msh_heredoc(cmd_array[i + 1]);
 	if (g_last_exit_status)
 	{
-		// free(heredoc);
 		dup2(std_in, 0);
 		return (1);
 	}
@@ -86,7 +86,7 @@ static void	launch_heredocs(char **cmd_array, char **redir_array)
 	}
 }
 
-int	processing_redirs(t_list *shell_lst, t_list *redirs)
+int	pre_execution(t_list *shell_lst, t_list *redirs)
 {
 	char	**shell_data;
 	char	**redir_data;

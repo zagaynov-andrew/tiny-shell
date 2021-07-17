@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 19:10:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/14 18:59:48 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/17 19:36:38 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	msh_cd_utils(char *oldpwd, int oldpwd_pos, int pwd_pos, char *env[])
 	if (pwd_pos != -1)
 	{
 		free(env[pwd_pos]);
-		env[pwd_pos] = ft_strjoin("PWD=", pwd);;
+		env[pwd_pos] = ft_strjoin("PWD=", pwd); // check malloc
 		free(pwd);
 		if (!env[pwd_pos])
 			return (1);
@@ -82,8 +82,6 @@ int	msh_cd(const int argc, const char *argv[], char **env[])
 // int main(int argc, char *argv[], char *env[])
 // {
 // 	char	**copy_env;
-
-
 
 // 	copy_env = NULL;
 // 	copy_env = str_array_copy((const char **)env);

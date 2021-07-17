@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 23:33:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/15 18:15:49 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/17 19:39:44 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	msh_export_add_env(const char *argv[], char **env[])
 			i++;
 			continue ;
 		}
-		if ((pos = get_env_pos(argv[i], (const char **)*env)) >= 0)
+		pos = get_env_pos(argv[i], (const char **)*env);
+		if (pos >= 0)
 		{
 			if (ft_strnstr(argv[i], "=", ft_strlen(argv[i])))
 			{
@@ -64,7 +65,8 @@ int	msh_export_add_env(const char *argv[], char **env[])
 		}
 		else
 		{
-			if (!(*env = str_array_add_back(env, argv[i])))
+			*env = str_array_add_back(env, argv[i]);
+			if (!(*env))
 			{
 				perror("ERROR"); //
 				return (errno);
@@ -86,7 +88,8 @@ int	msh_export(const int argc, const char *argv[], char **env[])
 
 	if (argc == 1)
 	{
-		if (!(copy = str_array_copy((const char **)*env)))
+		copy = str_array_copy((const char **)*env);
+		if (!copy)
 			return (errno);
 		str_array_sort(copy);
 		msh_export_print((const char **)copy);

@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/14 17:54:16 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/17 20:34:04 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ TEST_DIR		= test/
 SRCS_DIR		= ./srcs/
 OBJS_DIR		= ./objs/
 CC				= gcc
-CC_FLAGS		= -g -Wall -Wextra -Werror
+CC_FLAGS		= -g #-Wall -Wextra -Werror
 
 LIBFT_SRCS	=	ft_memset.c				\
 				ft_bzero.c				\
@@ -86,6 +86,7 @@ LIBFT_SRCS	=	ft_memset.c				\
 
 SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(EXECUTOR_DIR)executor_utils.c		\
+			$(SRCS_DIR)$(EXECUTOR_DIR)fd_substitution.c		\
 			$(SRCS_DIR)$(EXECUTOR_DIR)msh_file_creation.c	\
 			$(SRCS_DIR)$(BUILTIN_DIR)echo.c					\
 			$(SRCS_DIR)$(BUILTIN_DIR)pwd.c					\
@@ -98,6 +99,7 @@ SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(TEST_DIR)print_list_str_array.c	\
 			$(SRCS_DIR)$(TEST_DIR)msh_errors.c				\
 			$(SRCS_DIR)$(TEST_DIR)msh_signals.c				\
+			$(SRCS_DIR)$(TEST_DIR)msh_heredoc.c				\
 			$(SRCS_DIR)minishell.c
 			# $(SRCS_DIR)$(PARSER_DIR)lexer.c					\
 			# $(SRCS_DIR)$(PARSER_DIR)ft_split_cmd_args.c		\
@@ -127,11 +129,6 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(SRCS_DIR)minishell.h
 	@mkdir -p $(OBJS_DIR)
 	@echo "\033[1;31m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@ -I./libs/readline/include
-
-# $(OBJS_DIR)%.o : $(SRCS_DIR)$(PARSER_DIR)%.c $(SRCS_DIR)minishell.h
-# 	@mkdir -p $(OBJS_DIR)
-# 	@echo "\033[1;31m- Done :\033[0m $<"
-# 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)$(TEST_DIR)%.c $(SRCS_DIR)$(TEST_DIR)test_minishell.h
 	@mkdir -p $(OBJS_DIR)
