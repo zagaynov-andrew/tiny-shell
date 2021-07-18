@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/16 14:04:47 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/17 19:24:22 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 15:57:02 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ static char	*msh_heredoc_utils(char *heredoc, char *input)
 	return (heredoc);
 }
 
-static char	*checkinging_input(char *input, char *heredoc, char *delimeter)
+static char	*checkinging_input(char *heredoc, char *delimeter)
 {
+	char	*input;
+
 	while (1)
 	{
 		init_signals(sig_catcher_heredoc);
@@ -58,12 +60,11 @@ static char	*checkinging_input(char *input, char *heredoc, char *delimeter)
 char	*msh_heredoc(char *delimeter)
 {
 	char	*heredoc;
-	char	*input;
 
 	heredoc = ft_strdup("");
 	if (!heredoc || !delimeter)
 		exit(msh_strerror(EXIT_FAILURE));
-	heredoc = checkinging_input(input, heredoc, delimeter);
+	heredoc = checkinging_input(heredoc, delimeter);
 	if (!heredoc)
 		return (NULL);
 	if (ft_strcmp(heredoc, "") == 0)

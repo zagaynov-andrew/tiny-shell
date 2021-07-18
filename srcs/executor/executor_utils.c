@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/17 20:32:13 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 14:20:42 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ static int	msh_launch_builtin(t_list *cmd, char **env[])
 
 	args = (char **)cmd->content;
 	args_size = str_array_size((const char **)args);
-	if (ft_strcmp(args[0], "/bin/echo") == 0)
+	if (ft_strcmp(args[0], "echo") == 0)
 		return (msh_echo(args_size, args, *env));
-	else if (ft_strcmp(args[0], "/bin/pwd") == 0)
+	else if (ft_strcmp(args[0], "pwd") == 0)
 		return (msh_pwd(args_size, args, *env));
-	else if (ft_strcmp(args[0], "/usr/bin/cd") == 0)
+	else if (ft_strcmp(args[0], "cd") == 0)
 		return (msh_cd(args_size, (const char **)args, env));
-	else if (ft_strcmp(args[0], "/usr/bin/env") == 0)
+	else if (ft_strcmp(args[0], "env") == 0)
 		return (msh_env(args_size, args, *env));
 	else if (ft_strcmp(args[0], "export") == 0)
 		return (msh_export(args_size, (const char **)args, env));
@@ -73,22 +73,21 @@ int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[])
 	return (-1);
 }
 
-static int	cmd_waiting(t_list	**pid_lst)
+static int	cmd_waiting(t_list	*pid_lst)
 {
 	int		pid;
 	int		status;
-	t_list	*pid_lst_copy;
 
-	pid_lst_copy = *pid_lst;
-	while (*pid_lst)
+	while (pid_lst)
 	{
-		pid = *((int *)((*pid_lst)->content));
+		pid = *((int *)(pid_lst->content));
 		waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
-		(*pid_lst) = (*pid_lst)->next;
+		pid_lst = pid_lst->next;
 	}
-	ft_lstclear(&pid_lst_copy, free);
+	if (!pid_lst)
+		return (0);
 	if (WIFSIGNALED(status))
 		return (g_last_exit_status);
 	return (WEXITSTATUS(status));
@@ -96,7 +95,8 @@ static int	cmd_waiting(t_list	**pid_lst)
 
 void	processint_pids(t_list **pid_lst, int status[])
 {
-	status[1] = cmd_waiting(pid_lst);
+	status[1] = cmd_waiting(*pid_lst);
+	ft_lstclear(pid_lst, free);
 	if (status[0] != -1)
 		g_last_exit_status = status[0];
 	else

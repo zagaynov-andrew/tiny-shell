@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/17 20:34:04 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/18 16:49:33 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -87,7 +87,7 @@ LIBFT_SRCS	=	ft_memset.c				\
 SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(EXECUTOR_DIR)executor_utils.c		\
 			$(SRCS_DIR)$(EXECUTOR_DIR)fd_substitution.c		\
-			$(SRCS_DIR)$(EXECUTOR_DIR)msh_file_creation.c	\
+			$(SRCS_DIR)$(EXECUTOR_DIR)pre_execution.c	\
 			$(SRCS_DIR)$(BUILTIN_DIR)echo.c					\
 			$(SRCS_DIR)$(BUILTIN_DIR)pwd.c					\
 			$(SRCS_DIR)$(BUILTIN_DIR)cd.c					\
@@ -100,6 +100,9 @@ SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(TEST_DIR)msh_errors.c				\
 			$(SRCS_DIR)$(TEST_DIR)msh_signals.c				\
 			$(SRCS_DIR)$(TEST_DIR)msh_heredoc.c				\
+			$(SRCS_DIR)split_shell_lst.c					\
+			$(SRCS_DIR)prompt_loop.c						\
+			$(SRCS_DIR)split_shell_lst_utils.c				\
 			$(SRCS_DIR)minishell.c
 			# $(SRCS_DIR)$(PARSER_DIR)lexer.c					\
 			# $(SRCS_DIR)$(PARSER_DIR)ft_split_cmd_args.c		\
@@ -110,6 +113,8 @@ SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			# $(SRCS_DIR)$(PARSER_DIR)ft_split_utils.c		\
 			# $(SRCS_DIR)$(PARSER_DIR)cmd_table.c				\
 			# $(SRCS_DIR)$(PARSER_DIR)parse_line.c			\
+			# $(SRCS_DIR)$(PARSER_DIR)replace_var.c			\
+
 
 
 OBJS			= $(notdir $(SRCS:.c=.o))

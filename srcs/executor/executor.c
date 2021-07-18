@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 15:55:31 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/17 20:30:49 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 15:46:51 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void	msh_simple_cmd_loop(t_list *cmds, t_list *redirs,
 			status[0] = -1;
 		inc_lst(&cmds, &redirs);
 		if (i != num_cmds - 1)
-			set_input((char **)(redirs->content), NULL, fd);
+			if (set_input((char **)(redirs->content), NULL, fd))
+				i++;
 	}
 	processint_pids(&pid_lst, status);
 }
