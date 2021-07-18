@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:28:17 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 16:35:47 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 17:36:55 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ int		split_shell_lst_element(char *element[],
 			t_list **cmd_lst, t_list **redir_lst);
 int		split_lst_cmds_redirs(t_list *shell_lst,
 			t_list **cmds, t_list **redirs);
+int		msh_exit_error(int ret);
 int		msh_perror(char *str, int ret);
+int		msh_perror_arg(char *arg, char *str, int ret);
 int		msh_strerror(int ret);
 int		msh_strerror_arg(int ret, char *arg);
 void	sig_catcher_msh(int sig);

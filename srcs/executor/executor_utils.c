@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 14:20:42 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 18:43:23 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	*ft_int_dup(int num)
 	return (tmp);
 }
 
-static int	msh_launch_builtin(t_list *cmd, char **env[])
+static int	msh_launch_builtin(t_list *cmd, char **env[], int num_cmds)
 {
 	char	**args;
 	int		args_size;
@@ -42,16 +42,22 @@ static int	msh_launch_builtin(t_list *cmd, char **env[])
 		return (msh_export(args_size, (const char **)args, env));
 	else if (ft_strcmp(args[0], "unset") == 0)
 		return (msh_unset(args_size, (const char **)args, env));
+	else if (ft_strcmp(args[0], "exit") == 0)
+	{
+		if (num_cmds > 1)
+			return (0);
+		return (msh_exit(args_size, args, *env));
+	}
 	return (-1);
 }
 
-int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[])
+int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[], int num_cmds)
 {
 	int		pid;
 	int		status;
 	t_list	*new_node;
 
-	status = msh_launch_builtin(cmd, env);
+	status = msh_launch_builtin(cmd, env, num_cmds);
 	if (status != -1)
 		return (status);
 	pid = fork();

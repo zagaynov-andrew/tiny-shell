@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 15:55:31 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 15:46:51 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 17:48:32 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	msh_simple_cmd_loop(t_list *cmds, t_list *redirs,
 		if (i != num_cmds - 1)
 			msh_create_pipe(fd);
 		set_output(((char **)redirs->content), std_io, fd, i == num_cmds - 1);
-		status[0] = msh_launch(cmds, &pid_lst, env);
+		status[0] = msh_launch(cmds, &pid_lst, env, num_cmds);
 		if (i != num_cmds - 1)
 			status[0] = -1;
 		inc_lst(&cmds, &redirs);

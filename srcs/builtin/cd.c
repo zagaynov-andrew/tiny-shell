@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 19:10:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/17 19:36:38 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 20:45:38 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,40 +23,36 @@ static int	cd_perror(char *str, int ret)
 	return (ret);
 }
 
-static int	msh_cd_utils(char *oldpwd, int oldpwd_pos, int pwd_pos, char *env[])
+static void	msh_cd_utils(char *oldpwd, int pwd_pos, char **env[])
 {
 	char	*pwd;
+	char	**args;
+	char	*new;
 
 	pwd = get_cur_dir();
-	if (!oldpwd || !pwd)
-		return (1);
-	if (oldpwd_pos != -1)
-	{
-		free(env[oldpwd_pos]);
-		env[oldpwd_pos] = ft_strjoin("OLDPWD=", oldpwd);
-		free(oldpwd);
-		if (!env[oldpwd_pos])
-			return (1);
-	}
-	if (pwd_pos != -1)
-	{
-		free(env[pwd_pos]);
-		env[pwd_pos] = ft_strjoin("PWD=", pwd); // check malloc
-		free(pwd);
-		if (!env[pwd_pos])
-			return (1);
-	}
-	return (0);
+	new = ft_strjoin("OLDPWD=", oldpwd); // check malloc
+	args = NULL;
+	str_array_add_back(&args, "export"); // check malloc
+	str_array_add_back(&args, new); // check malloc
+	free(new);
+	msh_export(2, (const char **)args, env);
+	str_array_free(&args);
+
+	new = ft_strjoin("PWD=", get_cur_dir()); // check malloc
+	args = NULL;
+	str_array_add_back(&args, "export"); // check malloc
+	str_array_add_back(&args, new); // check malloc
+	free(new);
+	msh_export(2, (const char **)args, env);
+	str_array_free(&args);
 }
 
 int	msh_cd(const int argc, const char *argv[], char **env[])
 {
 	int		pwd_pos;
-	int		oldpwd_pos;
 	char	*oldpwd;
 
 	pwd_pos = get_env_pos("PWD", (const char **)*env);
-	oldpwd_pos = get_env_pos("OLDPWD", (const char **)*env);
 	oldpwd = get_cur_dir();
 	if (argc == 1)
 	{
@@ -76,7 +72,10 @@ int	msh_cd(const int argc, const char *argv[], char **env[])
 			return (EXIT_FAILURE);
 		}
 	}
-	return (msh_cd_utils(oldpwd, oldpwd_pos, pwd_pos, *env));
+	if (!oldpwd)
+		return (msh_perror("Current directory was deleted", 1));
+	msh_cd_utils(oldpwd, pwd_pos, env);
+	return (0);
 }
 
 // int main(int argc, char *argv[], char *env[])

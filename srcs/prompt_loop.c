@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/18 16:31:36 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 16:44:46 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 17:31:06 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	prompt_loop(t_list	*cmds, t_list *redirs, char **env_copy[])
 
 	while (1)
 	{
-		g_last_exit_status = 0;
 		init_signals(sig_catcher_msh);
 		input = readline("\033[1;35mminishell $ \033[0m");
 		if (ctrl_d(input))
@@ -73,6 +72,7 @@ void	prompt_loop(t_list	*cmds, t_list *redirs, char **env_copy[])
 		if (input)
 			add_history(input);
 		shell_lst = lexer(input, g_last_exit_status, *env_copy);
+		g_last_exit_status = 0;
 		if (!shell_lst)
 			continue ;
 		split_shell_lst(shell_lst, &cmds, &redirs);

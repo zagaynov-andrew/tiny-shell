@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 20:05:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 13:34:11 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 20:34:25 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*get_cur_dir(void)
 	size = 64;
 	path = (char *)ft_calloc(size, sizeof(char));
 	if (!path)
-		return (NULL);
+		exit(msh_strerror(EXIT_FAILURE));
 	tmp = path;
 	path = getcwd(path, size);
 	if (!path && errno != 34)

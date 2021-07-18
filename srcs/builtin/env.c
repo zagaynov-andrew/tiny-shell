@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 21:08:20 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 14:20:28 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/18 18:46:43 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	msh_env(int argc, char *argv[], char *env[])
 	{
 		ft_putstr_fd(*env, 1);
 		ft_putchar_fd('\n', 1);
-		(*env)++;
+		env++;
 	}
 	return (0);
 }
