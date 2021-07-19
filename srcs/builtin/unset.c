@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 01:12:51 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/10 11:34:14 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 15:24:00 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,21 @@ int	msh_unset(const int argc, const char *argv[], char **env[])
 {
 	int	i;
 	int	flag;
-	int pos;
+	int	pos;
 
-	if (argc == 1)
-		return (0);
 	flag = 0;
 	i = 1;
 	while (i < argc)
 	{
 		if (!is_valid_env_name(argv[i]))
 		{
-			perror("ERROR not a valid identifier"); //
+			print_not_valid(argv[i]);
 			flag = 1;
 			i++;
 			continue ;
 		}
-		if ((pos = get_env_pos(argv[i], (const char **)*env)) >= 0)
+		pos = get_env_pos(argv[i], (const char **)*env);
+		if (pos >= 0)
 			if (!str_array_erase(env, pos))
 				return (1);
 		i++;
@@ -51,7 +50,7 @@ int	msh_unset(const int argc, const char *argv[], char **env[])
 // 	// copy_env = str_array_add_back(&copy_env, "second=string");
 // 	// copy_env = str_array_add_back(&copy_env, "third=string");
 // 	// copy_env = str_array_add_back(&copy_env, "forth=string");
-	
+
 // 	msh_unset(argc, argv, &copy_env);
 // 	print_str_array(copy_env);
 // 	str_array_free(copy_env);

@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 18:43:23 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 11:36:53 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[], int num_cmds)
 	pid = fork();
 	if (pid == 0)
 	{
-		execvp(((char **)cmd->content)[0], ((char **)cmd->content));
+		execve(((char **)cmd->content)[0], ((char **)cmd->content), *env);
 		exit(msh_strerror(127));
 	}
 	if (pid > 0)

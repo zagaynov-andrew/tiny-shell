@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 22:07:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 17:40:12 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 15:18:57 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,10 @@ int		is_valid_env_name(const char *env_ptr);
 int		get_env_pos(const char *name, const char **env);
 char	*get_env_var_value(const char *name, const char **env);
 char	*get_cur_dir(void);
+char	*get_home(const char **env);
+void	change_pwd_oldpwd(char *oldpwd, char **env[]);
+char	*get_cur_dir_s(const char *env[]);
+void	print_not_valid(const char *var);
+void	msh_export_print(const char **str_array);
 
 #endif

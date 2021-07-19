@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 20:05:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 20:34:25 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 14:40:22 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,15 @@ char	*get_cur_dir(void)
 	return (path);
 }
 
+static int	msh_pwd_perror(char *arg_1, char c, char *arg_2, int ret)
+{
+	ft_putstr_fd(arg_1, 2);
+	ft_putchar_fd(c, 2);
+	ft_putstr_fd(arg_2, 2);
+	ft_putstr_fd("\n", 2);
+	return (ret);
+}
+
 int	msh_pwd(int argc, char *argv[], char *env[])
 {
 	char	*cur_dir;
@@ -50,21 +59,13 @@ int	msh_pwd(int argc, char *argv[], char *env[])
 	if (argc > 1)
 	{
 		if (argv[1][0] == '-' && argv[1][1] == '-'
-			&& argv[1][2] != '\0') // check -, --, -dafb, -s
-		{
-			ft_putstr_fd("minishell: pwd: -", 2);
-			ft_putchar_fd(argv[1][1], 2);
-			ft_putstr_fd(": invalid option\n", 2);
-			return (1);
-		}
+			&& argv[1][2] != '\0')
+			return (msh_pwd_perror("minishell: pwd: -",
+					argv[1][1], ": invalid option", 1));
 		else if (argv[1][0] == '-' && argv[1][1] != '\0'
-			&& argv[1][1] != '-') // check -, --, -dafb, -s
-		{
-			ft_putstr_fd("minishell: pwd: -", 2);
-			ft_putchar_fd(argv[1][1], 2);
-			ft_putstr_fd(": invalid option\n", 2);
-			return (1);
-		}
+			&& argv[1][1] != '-')
+			return (msh_pwd_perror("minishell: pwd: -",
+					argv[1][1], ": invalid option", 1));
 	}
 	cur_dir = get_cur_dir();
 	if (!cur_dir)

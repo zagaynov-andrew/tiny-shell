@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/18 17:34:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 17:43:30 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 15:30:34 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,14 @@ static int	is_number(char *str)
 
 int	msh_exit(int argc, char *argv[], char *env[])
 {
+	(void)argc;
 	(void)env;
 	if (str_array_size((const char **)argv) > 1)
 	{
 		if (!is_number(argv[1]))
 		{
 			ft_putstr_fd("exit\n", 2);
-			exit(msh_perror_arg(argv[1], "numeric argument required", 255));
+			exit(msh_perror_arg(argv[1], ": numeric argument required", 255));
 		}
 	}
 	if (str_array_size((const char **)argv) > 2)

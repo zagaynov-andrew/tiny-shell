@@ -6,75 +6,110 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 19:10:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 20:45:38 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 14:23:04 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static int	cd_perror(char *str, int ret)
-{
-	if (!str)
-		return (ret);
-	ft_putstr_fd("minishell: cd: ", 2);
-	ft_putstr_fd(str, 2);
-	ft_putchar_fd('\n', 2);
-	errno = 0;
-	return (ret);
-}
-
-static void	msh_cd_utils(char *oldpwd, int pwd_pos, char **env[])
+char	*get_cur_dir_s(const char *env[])
 {
 	char	*pwd;
-	char	**args;
-	char	*new;
 
 	pwd = get_cur_dir();
-	new = ft_strjoin("OLDPWD=", oldpwd); // check malloc
-	args = NULL;
-	str_array_add_back(&args, "export"); // check malloc
-	str_array_add_back(&args, new); // check malloc
-	free(new);
-	msh_export(2, (const char **)args, env);
-	str_array_free(&args);
+	if (pwd)
+		return (pwd);
+	pwd = get_env_var_value("PWD", env);
+	return (pwd);
+}
 
-	new = ft_strjoin("PWD=", get_cur_dir()); // check malloc
-	args = NULL;
-	str_array_add_back(&args, "export"); // check malloc
-	str_array_add_back(&args, new); // check malloc
-	free(new);
-	msh_export(2, (const char **)args, env);
-	str_array_free(&args);
+static int	cd_home(const char **env)
+{
+	char	*home;
+
+	home = get_home(env);
+	if (!home)
+		return (1);
+	if (chdir(home) != 0)
+	{
+		free (home);
+		return (msh_perror("cd: HOME not set", EXIT_FAILURE));
+	}
+	free (home);
+	return (0);
+}
+
+static int	cd_oldpwd(const char **env)
+{
+	char	*home;
+
+	home = get_env_var_value("OLDPWD", env);
+	if (!ft_strcmp(home, ""))
+	{
+		free(home);
+		home = getenv("OLDPWD");
+	}
+	if (!home)
+		return (1);
+	if (chdir(home) != 0)
+	{
+		free(home);
+		return (msh_perror("cd: HOME not set", EXIT_FAILURE));
+	}
+	free(home);
+	return (0);
+}
+
+static int	msh_cd_utils(const char *argv[], char *oldpwd, const char *env[])
+{
+	char	*home;
+	char	*path;
+
+	home = get_home(env);
+	if (!home)
+	{
+		free(oldpwd);
+		return (msh_perror("cd: HOME not set", EXIT_FAILURE));
+	}
+	path = ft_strjoin(home, argv[1] + 1);
+	if (!path)
+		exit(msh_strerror(EXIT_FAILURE));
+	free(home);
+	if (chdir(path) == -1)
+	{
+		free(oldpwd);
+		free(path);
+		return (msh_strerror_arg_2(1, "cd", (char *)argv[1]));
+	}
+	free(path);
+	return (0);
 }
 
 int	msh_cd(const int argc, const char *argv[], char **env[])
 {
-	int		pwd_pos;
 	char	*oldpwd;
 
-	pwd_pos = get_env_pos("PWD", (const char **)*env);
-	oldpwd = get_cur_dir();
-	if (argc == 1)
+	oldpwd = get_cur_dir_s((const char **)*env);
+	if (argc == 1 || !ft_strcmp(argv[1], "~"))
 	{
-		if (chdir(getenv("HOME")) != 0)
-			return (cd_perror("HOME not set", EXIT_FAILURE));
-	}
-	else
-	{
-		if (chdir(argv[1]) != 0)
+		if (cd_home((const char **)*env))
 		{
-			ft_putstr_fd("minishell: cd: ", 2);
-			ft_putstr_fd(argv[1], 2);
-			ft_putstr_fd(": ", 2);
-			ft_putstr_fd(strerror(errno), 2);
-			ft_putchar_fd('\n', 2);
-			errno = 0;
-			return (EXIT_FAILURE);
+			free(oldpwd);
+			return (1);
 		}
 	}
-	if (!oldpwd)
-		return (msh_perror("Current directory was deleted", 1));
-	msh_cd_utils(oldpwd, pwd_pos, env);
+	else if (argc == 2 && !ft_strcmp(argv[1], "-"))
+	{
+		if (cd_oldpwd((const char **)*env))
+		{
+			free(oldpwd);
+			return (1);
+		}
+	}
+	else if (msh_cd_utils(argv, oldpwd, (const char **)*env))
+		return (1);
+	change_pwd_oldpwd(oldpwd, env);
+	free(oldpwd);
 	return (0);
 }
 

@@ -6,39 +6,31 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 23:33:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/17 19:39:44 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 15:17:23 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-void	msh_export_print(const char **str_array)
+static void	export_value(int i, int pos, const char *argv[], const char *env[])
 {
-	int	i;
-	int	j;
-
-	i = 0;
-	while (str_array[i])
+	if (ft_strnstr(argv[i], "=", ft_strlen(argv[i])))
 	{
-		ft_putstr_fd("declare -x ", 1);
-		j = 0;
-		while (str_array[i][j] != '=' && str_array[i][j] != '\0')
-		{
-			ft_putchar_fd(str_array[i][j], 1);
-			j++;
-		}
-		if (str_array[i][j] != '\0')
-		{
-			ft_putstr_fd("=\"", 1);
-			ft_putstr_fd(&str_array[i][j + 1], 1);
-			ft_putstr_fd("\"", 1);
-		}
-		ft_putstr_fd("\n", 1);
-		i++;
+		free((char *)env[pos]);
+		env[pos] = ft_strdup(argv[i]);
+		if (!env[pos])
+			exit(msh_strerror(EXIT_FAILURE));
 	}
 }
 
-int	msh_export_add_env(const char *argv[], char **env[])
+static void	export_non_existent_value(int i, const char *argv[], char **env[])
+{
+	*env = str_array_add_back((char ***)env, argv[i]);
+	if (!(*env))
+		exit(msh_strerror(EXIT_FAILURE));
+}
+
+static int	msh_export_add_env(const char *argv[], char **env[])
 {
 	int		i;
 	int		pos;
@@ -51,34 +43,19 @@ int	msh_export_add_env(const char *argv[], char **env[])
 		if (!is_valid_env_name(argv[i]))
 		{
 			flag = 1;
+			print_not_valid(argv[i]);
 			i++;
 			continue ;
 		}
 		pos = get_env_pos(argv[i], (const char **)*env);
 		if (pos >= 0)
-		{
-			if (ft_strnstr(argv[i], "=", ft_strlen(argv[i])))
-			{
-				free((char *)(*env)[pos]);
-				(*env)[pos] = ft_strdup(argv[i]);
-			}
-		}
+			export_value(i, pos, argv, (const char **)*env);
 		else
-		{
-			*env = str_array_add_back(env, argv[i]);
-			if (!(*env))
-			{
-				perror("ERROR"); //
-				return (errno);
-			}
-		}
+			export_non_existent_value(i, argv, env);
 		i++;
 	}
 	if (flag)
-	{
-		perror("ERROR not a valid identifier"); //
 		return (1);
-	}
 	return (0);
 }
 

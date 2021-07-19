@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:28:17 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 17:36:55 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 11:59:43 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int		msh_perror(char *str, int ret);
 int		msh_perror_arg(char *arg, char *str, int ret);
 int		msh_strerror(int ret);
 int		msh_strerror_arg(int ret, char *arg);
+int		msh_strerror_arg_2(int ret, char *arg_1, char *arg_2);
 void	sig_catcher_msh(int sig);
 void	sig_catcher_cmds(int sig);
 void	sig_catcher_heredoc(int sig);
