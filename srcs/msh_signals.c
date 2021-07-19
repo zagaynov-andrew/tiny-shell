@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/14 15:04:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/17 19:14:29 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 17:10:57 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	sig_catcher_heredoc(int sig)
 		ft_putstr_fd("> ", 1);
 		ft_putstr_fd(rl_line_buffer, 1);
 		ft_putstr_fd("  \b\b", 1);
+		init_signals(sig_catcher_msh);
 	}
 	else if (sig == SIGINT)
 	{
@@ -53,6 +54,7 @@ void	sig_catcher_heredoc(int sig)
 			ft_putstr_fd("\n", 1);
 		errno = 0;
 		g_last_exit_status = 1;
+		init_signals(sig_catcher_msh);
 	}
 }
 

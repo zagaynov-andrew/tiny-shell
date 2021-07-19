@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 11:36:53 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 17:17:52 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[], int num_cmds)
 	if (pid == 0)
 	{
 		execve(((char **)cmd->content)[0], ((char **)cmd->content), *env);
+		g_last_exit_status = 127;
 		exit(msh_strerror(127));
 	}
 	if (pid > 0)
@@ -84,6 +85,8 @@ static int	cmd_waiting(t_list	*pid_lst)
 	int		pid;
 	int		status;
 
+	if (!pid_lst)
+		return (0);
 	while (pid_lst)
 	{
 		pid = *((int *)(pid_lst->content));
@@ -92,19 +95,25 @@ static int	cmd_waiting(t_list	*pid_lst)
 			waitpid(pid, &status, WUNTRACED);
 		pid_lst = pid_lst->next;
 	}
-	if (!pid_lst)
-		return (0);
-	if (WIFSIGNALED(status))
+	if (WIFSIGNALED(status) && (WTERMSIG(status) == SIGINT
+			|| WTERMSIG(status) == SIGQUIT))
 		return (g_last_exit_status);
+	if (WIFSIGNALED(status) && g_last_exit_status)
+		return (1);
+	if (WIFSIGNALED(status))
+		return (1);
 	return (WEXITSTATUS(status));
 }
 
-void	processint_pids(t_list **pid_lst, int status[])
+int	processint_pids(t_list **pid_lst, int status[])
 {
 	status[1] = cmd_waiting(*pid_lst);
 	ft_lstclear(pid_lst, free);
+	if (status[0] == -2)
+		return (1);
 	if (status[0] != -1)
 		g_last_exit_status = status[0];
 	else
 		g_last_exit_status = status[1];
+	return (0);
 }

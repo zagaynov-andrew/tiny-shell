@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/18 17:34:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 15:30:34 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 17:20:11 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,9 @@ int	msh_exit(int argc, char *argv[], char *env[])
 		if (!is_number(argv[1]))
 		{
 			ft_putstr_fd("exit\n", 2);
-			exit(msh_perror_arg(argv[1], ": numeric argument required", 255));
+			g_last_exit_status = msh_perror_arg(argv[1],
+					": numeric argument required", 255);
+			return (-2);
 		}
 	}
 	if (str_array_size((const char **)argv) > 2)
@@ -43,6 +45,10 @@ int	msh_exit(int argc, char *argv[], char *env[])
 		return (msh_perror("exit: too many arguments", 1));
 	}
 	if (str_array_size((const char **)argv) == 2)
-		exit(msh_exit_error(ft_atoi(argv[1]) % 255));
-	exit(msh_exit_error(0));
+	{
+		g_last_exit_status = msh_exit_error(ft_atoi(argv[1]) % 255);
+		return (-2);
+	}
+	g_last_exit_status = msh_exit_error(0);
+	return (-2);
 }

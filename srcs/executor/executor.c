@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 15:55:31 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 17:48:32 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 15:49:10 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	inc_lst(t_list **cmds, t_list **redirs)
 	*cmds = (*cmds)->next;
 }
 
-static void	msh_simple_cmd_loop(t_list *cmds, t_list *redirs,
+static int	msh_simple_cmd_loop(t_list *cmds, t_list *redirs,
 			int std_io[], char **env[])
 {
 	int		num_cmds;
@@ -44,18 +44,20 @@ static void	msh_simple_cmd_loop(t_list *cmds, t_list *redirs,
 			if (set_input((char **)(redirs->content), NULL, fd))
 				i++;
 	}
-	processint_pids(&pid_lst, status);
+	return (processint_pids(&pid_lst, status));
 }
 
-void	msh_exec(t_list *cmds, t_list *redirs, char **env[])
+int	msh_exec(t_list *cmds, t_list *redirs, char **env[])
 {
 	int	std_io[2];
 
 	std_io[0] = dup(0);
 	std_io[1] = dup(1);
-	msh_simple_cmd_loop(cmds, redirs, std_io, env);
+	if (msh_simple_cmd_loop(cmds, redirs, std_io, env) == 1)
+		return (1);
 	dup2(std_io[0], 0);
 	dup2(std_io[1], 1);
 	close(std_io[0]);
 	close(std_io[1]);
+	return (0);
 }

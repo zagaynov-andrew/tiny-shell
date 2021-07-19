@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:28:17 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 11:59:43 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 16:24:08 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ void	init_signals(void (*sig_catcher)(int));
 char	*msh_heredoc(char *delimeter);
 void	fill_cmd(char *element[], t_list **cmd_lst);
 void	fill_redir(char *element[], t_list **redir_lst);
-void	prompt_loop(t_list	*cmds, t_list *redirs, char **env_copy[]);
+void	prompt_loop(t_list	**cmds, t_list **redirs,
+			char **env_copy[], t_list **shell_lst);
 void	split_shell_lst(t_list *shell_lst, t_list **cmds, t_list **redirs);
+int		clear_shell_lst(t_list **shell_lst, t_list **cmds,
+			t_list **redirs, char **input);
 
 #endif

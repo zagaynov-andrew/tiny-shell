@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 16:17:15 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 17:48:38 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 17:17:23 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@
 # include <sys/stat.h>
 # include <fcntl.h>
 
-void	msh_exec(t_list *cmds, t_list *redirs, char **env[]);
+int		msh_exec(t_list *cmds, t_list *redirs, char **env[]);
 void	pre_execution(t_list *shell_lst, t_list *redirs);
 int		msh_launch(t_list *cmd, t_list **pid_lst, char **env[], int num_cmds);
 int		set_input(char **redirs, int tmp[], int fd[]);
 void	set_output(char **redirs, int tmp[], int fd[], int flag_last);
 void	msh_create_pipe(int fd[]);
-void	processint_pids(t_list **pid_lst, int status[]);
+int		processint_pids(t_list **pid_lst, int status[]);
 
 #endif
