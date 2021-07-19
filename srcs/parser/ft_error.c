@@ -11,8 +11,7 @@ void	ft_parse_error(char ch)
 	char	*str;
 
 	(void)ch;
-	str = "minishell: syntax error near unexpected token ";
-	write(2, str, ft_strlen(str));
-	write(2, "\'", 1);
-	write(2, "\'\n", 2);
+	str = "minishell: syntax error near unexpected token";
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("\n", 2);
 }
