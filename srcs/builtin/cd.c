@@ -6,69 +6,117 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 19:10:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 21:44:54 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 17:48:17 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static int	msh_cd_utils(char *oldpwd, int oldpwd_pos, int pwd_pos, char *env[])
+static int	cd_home(const char **env)
 {
-	char	*pwd;
+	char	*home;
 
-	pwd = get_cur_dir();
-	if (!oldpwd || !pwd)
+	home = get_home(env);
+	if (!home)
 		return (1);
-	if (oldpwd_pos != -1)
+	if (chdir(home) != 0)
 	{
-		free(env[oldpwd_pos]);
-		env[oldpwd_pos] = ft_strjoin("OLDPWD=", oldpwd);
+		free (home);
+		return (msh_perror("cd: HOME not set", EXIT_FAILURE));
+	}
+	free (home);
+	return (0);
+}
+
+static int	cd_oldpwd(const char **env)
+{
+	char	*home;
+
+	home = get_env_var_value("OLDPWD", env);
+	if (!ft_strcmp(home, ""))
+	{
+		free(home);
+		home = getenv("OLDPWD");
+	}
+	if (!home)
+		return (1);
+	if (chdir(home) != 0)
+	{
+		free(home);
+		return (msh_perror("cd: HOME not set", EXIT_FAILURE));
+	}
+	free(home);
+	return (0);
+}
+
+static int	msh_cd_utils_2(const char *argv[], char *oldpwd, const char *env[])
+{
+	char	*home;
+	char	*path;
+
+	home = get_home(env);
+	if (!home)
+	{
 		free(oldpwd);
-		if (!env[oldpwd_pos])
-			return (1);
+		return (msh_perror("cd: HOME not set", EXIT_FAILURE));
 	}
-	if (pwd_pos != -1)
+	path = ft_strjoin(home, argv[1] + 1);
+	if (!path)
+		exit(msh_strerror(EXIT_FAILURE));
+	free(home);
+	if (chdir(path) == -1)
 	{
-		free(env[pwd_pos]);
-		env[pwd_pos] = ft_strjoin("PWD=", pwd);;
-		free(pwd);
-		if (!env[pwd_pos])
+		free(oldpwd);
+		free(path);
+		return (msh_strerror_arg_2(1, "cd", (char *)argv[1]));
+	}
+	free(path);
+	return (0);
+}
+
+static int	msh_cd_utils(const char *argv[], char *oldpwd, const char *env[])
+{
+	if (argv[1][0] == '~')
+	{
+		if (msh_cd_utils_2(argv, oldpwd, env))
 			return (1);
 	}
+	else if (chdir(argv[1]) == -1)
+		return (msh_strerror_arg_2(1, "cd", (char *)argv[1]));
 	return (0);
 }
 
 int	msh_cd(const int argc, const char *argv[], char **env[])
 {
-	int		pwd_pos;
-	int		oldpwd_pos;
 	char	*oldpwd;
 
-	pwd_pos = get_env_pos("PWD", (const char **)*env);
-	oldpwd_pos = get_env_pos("OLDPWD", (const char **)*env);
-	oldpwd = get_cur_dir();
-	if (argc == 1)
+	oldpwd = get_cur_dir_s((const char **)*env);
+	if (argc == 1 || !ft_strcmp(argv[1], "~"))
 	{
-		if (chdir(getenv("HOME")) != 0)
-			perror("ERROR"); //
-	}
-	else if (argc > 2)
-	{
-		perror("too many arguments"); // return value
-	}
-	else
-	{
-		if (chdir(argv[1]) != 0)
+		if (cd_home((const char **)*env))
+		{
+			free(oldpwd);
 			return (1);
+		}
 	}
-	return (msh_cd_utils(oldpwd, oldpwd_pos, pwd_pos, *env));
+	else if (argc == 2 && !ft_strcmp(argv[1], "-"))
+	{
+		if (cd_oldpwd((const char **)*env))
+		{
+			free(oldpwd);
+			return (1);
+		}
+	}
+	else if (msh_cd_utils(argv, oldpwd, (const char **)*env))
+		return (1);
+	change_pwd_oldpwd(oldpwd, env);
+	free(oldpwd);
+	return (0);
 }
 
 // int main(int argc, char *argv[], char *env[])
 // {
 // 	char	**copy_env;
-
-
 
 // 	copy_env = NULL;
 // 	copy_env = str_array_copy((const char **)env);

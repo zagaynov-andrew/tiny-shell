@@ -2,7 +2,7 @@
 
 void	print_str_array(char **array)
 {
-	int i;
+	int	i;
 
 	if (!array)
 		return ;
@@ -16,7 +16,7 @@ void	print_str_array(char **array)
 
 void	print_str_array_no_color(char **array)
 {
-	int i;
+	int	i;
 
 	if (!array)
 		return ;

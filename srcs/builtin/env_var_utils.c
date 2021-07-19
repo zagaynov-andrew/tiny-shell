@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 10:48:08 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 21:15:54 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 15:24:18 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,16 @@ int	get_env_pos(const char *name, const char **env)
 	return (-1);
 }
 
+static char	*return_empty(void)
+{
+	char	*value;
+
+	value = ft_strdup("");
+	if (!value)
+		exit(msh_strerror(EXIT_FAILURE));
+	return (value);
+}
+
 char	*get_env_var_value(const char *name, const char **env)
 {
 	int		pos;
@@ -73,10 +83,12 @@ char	*get_env_var_value(const char *name, const char **env)
 		return (NULL);
 	pos = get_env_pos(name, env);
 	if (pos == -1)
-		return (NULL);
+		return (return_empty());
 	equal = ft_strnstr(env[pos], "=", ft_strlen(env[pos]));
 	if (!equal)
-		return (NULL);
+		return (return_empty());
 	value = ft_strdup(equal + 1);
+	if (!value)
+		exit(msh_strerror(EXIT_FAILURE));
 	return (value);
 }

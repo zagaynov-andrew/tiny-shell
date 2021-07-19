@@ -2,8 +2,8 @@
 
 char	*ft_subline(char *line)
 {
-	int 	i;
-	int 	len;
+	int		i;
+	int		len;
 	char	*subline;
 
 	i = 0;
@@ -41,15 +41,10 @@ char	*ft_new_line(char *str_new, char *line)
 	return (newline);
 }
 
-char	*check_var(char *line , char **env, int status)
+char	*check_var(char *line, char **env, int status)
 {
 	char	*str_new;
 
-	// while (line[i])
-	// {
-	// 	if (line[i] == '$')
-	// 	{
-	// 		str_new = ft_subline(&line[i]);
 	if (!ft_strcmp(line, "?"))
 		return (ft_itoa(status));
 	str_new = get_env_var_value(line, (const char **)env);
@@ -60,14 +55,3 @@ char	*check_var(char *line , char **env, int status)
 	}
 	return (line);
 }
-
-// int main()
-// {
-// 	char *new;
-// 	char *str = strdup("wetetr$PWD");
-// 	new = check_var(str);
-// 	// new = getenv("PWD");
-// 	printf("%s\n", new);
-// 	sleep(1000);
-// 	return 0;
-// }

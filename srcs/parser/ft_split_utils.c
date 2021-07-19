@@ -1,26 +1,22 @@
 #include "parser.h"
 
-int quote_len(char *line, char ch)
+int	quote_len(char *line, char ch)
 {
-	int len;
-	int i;
+	int	len;
+	int	i;
+	int	count;
 
 	len = 0;
+	count = 0;
 	i = 1;
-	while (line[i])
+	while (line[i] && line[i] != ch)
 	{
-		if (line[i] == ch)
-		{
-			i++;
-			while (!ft_strchr(" \t\r", line[i])  && !ft_strchr("<>|", line[i++]))
-				len++;
-			return (len);
-		}
+		if (!ft_strchr(" \t \r \v", line[i]))
+			count++;
 		len++;
 		i++;
 	}
-	write(1, "Error quote parsing\n", 20);
-	exit(EXIT_FAILURE);
+	return (len);
 }
 
 void	quote_parse(char **split, char **line, int *i)
@@ -29,6 +25,11 @@ void	quote_parse(char **split, char **line, int *i)
 	char	*tmp;
 
 	len = quote_len(*line, **line);
+	if (len == 0)
+	{
+		*line += len + 2;
+		return ;
+	}
 	tmp = *line;
 	split[*i] = malloc(sizeof(char) * len + 3);
 	ft_strncpy(split[*i], tmp, len + 2);
@@ -42,9 +43,9 @@ void	skip_wsp(int *i, char *line)
 		(*i)++;
 }
 
-void	  skip_del_ch(char *line, int *len, int *i)
+void	skip_del_ch(char *line, int *len, int *i)
 {
-	char ch;
+	char	ch;
 
 	(*len)++;
 	ch = line[*i];
@@ -52,10 +53,10 @@ void	  skip_del_ch(char *line, int *len, int *i)
 		(*i)++;
 }
 
-int		get_num_words(char *line)
+int	get_num_words(char *line)
 {
-	int len;
-	int i;
+	int	len;
+	int	i;
 
 	len = 0;
 	i = 0;
@@ -68,14 +69,15 @@ int		get_num_words(char *line)
 		else if (line[i] == '\'' || line[i] == '\"')
 		{
 			i += quote_len(&line[i], line[i]) + 2;
-			len++;
+			if (quote_len(&line[i], line[i]))
+				len++;
 		}
 		else
 		{
 			len++;
 			while (!ft_strchr("|<> ", line[i]))
 				i++;
-		}		
+		}
 	}
 	return (len);
 }

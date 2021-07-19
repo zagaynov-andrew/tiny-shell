@@ -6,169 +6,114 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/12 21:40:06 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 19:54:34 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 
-void	msh_set_input(char *in_file, int tmp[], int fd[])
-{
-	if (ft_strcmp(in_file, ""))
-		fd[0] = open(in_file, O_RDONLY);
-	else if (tmp)
-		fd[0] = dup(tmp[0]);
-	dup2(fd[0], 0);
-	close(fd[0]);
-}
-
-static void	msh_set_output(char **path, int tmp[], int fd[], int flag_last)
-{
-	if (ft_strcmp(path[2], ""))
-		fd[1] = open(path[2], O_TRUNC | O_RDWR);
-	else if (ft_strcmp(path[3], ""))
-		fd[1] = open(path[3], O_APPEND | O_RDWR);
-	else if (flag_last)
-	{
-		fd[1] = dup(tmp[1]);
-		dup2(fd[1], 1);
-		return ;
-	}
-	else
-		return ;
-	dup2(fd[1], 1);
-	close(fd[1]);
-}
-
-static void	msh_create_pipe(int fd[])
-{
-	int	fd_pipe[2];
-
-	pipe(fd_pipe);
-	fd[1] = fd_pipe[1];
-	fd[0] = fd_pipe[0];
-	dup2(fd[1], 1);
-	close(fd[1]);
-}
-
 static int	*ft_int_dup(int num)
 {
 	int	*tmp;
 
-	if (!(tmp = (int *)malloc(sizeof(int))))
-		return (NULL);
+	tmp = (int *)malloc(sizeof(int));
+	if (!tmp)
+		exit(msh_strerror(EXIT_FAILURE));
 	*tmp = num;
 	return (tmp);
 }
 
-static int		len_str_array(char **str_array)
+static int	msh_launch_builtin(char **args, char **env[], int num_cmds)
 {
-	int	i;
+	int		args_size;
 
-	i = 0;
-	while (str_array[i])
-		i++;
-	return (i);
-}
-
-static int	msh_launch_builtin(t_list *cmd, char **env[])
-{
-	char	**args;
-
-	args = (char **)cmd->content;
-	if (!ft_strcmp(args[0], "echo"))
-		return (msh_echo(len_str_array(args), args, *env));
-	else if (!ft_strcmp(args[0], "pwd"))
-		return(msh_pwd(len_str_array(args), args, *env));
-	else if (!ft_strcmp(args[0], "cd"))
-		return(msh_cd(len_str_array(args), (const char **)args, env));
-	else if (!ft_strcmp(args[0], "env"))
-		return(msh_env(len_str_array(args), args, *env));
-	else if (!ft_strcmp(args[0], "export"))
-		return(msh_export(len_str_array(args), (const char **)args, env));
-	else if (!ft_strcmp(args[0], "unset"))
-		return(msh_unset(len_str_array(args), (const char **)args, env));
+	if (!args)
+		return (0);
+	args_size = str_array_size((const char **)args);
+	if (ft_strcmp(args[0], "echo") == 0)
+		return (msh_echo(args_size, args, *env));
+	else if (ft_strcmp(args[0], "pwd") == 0)
+		return (msh_pwd(args_size, args, *env));
+	else if (ft_strcmp(args[0], "cd") == 0)
+		return (msh_cd(args_size, (const char **)args, env));
+	else if (ft_strcmp(args[0], "env") == 0)
+		return (msh_env(args_size, args, *env));
+	else if (ft_strcmp(args[0], "export") == 0)
+		return (msh_export(args_size, (const char **)args, env));
+	else if (ft_strcmp(args[0], "unset") == 0)
+		return (msh_unset(args_size, (const char **)args, env));
+	else if (ft_strcmp(args[0], "exit") == 0)
+	{
+		if (num_cmds > 1)
+			return (0);
+		return (msh_exit(args_size, args, *env));
+	}
 	return (-1);
 }
 
-static int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[])
+int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[], int num_cmds)
 {
 	int		pid;
 	int		status;
-	char	**args;
+	t_list	*new_node;
 
-	status = msh_launch_builtin(cmd, env);
+	status = msh_launch_builtin((char **)cmd->content, env, num_cmds);
 	if (status != -1)
 		return (status);
-	args = (char **)cmd->content;
 	pid = fork();
 	if (pid == 0)
 	{
-		execvp(args[0], args);
-		perror("ERROR1");
-		exit(EXIT_FAILURE);
+		execve(((char **)cmd->content)[0], ((char **)cmd->content), *env);
+		g_last_exit_status = 127;
+		exit(msh_perror_arg(((char **)cmd->content)[0], NOT_FOUND, 127));
 	}
 	if (pid > 0)
-		ft_lstadd_back(pid_lst, ft_lstnew((void *)ft_int_dup(pid))); // Check malloc
+	{
+		init_signals(sig_catcher_cmds);
+		new_node = ft_lstnew((void *)ft_int_dup(pid));
+		if (!new_node || !(new_node->content))
+			exit(msh_strerror(EXIT_FAILURE));
+		ft_lstadd_back(pid_lst, new_node);
+	}
 	if (pid < 0)
-		perror("Forking error\n"); //
+		exit(msh_perror("Forking error", EXIT_FAILURE));
 	return (-1);
 }
 
-int	cmd_waiting(t_list	**pid_lst)
+static int	cmd_waiting(t_list	*pid_lst)
 {
 	int		pid;
 	int		status;
-	t_list	*pid_lst_copy;
 
-	pid_lst_copy = *pid_lst;
-	while (*pid_lst)
+	if (!pid_lst)
+		return (0);
+	while (pid_lst)
 	{
-		pid = *((int *)((*pid_lst)->content));
+		pid = *((int *)(pid_lst->content));
 		waitpid(pid, &status, WUNTRACED);
 		while (!WIFEXITED(status) && !WIFSIGNALED(status))
 			waitpid(pid, &status, WUNTRACED);
-		(*pid_lst) = (*pid_lst)->next;
+		pid_lst = pid_lst->next;
 	}
-	ft_lstclear(&pid_lst_copy, free);
-	return (status); // incorrect exit status
+	if (WIFSIGNALED(status) && (WTERMSIG(status) == SIGINT
+			|| WTERMSIG(status) == SIGQUIT))
+		return (g_last_exit_status);
+	if (WIFSIGNALED(status) && g_last_exit_status)
+		return (1);
+	if (WIFSIGNALED(status))
+		return (1);
+	return (WEXITSTATUS(status));
 }
 
-static void	inc_lst(t_list **cmds, t_list **redirs)
+int	processint_pids(t_list **pid_lst, int status[])
 {
-	*redirs = (*redirs)->next;
-	*cmds = (*cmds)->next;
-}
-
-int	msh_simple_cmd_loop(t_list *cmds, t_list *redirs, int standard_io[], char **env[])
-{
-	int		num_cmds;
-	int		i;
-	int		fd[2];
-	t_list	*pid_lst;
-	int		status[2];
-
-	msh_set_input(((char **)redirs->content)[0], standard_io, fd);
-	num_cmds = ft_lstsize(cmds);
-	pid_lst = NULL;
-	i = -1;
-	while (++i < num_cmds)
-	{
-		if (i != num_cmds - 1)
-			msh_create_pipe(fd);
-		msh_set_output(((char **)redirs->content), standard_io, fd, i == num_cmds - 1);
-		status[0] = msh_launch(cmds, &pid_lst, env);
-		if (i != num_cmds - 1)
-			status[0] = -1;
-		redirs = redirs->next;
-		if (i != num_cmds - 1)
-			msh_set_input(((char **)redirs->content)[0], NULL, fd);
-		cmds = cmds->next;
-	}
-	if (errno != 0)		//
-		perror("DONE");	//
-	status[1] = cmd_waiting(&pid_lst);
+	status[1] = cmd_waiting(*pid_lst);
+	ft_lstclear(pid_lst, free);
+	if (status[0] == -2)
+		return (1);
 	if (status[0] != -1)
-		return (status[0]);
-	return (status[1]);
+		g_last_exit_status = status[0];
+	else
+		g_last_exit_status = status[1];
+	return (0);
 }

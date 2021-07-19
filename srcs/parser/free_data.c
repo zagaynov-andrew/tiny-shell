@@ -1,8 +1,8 @@
 #include "parser.h"
 
-void free_split(char **split)
+void	free_split(char **split)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while ((split)[i])
@@ -11,14 +11,14 @@ void free_split(char **split)
 	split = NULL;
 }
 
-void del_list_content(void *data)
+void	del_list_content(void *data)
 {
-	free_split((char **)(&(((t_list *)(data))->content)));
+	str_array_free((char ***)&data);
 }
 
-void ft_lstclear1(t_list **lst, void (*del)(void *))
+void	ft_lstclear1(t_list **lst, void (*del)(void *))
 {
-	t_list *tmp;
+	t_list	*tmp;
 
 	while (*lst)
 	{

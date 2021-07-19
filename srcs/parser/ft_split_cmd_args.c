@@ -1,102 +1,75 @@
 #include "parser.h"
 
-char	*define_del(char *str, int len)
+void	delimitres(int *i, char *line)
 {
-	if (!ft_strncmp("|", str , 1) && len == 1)
-		return ("|");
-	if (!ft_strncmp("<<", str, 2) && len == 2)
-		return ("<<");
-	if (!ft_strncmp(">>", str, 2) && len == 2)
-		return (">>");
-	if (!ft_strncmp("<", str, 1) && len == 1)
-		return ("<");
-	if (!ft_strncmp(">", str, 1) && len == 1)
-		return (">");
-	return (NULL);
+	char	ch;
+
+	ch = line[*i];
+	while (line[*i] == ch)
+		(*i)++;
 }
 
-int		calc_ch(char *str, char *ch)
+void	to_next_quote(int *i, char *line)
 {
-	int i;
-	int count;
+	char	ch;
 
-	i = 0;
-	count = 0;
-	while (str[i])
-	{
-		if (ft_strchr(ch, str[i]))
-			count++;
-		else
-			return (count);
-		i++;
-	}
-	return (count);
+	ch = line[*i];
+	(*i)++;
+	while (line[*i] != ch)
+		(*i)++;
 }
 
-void	check_spec(char **split, char **line, int *i)
+void	to_end_word(int *i, char *line)
 {
-	int 	len;
-	char	*type;
-
-	len = calc_ch(*line, "|<>");
-	type = define_del(*line, len);
-	if (type)
-	{
-		split[*i] = malloc(sizeof(char) * ft_strlen(type) + 1);
-		ft_strncpy(split[*i], type, ft_strlen(type));
-		*i = *i + 1;
-		(*line) += len;
-	}
-	else
-	{
-		write(1, "Error parsing delimetrs\n", 24);
-		exit(EXIT_FAILURE);
-	}
+	while (!ft_strchr(" \t|<>", line[*i]))
+		(*i)++;
+	(*i)--;
 }
 
-void	skip_spaces(char **line)
+void	insert_tokken(int *i, char ***split, char *line)
 {
-	while ((**line == ' ' || **line == '\t' || **line == '\r') && **line)
-		(*line)++;
-}
+	int		start;
+	int		end;
+	char	*tokken;
 
-void	make_word(char **split, char **line, int *i)
-{
-	char	*tmp;
-	int		len;
-
-	tmp = *line;
-	len = 0;
-	while (!ft_strchr("|<> \'\"", **line))
+	start = *i;
+	if (ft_strchr("|<>", line[*i]))
+		delimitres(i, line);
+	else if (line && line[*i] && !ft_strchr(" \t|<>", line[*i]))
 	{
-		(*line)++;
-		len++;
+		while (line && line[*i] && !ft_strchr(" \t|<>", line[*i]))
+		{
+			if (line[*i] == '\'' || line[*i] == '\"')
+				to_next_quote(i, line);
+			else
+				to_end_word(i, line);
+			(*i)++;
+		}
 	}
-	split[*i] = malloc(sizeof(char) * len + 1);
-	ft_strncpy(split[*i], tmp, len);
-	*i = *i + 1;
+	else if (ft_strchr("|<>", line[*i]))
+		delimitres(i, line);
+	end = *i - 1;
+	tokken = ft_substr(line, start, end - start + 1);
+	str_array_add_back(split, tokken);
+	free(tokken);
 }
 
 char	**ft_split_cmd_args(char *line)
 {
-	int i;
-	int numstr;
-	char **split;
+	int		i;
+	char	**split;
+	int		quotes[2];
 
 	i = 0;
-	numstr = get_num_words(line);
-	split = (char **)malloc(sizeof(char *) * numstr + 1);
-	while (*line && i < numstr)
+	quotes[0] = 0;
+	quotes[1] = 0;
+	split = NULL;
+	while (line && line[i])
 	{
-		if (ft_strchr("|<>", *line))
-			check_spec(split, &line, &i);
-		else if (*line == ' ' || *line == '\t' || *line == '\r')
-			skip_spaces(&line);
-		else if (*line == '\'' || *line == '\"')
-			quote_parse(split, &line, &i);
+		if (!ft_is_whitespace(line[i]))
+			insert_tokken(&i, &split, line);
 		else
-			make_word(split, &line, &i);
+			i++;
 	}
-	split[i] = 0;
 	return (split);
 }

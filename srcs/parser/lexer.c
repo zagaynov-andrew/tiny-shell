@@ -1,17 +1,41 @@
 #include "parser.h"
 
-void	change_var(char **split, char **env, int status)
+void	evaluate_replace_arg(char **arr, char **env, int status)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while (split[i])
+	while (arr[i])
 	{
-		if (i == 0)
-			split[i] = check_cmd(split[i], env);
-		else if (ft_strncmp("<<", split[i - 1], 2))
-			split[i] = parce_line(split[i], env, status);
+		if (i == 0 && !is_built_in(arr[i]))
+		{
+			arr[i] = parce_line(arr[i], env, status);
+			arr[i] = check_cmd(arr[i], env);
+		}
+		else
+			arr[i] = parce_line(arr[i], env, status);
 		i++;
+	}
+}
+
+void	replace_var_cmd(char **arr, char **env, int status)
+{
+	if (!is_redir(*arr) && ft_strcmp(*arr, "|"))
+		evaluate_replace_arg(arr, env, status);
+	else
+		remove_quotes_fl(arr);
+}
+
+void	change_var_cmd(t_list **list, char **env, int status)
+{
+	t_list	*tmp;
+
+	tmp = *list;
+	while (tmp)
+	{
+		if ((char **)(tmp->content))
+			replace_var_cmd((char **)(tmp->content), env, status);
+		tmp = tmp->next;
 	}
 }
 
@@ -20,12 +44,12 @@ t_list	*lexer(char *line, int status, char **env)
 	t_list	*node;
 	char	**split;
 
-	if (status != 0)
-		return (NULL);
 	node = NULL;
+	if (preparser(line))
+		return (NULL);
 	split = ft_split_cmd_args(line);
-	change_var(split, env, status);
 	node = cmd_table(split);
-	free_split(split);
+	change_var_cmd(&node, env, status);
+	str_array_free(&split);
 	return (node);
 }
