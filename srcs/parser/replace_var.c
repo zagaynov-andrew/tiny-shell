@@ -1,6 +1,6 @@
 #include "parser.h"
 
-char	*replace_var(char *name , char **env, int status)
+char	*replace_var(char *name, char **env, int status)
 {
 	char	*str_new;
 
@@ -9,14 +9,3 @@ char	*replace_var(char *name , char **env, int status)
 	str_new = get_env_var_value(name, env);
 	return (str_new);
 }
-
-// int main()
-// {
-// 	char *new;
-// 	char *str = strdup("wetetr$PWD");
-// 	new = check_var(str);
-// 	// new = getenv("PWD");
-// 	printf("%s\n", new);
-// 	sleep(1000);
-// 	return 0;
-// }

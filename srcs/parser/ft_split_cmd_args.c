@@ -11,7 +11,7 @@ void	delimitres(int *i, char *line)
 
 void	to_next_quote(int *i, char *line)
 {
-	char ch;
+	char	ch;
 
 	ch = line[*i];
 	(*i)++;
@@ -28,8 +28,8 @@ void	to_end_word(int *i, char *line)
 
 void	insert_tokken(int *i, char ***split, char *line)
 {
-	int start;
-	int end;
+	int		start;
+	int		end;
 	char	*tokken;
 
 	start = *i;
@@ -56,9 +56,9 @@ void	insert_tokken(int *i, char ***split, char *line)
 
 char	**ft_split_cmd_args(char *line)
 {
-	int i;
-	char **split;
-	int quotes[2];
+	int		i;
+	char	**split;
+	int		quotes[2];
 
 	i = 0;
 	quotes[0] = 0;
@@ -66,12 +66,10 @@ char	**ft_split_cmd_args(char *line)
 	split = NULL;
 	while (line && line[i])
 	{
-	
 		if (!ft_is_whitespace(line[i]))
 			insert_tokken(&i, &split, line);
 		else
 			i++;
 	}
-	// print_str_array(split);
 	return (split);
 }

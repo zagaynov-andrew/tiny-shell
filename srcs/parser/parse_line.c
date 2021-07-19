@@ -1,6 +1,6 @@
 #include "parser.h"
 
-static char *parse_slash(char *line, int *i)
+static char	*parse_slash(char *line, int *i)
 {
 	int		j;
 	char	*tmp;
@@ -47,16 +47,17 @@ void	dollar_proc(char **line, int *i, char **env, int status)
 {
 	int		len;
 	int		start;
-	char 	*name;
-	char 	*value;
+	char	*name;
+	char	*value;
 
 	len = 1;
 	start = *i;
-	(*i)++;
-	while (!ft_strchr(" \t\\\'\"/$", (*line)[*i]))
-	{
+	while (!ft_strchr(" \t\\\'\"/$", (*line)[++(*i)]))
 		len++;
-		(*i)++;
+	if (len == 1)
+	{
+		++(*i);
+		return ;
 	}
 	name = ft_substr(*line, start + 1, len - 1);
 	if (!name)
@@ -109,7 +110,7 @@ char	*parce_line(char *line, char **env, int status)
 			quotes_one(&line, &i);
 		else if (line[i] == '\"')
 			quotes_dbl(&line, &i, env, status);
-		else if(line[i] == '\\')
+		else if (line[i] == '\\')
 			bslash_proc(&line, &i);
 		else if (line[i] == '$')
 			dollar_proc(&line, &i, env, status);
@@ -118,13 +119,3 @@ char	*parce_line(char *line, char **env, int status)
 	}
 	return (line);
 }
-
-// int main()
-// {
-// 	char *line = strdup("  sd$hello  \'$PWD\' word");
-// 	line = parce_line(line);
-// 	printf("%s\n", line);
-// 	free(line);
-// 	sleep(1000);
-// 	return 0;
-// }
