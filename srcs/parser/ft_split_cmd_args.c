@@ -9,21 +9,10 @@ void	delimitres(int *i, char *line)
 		(*i)++;
 }
 
-void	to_next_quote(int *i, char *line)
+void	insert_tokken_utils(char **split)
 {
-	char	ch;
-
-	ch = line[*i];
-	(*i)++;
-	while (line[*i] != ch)
-		(*i)++;
-}
-
-void	to_end_word(int *i, char *line)
-{
-	while (!ft_strchr(" \t|<>", line[*i]))
-		(*i)++;
-	(*i)--;
+	if (!split)
+		exit(msh_strerror(EXIT_FAILURE));
 }
 
 void	insert_tokken(int *i, char ***split, char *line)
@@ -51,6 +40,7 @@ void	insert_tokken(int *i, char ***split, char *line)
 	end = *i - 1;
 	tokken = ft_substr(line, start, end - start + 1);
 	str_array_add_back(split, tokken);
+	insert_tokken_utils(*split);
 	free(tokken);
 }
 
@@ -58,11 +48,8 @@ char	**ft_split_cmd_args(char *line)
 {
 	int		i;
 	char	**split;
-	int		quotes[2];
 
 	i = 0;
-	quotes[0] = 0;
-	quotes[1] = 0;
 	split = NULL;
 	while (line && line[i])
 	{

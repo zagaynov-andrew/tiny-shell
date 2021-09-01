@@ -1,31 +1,11 @@
 #include "parser.h"
 
-char	*define_del(char *str)
-{
-	if (!str)
-		return (NULL);
-	if (!ft_strcmp("|", str))
-		return ("|");
-	if (!ft_strcmp("<<", str))
-		return ("<<");
-	if (!ft_strcmp(">>", str))
-		return (">>");
-	if (!ft_strcmp("<", str))
-		return ("<");
-	if (!ft_strcmp(">", str))
-		return (">");
-	free(str);
-	return (NULL);
-}
-
 int	count_quotes(char *line, int *i)
 {
 	char	ch;
-	int		quotes;
 
 	ch = line[*i];
 	(*i)++;
-	quotes = 0;
 	while (line[*i] && line[*i] != ch)
 		(*i)++;
 	if (line[*i])
@@ -52,4 +32,11 @@ int	check_quotes(char *line)
 		i++;
 	}
 	return (0);
+}
+
+char	first_token_symbol(char *line, int i)
+{
+	while (line[i] && ft_is_whitespace(line[i]))
+		i++;
+	return (line[i]);
 }

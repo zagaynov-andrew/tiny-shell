@@ -45,9 +45,9 @@ t_list	*lexer(char *line, int status, char **env)
 	char	**split;
 
 	node = NULL;
+	if (preparser(line))
+		return (NULL);
 	split = ft_split_cmd_args(line);
-	print_str_array(split);
-	ft_putstr_fd("\n\n", 1);
 	node = cmd_table(split);
 	change_var_cmd(&node, env, status);
 	str_array_free(&split);

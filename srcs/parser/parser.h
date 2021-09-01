@@ -7,9 +7,8 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <dirent.h>
-# include "gnl/get_next_line.h"
 # include "../../libs/libft/libft.h"
-# include "test_list/test_minishell.h"
+# include "../builtin/builtin.h"
 
 t_list	*lexer(char *line, int status, char **env);
 char	**ft_split_cmd_args(char *line);
@@ -20,7 +19,6 @@ void	free_split(char **split);
 void	ft_strerror(char *str);
 char	*check_cmd(char *cmd, char **env);
 char	*parce_line(char *line, char **env, int status);
-char	*get_env_var_value(char *name, char **env);
 void	insert_tokken(int *i, char ***split, char *line);
 char	**str_array_add_back(char **str_array[], const char *str);
 char	*str_replace(char *line, int start, int len, char *replace);
@@ -38,4 +36,11 @@ char	**split_path(char *path, char **env);
 int		is_built_in(char *str);
 char	*remove_q(char *str);
 void	remove_quotes_fl(char **arr);
+char	*str_replace(char *line, int start, int len, char *replace);
+int		is_redir(char *str);
+char	first_token_symbol(char *line, int i);
+void	dollar_proc(char **line, int *i, char **env, int status);
+void	to_next_quote(int *i, char *line);
+void	to_end_word(int *i, char *line);
+
 #endif

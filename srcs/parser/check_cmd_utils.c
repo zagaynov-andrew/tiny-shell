@@ -6,12 +6,12 @@ int	ft_comp_cmd(char *cmd, char *d_name)
 
 	tmp = ft_tolower_line(ft_strdup(cmd));
 	if (!tmp)
-		ft_strerror("Bad malloc allocation\n");
+		exit(msh_strerror(EXIT_FAILURE));
 	if (!ft_strcmp(tmp, d_name))
 	{
 		free(tmp);
 		return (1);
-	}	
+	}
 	free(tmp);
 	return (0);
 }
@@ -36,7 +36,7 @@ char	**split_path(char *path, char **env)
 	char	**splitpath;
 	char	*tmp;
 
-	tmp = get_env_var_value(path, env);
+	tmp = get_env_var_value(path, (const char **)env);
 	splitpath = ft_split(tmp, ':');
 	free(tmp);
 	if (!splitpath)
@@ -49,6 +49,8 @@ char	*ft_tolower_line(char *line)
 	int	i;
 
 	i = 0;
+	if (!line)
+		exit(msh_strerror(EXIT_FAILURE));
 	while (line[i])
 	{
 		line[i] = ft_tolower(line[i]);

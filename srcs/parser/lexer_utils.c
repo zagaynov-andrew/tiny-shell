@@ -3,24 +3,26 @@
 int	is_built_in(char *str)
 {
 	char	*tmp;
+	int		ret;
 
+	ret = 0;
 	tmp = ft_tolower_line(ft_strdup(str));
 	if (ft_strcmp(tmp, "echo") == 0)
-		return (1);
-	if (ft_strcmp(tmp, "cd") == 0)
-		return (1);
-	if (ft_strcmp(tmp, "pwd") == 0)
-		return (1);
-	if (ft_strcmp(tmp, "export") == 0)
-		return (1);
-	if (ft_strcmp(tmp, "unset") == 0)
-		return (1);
-	if (ft_strcmp(tmp, "env") == 0)
-		return (1);
-	if (ft_strcmp(tmp, "exit") == 0)
-		return (1);
+		ret = 1;
+	else if (ft_strcmp(tmp, "cd") == 0)
+		ret = 1;
+	else if (ft_strcmp(tmp, "pwd") == 0)
+		ret = 1;
+	else if (ft_strcmp(tmp, "export") == 0)
+		ret = 1;
+	else if (ft_strcmp(tmp, "unset") == 0)
+		ret = 1;
+	else if (ft_strcmp(tmp, "env") == 0)
+		ret = 1;
+	else if (ft_strcmp(tmp, "exit") == 0)
+		ret = 1;
 	free(tmp);
-	return (0);
+	return (ret);
 }
 
 char	*remove_q(char *str)

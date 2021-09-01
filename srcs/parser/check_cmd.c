@@ -1,6 +1,6 @@
 #include "parser.h"
 
-char	*checking_cmd(DIR *dir, char *path, char **cmd, char **split)
+char	*checking_cmd(DIR *dir, char *path, char **cmd)
 {
 	struct dirent	*entry;
 
@@ -20,7 +20,6 @@ char	*checking_cmd(DIR *dir, char *path, char **cmd, char **split)
 char	*check_cmd(char *cmd, char **env)
 {
 	DIR				*dir;
-	// struct dirent	*entry;
 	char			**tmp_split;
 	char			**splitpath;
 
@@ -34,25 +33,13 @@ char	*check_cmd(char *cmd, char **env)
 			splitpath++;
 			continue ;
 		}
-		// entry = readdir(dir);
-		// while (entry)
-		// {
-		// 	if (ft_comp_cmd(cmd, entry->d_name))
-		// 	{
-		// 		cmd = file_path(entry->d_name, *splitpath, cmd);
-		// 		str_array_free(&tmp_split);
-		// 		closedir(dir);
-		// 		return (cmd);
-		// 	}
-		// 	entry = readdir(dir);
-		// }
-		// closedir(dir);
-		if (checking_cmd(dir, *splitpath, &cmd, tmp_split))
+		if (checking_cmd(dir, *splitpath, &cmd))
 		{
 			closedir(dir);
 			str_array_free(&tmp_split);
 			return (cmd);
 		}
+		closedir(dir);
 		splitpath++;
 	}
 	str_array_free(&tmp_split);

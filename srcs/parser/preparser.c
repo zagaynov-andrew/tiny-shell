@@ -1,43 +1,5 @@
 #include "parser.h"
 
-int	checking_redir_pipes(char *line, int i, int len)
-{
-	char	ch;
-	int		start;
-
-	while (line[i])
-	{
-		len = 0;
-		if (ft_strchr("<>|", line[i]))
-		{
-			ch = line[i];
-			start = i;
-			while (ft_strchr("<>|", line[i]))
-			{
-				len++;
-				i++;
-			}
-			if (!define_del(ft_substr(line, start, len)))
-			{
-				ft_parse_error(line[i - 1]);
-				return (1);
-			}
-		}
-		i++;
-	}
-	return (0);
-}
-
-int	check_redir_pipes(char *line)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = 0;
-	return (checking_redir_pipes(line, i, len));
-}
-
 int	check_last_slash(char *line)
 {
 	int	i;

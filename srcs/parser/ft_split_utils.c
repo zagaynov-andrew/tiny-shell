@@ -1,10 +1,10 @@
 #include "parser.h"
 
-int quote_len(char *line, char ch)
+int	quote_len(char *line, char ch)
 {
-	int len;
-	int i;
-	int count;
+	int	len;
+	int	i;
+	int	count;
 
 	len = 0;
 	count = 0;
@@ -16,8 +16,6 @@ int quote_len(char *line, char ch)
 		len++;
 		i++;
 	}
-	// if (count == 0)
-	// 	len = 0;
 	return (len);
 }
 
@@ -45,9 +43,9 @@ void	skip_wsp(int *i, char *line)
 		(*i)++;
 }
 
-void	  skip_del_ch(char *line, int *len, int *i)
+void	skip_del_ch(char *line, int *len, int *i)
 {
-	char ch;
+	char	ch;
 
 	(*len)++;
 	ch = line[*i];
@@ -55,10 +53,10 @@ void	  skip_del_ch(char *line, int *len, int *i)
 		(*i)++;
 }
 
-int		get_num_words(char *line)
+int	get_num_words(char *line)
 {
-	int len;
-	int i;
+	int	len;
+	int	i;
 
 	len = 0;
 	i = 0;
@@ -79,7 +77,7 @@ int		get_num_words(char *line)
 			len++;
 			while (!ft_strchr("|<> ", line[i]))
 				i++;
-		}		
+		}
 	}
 	return (len);
 }

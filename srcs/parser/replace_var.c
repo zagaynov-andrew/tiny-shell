@@ -6,6 +6,6 @@ char	*replace_var(char *name, char **env, int status)
 
 	if (!ft_strcmp(name, "?"))
 		return (ft_itoa(status));
-	str_new = get_env_var_value(name, env);
+	str_new = get_env_var_value(name, (const char **)env);
 	return (str_new);
 }
