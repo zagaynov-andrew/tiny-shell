@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 20:05:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 14:40:22 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/21 16:22:10 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ char	*get_cur_dir(void)
 	char	*path;
 	char	*tmp;
 
-	size = 64;
+	size = 200;
 	path = (char *)ft_calloc(size, sizeof(char));
 	if (!path)
 		exit(msh_strerror(EXIT_FAILURE));
 	tmp = path;
-	path = getcwd(path, size);
+	getcwd(path, size);
 	if (!path && errno != 34)
 		return (path);
 	while (!path)
@@ -32,8 +32,8 @@ char	*get_cur_dir(void)
 		size *= 2;
 		path = (char *)ft_calloc(size, sizeof(char));
 		if (!path)
-			return (NULL);
-		path = getcwd(path, size);
+			exit(msh_strerror(EXIT_FAILURE));
+		getcwd(path, size);
 		if (!path && errno != 34)
 			return (path);
 	}
@@ -67,7 +67,7 @@ int	msh_pwd(int argc, char *argv[], char *env[])
 			return (msh_pwd_perror("minishell: pwd: -",
 					argv[1][1], ": invalid option", 1));
 	}
-	cur_dir = get_cur_dir();
+	cur_dir = get_cur_dir_s((const char **)env);
 	if (!cur_dir)
 		return (1);
 	ft_putstr_fd(cur_dir, 1);

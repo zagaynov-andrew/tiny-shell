@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/18 16:31:36 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 17:15:01 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/21 21:02:03 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ static int	ctrl_d(char **input)
 	return (0);
 }
 
-static int	empty_input(char *input)
+static int	empty_input(char **input)
 {
-	if (ft_strcmp(input, "") == 0)
+	if (ft_strcmp(*input, "") == 0)
 	{
-		free(input);
+		free(*input);
+		*input = NULL;
 		rl_on_new_line();
 		rl_redisplay();
 		return (1);
@@ -44,17 +45,18 @@ int	clear_shell_lst(t_list **shell_lst, t_list **cmds,
 	if (*shell_lst)
 		ft_lstclear(shell_lst, void_array_free);
 	if (!input)
-		return (1);
+		return (0);
 	if (!*input)
-		return (1);
+		return (0);
 	free(*input);
 	*input = NULL;
-	return (1);
+	return (0);
 }
 
 static int	aborted_heredoc(t_list	**shell_lst,
 			t_list	**cmds, t_list **redirs, char **input)
 {
+	init_signals(sig_catcher_msh);
 	if (g_last_exit_status)
 	{
 		clear_shell_lst(shell_lst, cmds, redirs, input);
@@ -68,16 +70,17 @@ void	prompt_loop(t_list	**cmds, t_list **redirs,
 {
 	char	*input;
 
+	input = NULL;
 	while (1)
 	{
+		clear_shell_lst(shell_lst, cmds, redirs, &input);
 		init_signals(sig_catcher_msh);
 		input = readline("\033[1;35mminishell $ \033[0m");
 		if (ctrl_d(&input))
 			break ;
-		if (empty_input(input))
+		if (empty_input(&input))
 			continue ;
-		if (input)
-			add_history(input);
+		add_to_history(input);
 		*shell_lst = lexer(input, g_last_exit_status, *env_copy);
 		g_last_exit_status = 0;
 		if (!*shell_lst)
@@ -86,9 +89,8 @@ void	prompt_loop(t_list	**cmds, t_list **redirs,
 		pre_execution(*shell_lst, *redirs);
 		if (aborted_heredoc(shell_lst, cmds, redirs, &input))
 			continue ;
-		if (msh_exec(*cmds, *redirs, env_copy)
-			&& clear_shell_lst(shell_lst, cmds, redirs, &input))
+		if (msh_exec(*cmds, *redirs, env_copy))
 			break ;
-		clear_shell_lst(shell_lst, cmds, redirs, &input);
 	}
+	clear_shell_lst(shell_lst, cmds, redirs, &input);
 }

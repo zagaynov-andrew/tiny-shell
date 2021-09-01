@@ -6,22 +6,11 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/06 19:10:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 14:23:04 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/21 16:14:35 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
-
-char	*get_cur_dir_s(const char *env[])
-{
-	char	*pwd;
-
-	pwd = get_cur_dir();
-	if (pwd)
-		return (pwd);
-	pwd = get_env_var_value("PWD", env);
-	return (pwd);
-}
 
 static int	cd_home(const char **env)
 {
@@ -60,7 +49,7 @@ static int	cd_oldpwd(const char **env)
 	return (0);
 }
 
-static int	msh_cd_utils(const char *argv[], char *oldpwd, const char *env[])
+static int	msh_cd_utils_2(const char *argv[], char *oldpwd, const char *env[])
 {
 	char	*home;
 	char	*path;
@@ -82,6 +71,24 @@ static int	msh_cd_utils(const char *argv[], char *oldpwd, const char *env[])
 		return (msh_strerror_arg_2(1, "cd", (char *)argv[1]));
 	}
 	free(path);
+	return (0);
+}
+
+static int	msh_cd_utils(const char *argv[], char *oldpwd, const char *env[])
+{
+	if (argv[1][0] == '~')
+	{
+		if (msh_cd_utils_2(argv, oldpwd, env))
+		{
+			free(oldpwd);
+			return (1);
+		}
+	}
+	else if (chdir(argv[1]) == -1)
+	{
+		free(oldpwd);
+		return (msh_strerror_arg_2(1, "cd", (char *)argv[1]));
+	}
 	return (0);
 }
 

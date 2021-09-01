@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/18 17:34:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 17:20:11 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/20 19:17:34 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ static int	is_number(char *str)
 {
 	if (!str)
 		return (0);
+	if (str[0] == '-' || str[0] == '+')
+	{
+		if (!ft_isdigit(str[1]))
+			return (0);
+		str += 2;
+	}
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
@@ -23,6 +29,18 @@ static int	is_number(char *str)
 		str++;
 	}
 	return (1);
+}
+
+static int	get_exit_status(char *status)
+{
+	int	int_status;
+
+	int_status = ft_atoi(status);
+	if (int_status >= 0)
+		return (int_status % 256);
+	while (int_status < 0)
+		int_status += 256;
+	return (int_status);
 }
 
 int	msh_exit(int argc, char *argv[], char *env[])
@@ -46,7 +64,7 @@ int	msh_exit(int argc, char *argv[], char *env[])
 	}
 	if (str_array_size((const char **)argv) == 2)
 	{
-		g_last_exit_status = msh_exit_error(ft_atoi(argv[1]) % 255);
+		g_last_exit_status = msh_exit_error(get_exit_status(argv[1]));
 		return (-2);
 	}
 	g_last_exit_status = msh_exit_error(0);

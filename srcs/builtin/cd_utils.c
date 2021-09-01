@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/19 14:21:03 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 14:21:59 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/21 16:28:09 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	set_pwd(const char **env[])
 	char	*new;
 	char	**args;
 
-	pwd = get_cur_dir_s((const char **)env);
+	pwd = get_cur_dir_s((const char **)*env);
 	if (!pwd)
 		exit(msh_strerror(EXIT_FAILURE));
 	new = ft_strjoin("PWD=", pwd);
@@ -74,4 +74,17 @@ char	*get_home(const char **env)
 		home = getenv("HOME");
 	}
 	return (home);
+}
+
+char	*get_cur_dir_s(const char *env[])
+{
+	char	*pwd;
+
+	pwd = get_cur_dir();
+	if (pwd && ft_strcmp(pwd, ""))
+		return (pwd);
+	if (!ft_strcmp(pwd, ""))
+		free(pwd);
+	pwd = get_env_var_value("PWD", env);
+	return (pwd);
 }

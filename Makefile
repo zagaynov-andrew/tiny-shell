@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2021/07/19 15:31:00 by ngamora          ###   ########.fr        #
+#    Updated: 2021/07/23 16:36:27 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ TEST_DIR		= test/
 SRCS_DIR		= ./srcs/
 OBJS_DIR		= ./objs/
 CC				= gcc
-CC_FLAGS		= -g #-Wall -Wextra -Werror
+CC_FLAGS		= -Wall -Wextra -Werror
 
 LIBFT_SRCS	=	ft_memset.c				\
 				ft_bzero.c				\
@@ -86,6 +86,7 @@ LIBFT_SRCS	=	ft_memset.c				\
 
 SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(EXECUTOR_DIR)executor_utils.c		\
+			$(SRCS_DIR)$(EXECUTOR_DIR)shell_lvl.c		\
 			$(SRCS_DIR)$(EXECUTOR_DIR)fd_substitution.c		\
 			$(SRCS_DIR)$(EXECUTOR_DIR)pre_execution.c		\
 			$(SRCS_DIR)$(BUILTIN_DIR)echo.c					\
@@ -105,22 +106,26 @@ SRCS	=	$(SRCS_DIR)$(EXECUTOR_DIR)executor.c			\
 			$(SRCS_DIR)$(TEST_DIR)msh_signals.c				\
 			$(SRCS_DIR)$(TEST_DIR)msh_heredoc.c				\
 			$(SRCS_DIR)$(PARSER_DIR)lexer.c					\
+			$(SRCS_DIR)$(PARSER_DIR)lexer_utils.c			\
 			$(SRCS_DIR)$(PARSER_DIR)ft_split_cmd_args.c		\
 			$(SRCS_DIR)$(PARSER_DIR)check_var.c				\
-			$(SRCS_DIR)$(PARSER_DIR)free_data.c				\
 			$(SRCS_DIR)$(PARSER_DIR)ft_error.c				\
 			$(SRCS_DIR)$(PARSER_DIR)check_cmd.c				\
+			$(SRCS_DIR)$(PARSER_DIR)check_cmd_utils.c		\
 			$(SRCS_DIR)$(PARSER_DIR)ft_split_utils.c		\
+			$(SRCS_DIR)$(PARSER_DIR)ft_split_utils_2.c		\
 			$(SRCS_DIR)$(PARSER_DIR)cmd_table.c				\
+			$(SRCS_DIR)$(PARSER_DIR)cmd_table_utils.c		\
 			$(SRCS_DIR)$(PARSER_DIR)parse_line.c			\
+			$(SRCS_DIR)$(PARSER_DIR)parse_line_utils.c		\
 			$(SRCS_DIR)$(PARSER_DIR)replace_var.c			\
+			$(SRCS_DIR)$(PARSER_DIR)preparser.c				\
+			$(SRCS_DIR)$(PARSER_DIR)preparser_utils.c		\
+			$(SRCS_DIR)$(PARSER_DIR)preparser_utils_2.c		\
 			$(SRCS_DIR)split_shell_lst.c					\
 			$(SRCS_DIR)prompt_loop.c						\
 			$(SRCS_DIR)split_shell_lst_utils.c				\
 			$(SRCS_DIR)minishell.c
-
-
-
 
 OBJS			= $(notdir $(SRCS:.c=.o))
 OBJS_PATH		= $(addprefix $(OBJS_DIR), $(OBJS))
@@ -176,4 +181,6 @@ fclean: clean
 
 re: fclean all
 
-.PHONY : all clean fclean re
+bonus: $(NAME)
+
+.PHONY : all clean fclean re bonus

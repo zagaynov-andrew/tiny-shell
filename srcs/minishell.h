@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/12 11:28:17 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 16:24:08 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/23 11:07:02 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,8 @@ void	prompt_loop(t_list	**cmds, t_list **redirs,
 void	split_shell_lst(t_list *shell_lst, t_list **cmds, t_list **redirs);
 int		clear_shell_lst(t_list **shell_lst, t_list **cmds,
 			t_list **redirs, char **input);
+void	add_to_history(char *input);
+void	set_env_var(char *env_str, char **env[]);
+int		check_redir_pipes(char *line);
 
 #endif

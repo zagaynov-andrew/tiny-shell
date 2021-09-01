@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 18:20:58 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 17:17:52 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/21 19:34:44 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ static int	*ft_int_dup(int num)
 	return (tmp);
 }
 
-static int	msh_launch_builtin(t_list *cmd, char **env[], int num_cmds)
+static int	msh_launch_builtin(char **args, char **env[], int num_cmds)
 {
-	char	**args;
 	int		args_size;
 
-	args = (char **)cmd->content;
+	if (!args)
+		return (0);
 	args_size = str_array_size((const char **)args);
 	if (ft_strcmp(args[0], "echo") == 0)
 		return (msh_echo(args_size, args, *env));
@@ -57,7 +57,7 @@ int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[], int num_cmds)
 	int		status;
 	t_list	*new_node;
 
-	status = msh_launch_builtin(cmd, env, num_cmds);
+	status = msh_launch_builtin((char **)cmd->content, env, num_cmds);
 	if (status != -1)
 		return (status);
 	pid = fork();
@@ -65,7 +65,7 @@ int	msh_launch(t_list *cmd, t_list **pid_lst, char **env[], int num_cmds)
 	{
 		execve(((char **)cmd->content)[0], ((char **)cmd->content), *env);
 		g_last_exit_status = 127;
-		exit(msh_strerror(127));
+		exit(msh_perror_arg(((char **)cmd->content)[0], NOT_FOUND, 127));
 	}
 	if (pid > 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/18 15:58:45 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 16:45:32 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 20:07:23 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,13 @@ void	fill_cmd(char *element[], t_list **cmd_lst)
 {
 	char	**copy;
 
+	if (!element)
+	{
+		ft_lstadd_back(cmd_lst, ft_lstnew(NULL));
+		if (!ft_lstlast(*cmd_lst))
+			exit(msh_strerror(EXIT_FAILURE));
+		return ;
+	}
 	copy = str_array_copy((const char **)element);
 	if (!copy)
 		exit(msh_strerror(EXIT_FAILURE));

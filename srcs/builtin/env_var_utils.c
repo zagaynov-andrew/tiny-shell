@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/10 10:48:08 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 15:24:18 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/21 17:08:27 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ int	is_valid_env_name(const char *env_ptr)
 	char	*equal;
 	int		i;
 
+	if (env_ptr[0] == '=')
+		return (0);
 	if (ft_isdigit(env_ptr[0]))
 		return (0);
 	equal = ft_strnstr(env_ptr, "=", ft_strlen(env_ptr));

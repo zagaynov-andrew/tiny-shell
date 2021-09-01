@@ -6,7 +6,7 @@
 /*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/30 15:04:19 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/18 16:43:35 by ngamora          ###   ########.fr       */
+/*   Updated: 2021/07/19 20:31:29 by ngamora          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static void	launch_heredocs(char **cmd_array, char **redir_array)
 			redir_array[HEREDOC] = ft_strdup("");
 			if (!redir_array[HEREDOC])
 				exit(msh_strerror(EXIT_FAILURE));
-			i += 2;
+			i++;
 			continue ;
 		}
 		if (ft_strcmp(cmd_array[i], "<<") == 0)
