@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 20:05:29 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/21 16:22:10 by ngamora          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "builtin.h"
 
 char	*get_cur_dir(void)
@@ -60,11 +48,11 @@ int	msh_pwd(int argc, char *argv[], char *env[])
 	{
 		if (argv[1][0] == '-' && argv[1][1] == '-'
 			&& argv[1][2] != '\0')
-			return (msh_pwd_perror("minishell: pwd: -",
+			return (msh_pwd_perror("tinyshell: pwd: -",
 					argv[1][1], ": invalid option", 1));
 		else if (argv[1][0] == '-' && argv[1][1] != '\0'
 			&& argv[1][1] != '-')
-			return (msh_pwd_perror("minishell: pwd: -",
+			return (msh_pwd_perror("tinyshell: pwd: -",
 					argv[1][1], ": invalid option", 1));
 	}
 	cur_dir = get_cur_dir_s((const char **)env);

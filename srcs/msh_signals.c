@@ -1,28 +1,16 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   msh_signals.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/14 15:04:41 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 19:07:10 by ngamora          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
+#include "tinyshell.h"
 
 void	sig_catcher_msh(int sig)
 {
 	if (sig == SIGQUIT)
 	{
-		ft_putstr_fd("\033[1;35mminishell $ \033[0m", 1);
+		ft_putstr_fd("\033[1;35mtinyshell $ \033[0m", 1);
 		ft_putstr_fd(rl_line_buffer, 1);
 		ft_putstr_fd("  \b\b", 1);
 	}
 	else if (sig == SIGINT)
 	{
-		ft_putstr_fd("\033[1;35mminishell $ \033[0m", 1);
+		ft_putstr_fd("\033[1;35mtinyshell $ \033[0m", 1);
 		ft_putstr_fd(rl_line_buffer, 1);
 		ft_putstr_fd("  \b\b\n", 1);
 		rl_on_new_line();

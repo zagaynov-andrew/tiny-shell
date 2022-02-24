@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   prompt_loop.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/18 16:31:36 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/21 21:02:03 by ngamora          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
+#include "tinyshell.h"
 
 static int	ctrl_d(char **input)
 {
@@ -75,7 +63,7 @@ void	prompt_loop(t_list	**cmds, t_list **redirs,
 	{
 		clear_shell_lst(shell_lst, cmds, redirs, &input);
 		init_signals(sig_catcher_msh);
-		input = readline("\033[1;35mminishell $ \033[0m");
+		input = readline("\033[1;35mtinyshell $ \033[0m");
 		if (ctrl_d(&input))
 			break ;
 		if (empty_input(&input))

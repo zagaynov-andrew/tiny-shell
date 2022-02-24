@@ -7,7 +7,7 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <dirent.h>
-# include "../../libs/libft/libft.h"
+# include "../../libs/tinylibc/tinylibc.h"
 # include "../builtin/builtin.h"
 
 t_list	*lexer(char *line, int status, char **env);

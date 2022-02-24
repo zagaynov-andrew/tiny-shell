@@ -1,21 +1,9 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/06 22:07:23 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 15:18:57 by ngamora          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef BUILTIN_H
 # define BUILTIN_H
 
-# include "../../libs/libft/libft.h"
-# include "../test/test_minishell.h" //
-# include "../minishell.h"
+# include "../../libs/tinylibc/tinylibc.h"
+# include "../test/test_tinyshell.h" //
+# include "../tinyshell.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>

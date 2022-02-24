@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/06/27 16:17:15 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/21 19:25:06 by ngamora          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef EXECUTOR_H
 # define EXECUTOR_H
 
-# include "../../libs/libft/libft.h"
-# include "../test/test_minishell.h"
+# include "../../libs/tinylibc/tinylibc.h"
+# include "../test/test_tinyshell.h"
 # include "../builtin/builtin.h"
-# include "../minishell.h"
+# include "../tinyshell.h"
 # include <stdio.h>
 # include <sys/wait.h>
 # include <readline/history.h>

@@ -1,20 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   export_utils.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/19 15:17:34 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 15:18:32 by ngamora          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "builtin.h"
 
 void	print_not_valid(const char *var)
 {
-	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd("tinyshell: export: `", 2);
 	ft_putstr_fd(var, 2);
 	ft_putstr_fd("\': not a valid identifier\n", 2);
 }

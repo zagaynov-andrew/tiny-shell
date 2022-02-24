@@ -1,4 +1,4 @@
-#include "test_minishell.h"
+#include "test_tinyshell.h"
 
 void	print_str_array(char **array)
 {

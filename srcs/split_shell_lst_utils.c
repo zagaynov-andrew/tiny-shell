@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   split_shell_lst_utils.c                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/18 15:58:45 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/19 20:07:23 by ngamora          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
+#include "tinyshell.h"
 
 static void	add_redir(char **redir, char *redir_str,
 			int add_pos, int replace_pos)

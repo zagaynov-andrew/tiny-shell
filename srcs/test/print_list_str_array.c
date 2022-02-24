@@ -1,4 +1,4 @@
-#include "test_minishell.h"
+#include "test_tinyshell.h"
 
 void	print_list_str_array(t_list *lst)
 {

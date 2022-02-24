@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   shell_lvl.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/07/21 19:34:14 by ngamora           #+#    #+#             */
-/*   Updated: 2021/07/21 19:36:23 by ngamora          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "executor.h"
 
 static void	set_shell_lvl(int value, char **env[])
@@ -37,10 +25,10 @@ static void	set_shell_lvl(int value, char **env[])
 	str_array_free(&argv);
 }
 
-static int	is_minishell(char *path)
+static int	is_tinyshell(char *path)
 {
-	if (!ft_strcmp(path + ft_strlen(path) - ft_strlen("minishell"),
-			"minishell"))
+	if (!ft_strcmp(path + ft_strlen(path) - ft_strlen("tinyshell"),
+			"tinyshell"))
 		return (1);
 	return (0);
 }
@@ -50,7 +38,7 @@ void	inc_shell_lvl(char *path, char **env[])
 	char	*shell_lvl_value;
 	int		shell_lvl_pos;
 
-	if (!is_minishell(path))
+	if (!is_tinyshell(path))
 		return ;
 	shell_lvl_pos = get_env_pos("SHLVL", (const char **)*env);
 	if (shell_lvl_pos == -1)

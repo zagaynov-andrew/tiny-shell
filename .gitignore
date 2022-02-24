@@ -1,5 +1,5 @@
 .vscode
-libs/libft/objs
+libs/tinylibc/objs
 objs
-libs/libft/libft.a
-minishell
+libs/tinylibc/tinylibc.a
+tiny-shell
