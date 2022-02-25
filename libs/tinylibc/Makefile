@@ -85,27 +85,27 @@ OBJS_STR_ARRAY_PATH = $(addprefix $(OBJS_DIR), $(OBJS_STR_ARRAY))
 
 $(OBJS_DIR)%.o : %.c tinylibc.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : ft_vec/%.c tinylibc.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : ft_list/%.c tinylibc.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : str_array/%.c str_array/str_array.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS_PATH)
 	@ar r $(NAME) $(OBJS_PATH)
-	@echo "🔥🔥🔥 \033[0;31;43mtinylibc IS COMPLETED\033[0m 🔥🔥🔥"
+	@echo "✅ \033[1;37;42mtinylibc IS COMPLETED\033[0m"
 
 all: $(NAME)
 
@@ -119,15 +119,15 @@ re: fclean all
 
 vec: $(OBJS_VEC_PATH)
 	@ar r $(NAME) $(OBJS_VEC_PATH)
-	@echo "🔥🔥🔥 \033[0;31;43mtinylibc WITH VEC IS COMPLETED\033[0m 🔥🔥🔥"
+	@echo "✅ \033[1;37;42mtinylibc WITH VEC IS COMPLETED\033[0m"
 
 list: $(OBJS_LIST_PATH)
 	@ar r $(NAME) $(OBJS_LIST_PATH)
-	@echo "🔥🔥🔥 \033[0;31;43mtinylibc WITH LIST IS COMPLETED\033[0m 🔥🔥🔥"
+	@echo "✅ \033[1;37;42mtinylibc WITH LIST IS COMPLETED\033[0m"
 
 str_array: $(OBJS_STR_ARRAY_PATH)
 	@ar r $(NAME) $(OBJS_STR_ARRAY_PATH)
-	@echo "🔥🔥🔥 \033[0;31;43mtinylibc WITH STR_ARRAY IS COMPLETED\033[0m 🔥🔥🔥"
+	@echo "✅ \033[1;37;42mtinylibc WITH STR_ARRAY IS COMPLETED\033[0m"
 
 full:
 	@make list vec str_array

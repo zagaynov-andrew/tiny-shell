@@ -1,15 +1,3 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2022/02/25 11:50:08 by ngamora          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
-
 NAME			= tinyshell
 TINYLIBC_DIR	= libs/tinylibc
 PARSER_DIR		= parser/
@@ -70,33 +58,33 @@ OBJS_PATH		= $(addprefix $(OBJS_DIR), $(OBJS))
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)%.c $(SRCS_DIR)tinyshell.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@ -I./libs/readline/include
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)$(TEST_DIR)%.c $(SRCS_DIR)$(TEST_DIR)test_tinyshell.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)$(PARSER_DIR)%.c $(SRCS_DIR)$(PARSER_DIR)parser.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)$(EXECUTOR_DIR)%.c $(SRCS_DIR)$(EXECUTOR_DIR)executor.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(OBJS_DIR)%.o : $(SRCS_DIR)$(BUILTIN_DIR)%.c $(SRCS_DIR)$(BUILTIN_DIR)builtin.h
 	@mkdir -p $(OBJS_DIR)
-	@echo "\033[1;31m- Done :\033[0m $<"
+	@echo "\033[0;32m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS_PATH)
 	@$(MAKE) full -C $(TINYLIBC_DIR)
 	@gcc -o $(NAME) libs/tinylibc/tinylibc.a $(OBJS_PATH) -lreadline -L ./libs/readline/lib
-	@echo "🔥🔥🔥 \033[1;33;41mTINYSHELL IS COMPLETED\033[0m 🔥🔥🔥"
+	@echo "✅✅✅ \033[0;30;42mTINYSHELL IS COMPLETED\033[0m ✅✅✅"
 
 all: $(NAME)
 
