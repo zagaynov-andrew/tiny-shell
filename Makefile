@@ -6,7 +6,7 @@
 #    By: ngamora <ngamora@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/15 17:10:51 by ngamora           #+#    #+#              #
-#    Updated: 2022/02/24 12:36:36 by ngamora          ###   ########.fr        #
+#    Updated: 2022/02/25 11:50:08 by ngamora          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -93,10 +93,8 @@ $(OBJS_DIR)%.o : $(SRCS_DIR)$(BUILTIN_DIR)%.c $(SRCS_DIR)$(BUILTIN_DIR)builtin.h
 	@echo "\033[1;31m- Done :\033[0m $<"
 	@$(CC) $(CC_FLAGS) -c $< -o $@
 
-tinylibc:
+$(NAME): $(OBJS_PATH)
 	@$(MAKE) full -C $(TINYLIBC_DIR)
-
-$(NAME): tinylibc $(OBJS_PATH)
 	@gcc -o $(NAME) libs/tinylibc/tinylibc.a $(OBJS_PATH) -lreadline -L ./libs/readline/lib
 	@echo "🔥🔥🔥 \033[1;33;41mTINYSHELL IS COMPLETED\033[0m 🔥🔥🔥"
 
