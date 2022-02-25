@@ -55,9 +55,3 @@ make
 ```
 ./tinyshell
 ```
-
-или
-
-```
-bash tinyshell
-```
